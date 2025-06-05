@@ -1,0 +1,47 @@
+﻿.inbox-container {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgb(0 0 0 / 0.1);
+}
+
+    .inbox-container h2 {
+        margin-bottom: 20px;
+        font-weight: 600;
+        color: #333;
+    }
+
+.table tbody tr:hover {
+    background-color: #f9f9f9;
+}
+
+.table th,
+.table td {
+    vertical-align: middle;
+    text-align: left;
+}
+
+.table img.order-img {
+    max-width: 80px;
+    border-radius: 4px;
+}
+
+.btn-info {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+}
+
+    .btn-info:hover {
+        background-color: #0b5ed7;
+        border-color: #0a58ca;
+    }
+
+.btn-danger {
+    background-color: #dc3545;
+    border-color: #dc3545;
+}
+
+    .btn-danger:hover {
+        background-color: #bb2d3b;
+        border-color: #b02a37;
+    }

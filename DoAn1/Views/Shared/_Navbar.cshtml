@@ -1,0 +1,85 @@
+﻿<nav class="navbar navbar-expand-lg" style="background-color: #ffc107;">
+    <div class="container">
+
+        <!-- Logo thay cho Trang Chủ -->
+        <a class="navbar-brand" asp-controller="Home" asp-action="Index">
+            <span class="fw-bold text-dark">Tên Shop</span>
+        </a>
+
+        <!-- Nút toggle (dấu ba gạch) -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+                <!-- Mục Sản phẩm (có dropdown) -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="productDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-list"></i> Sản phẩm
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="productDropdown">
+                        <li><a class="dropdown-item" asp-controller="Product" asp-action="All">Tất cả sản phẩm</a></li>
+                        <li><a class="dropdown-item" asp-controller="Product" asp-action="Fashion">Thời trang</a></li>
+                        <li><a class="dropdown-item" asp-controller="Product" asp-action="Household">Đồ gia dụng</a></li>
+                        <li><a class="dropdown-item" asp-controller="Product" asp-action="Electronics">Đồ điện tử</a></li>
+                        <li><a class="dropdown-item" asp-controller="Product" asp-action="MomBaby">Mẹ & Bé</a></li>
+                        <li><a class="dropdown-item" asp-controller="Product" asp-action="Vehicles">Xe cộ</a></li>
+                        <li><a class="dropdown-item" asp-controller="Product" asp-action="Book">Sách</a></li>
+                        <li><a class="dropdown-item" asp-controller="Product" asp-action="SportsEntertainment">Thể thao & Giải trí</a></li>
+                        <li><a class="dropdown-item" asp-controller="Product" asp-action="Office">Đồ dùng văn phòng</a></li>
+                        <li><a class="dropdown-item" asp-controller="Product" asp-action="Others">Khác</a></li>
+                    </ul>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link text-dark" asp-controller="Account" asp-action="Login">Đăng Nhập</a>
+                </li>
+            </ul>
+
+            <!-- Ô tìm kiếm -->
+            <form class="d-flex flex-grow-1 me-3" asp-controller="Products" asp-action="Search" method="get">
+                <input class="form-control me-2 w-100" type="search" name="query" placeholder="Tìm kiếm sản phẩm" aria-label="Search">
+                <button class="btn btn-outline-dark" type="submit">Tìm</button>
+            </form>
+
+            <!-- Các icon bên phải -->
+            <a class="btn btn-sm btn-outline-dark position-relative mx-2" asp-controller="Cart" asp-action="Cart">
+                <i class="bi bi-cart"></i>
+                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.7rem;">
+                    0
+                    <span class="visually-hidden">số sản phẩm trong giỏ</span>
+                </span>
+            </a>
+
+            <a class="btn btn-sm btn-outline-dark position-relative mx-2" href="#">
+                <i class="bi bi-bell"></i>
+                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.7rem;">
+                    3
+                    <span class="visually-hidden">số thông báo mới</span>
+                </span>
+            </a>
+
+            <a class="btn btn-sm btn-outline-dark position-relative mx-2" asp-controller="Messages" asp-action="Inbox">
+                <i class="bi bi-envelope"></i>
+                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.7rem;">
+                    2
+                    <span class="visually-hidden">số tin nhắn mới</span>
+                </span>
+            </a>
+
+            <a class="btn btn-sm btn-outline-dark mx-2" asp-controller="Buyer" asp-action="BuyerOrders">
+                <i class="bi bi-clipboard-check"></i>
+            </a>
+
+            <a class="btn btn-sm btn-outline-dark mx-2" asp-controller="Seller" asp-action="SellerOrders">
+                <i class="bi bi-clipboard-data"></i>
+            </a>
+
+            <!-- Nút Đăng tin -->
+            <a class="btn btn-sm btn-outline-success ms-3" asp-controller="Product" asp-action="Create">Đăng tin</a>
+        </div>
+    </div>
+</nav>

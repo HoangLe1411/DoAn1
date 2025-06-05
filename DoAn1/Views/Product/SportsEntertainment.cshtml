@@ -1,0 +1,100 @@
+﻿@{
+    ViewData["Title"] = "Thể Thao & Giải Trí";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/products.css" />
+}
+
+<div class="container mt-4">
+    <h2>Thể Thao & Giải Trí</h2>
+
+    <!-- Bộ lọc -->
+    <div class="filter-bar mb-4">
+        <span><i class="bi bi-funnel"></i> Lọc:</span>
+        <select class="form-select d-inline-block w-auto ms-2" id="categoryFilter">
+            <option value="">-- Loại --</option>
+            <option value="Bóng rổ">Bóng Rổ</option>
+            <option value="Dụng cụ gym">Dụng Cụ Gym</option>
+        </select>
+
+        <select class="form-select d-inline-block w-auto ms-2" id="priceFilter">
+            <option value="">-- Khoảng giá --</option>
+            <option value="0-600000">Dưới 600,000đ</option>
+            <option value="600000-1500000">600,000đ - 1,500,000đ</option>
+            <option value="1500000-999999999">Trên 1,500,000đ</option>
+        </select>
+
+        <select class="form-select d-inline-block w-auto ms-2" id="conditionFilter">
+            <option value="">-- Tình trạng --</option>
+            <option value="new">Mới</option>
+            <option value="used">Cũ</option>
+        </select>
+    </div>
+
+    <div class="filter-bar mb-4">
+        <div class="product-list">
+            <div class="card" data-category="Bóng rổ" data-price="500000" data-condition="new">
+                <img src="~/images/sports1.jpg" class="card-img-top" alt="Bóng rổ">
+                <div class="card-body">
+                    <h5 class="card-title">Bóng Rổ</h5>
+                    <p class="card-text">500,000đ</p>
+                    <a href="#" class="btn btn-outline-primary">Xem chi tiết</a>
+                </div>
+            </div>
+
+            <div class="card" data-category="Dụng cụ gym" data-price="1200000" data-condition="new">
+                <img src="~/images/sports2.jpg" class="card-img-top" alt="Dụng cụ gym">
+                <div class="card-body">
+                    <h5 class="card-title">Dụng Cụ Gym</h5>
+                    <p class="card-text">1,200,000đ</p>
+                    <a href="#" class="btn btn-outline-primary">Xem chi tiết</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const categoryFilter = document.getElementById('categoryFilter');
+            const priceFilter = document.getElementById('priceFilter');
+            const conditionFilter = document.getElementById('conditionFilter');
+            const cards = document.querySelectorAll('.card');
+
+            function applyFilters() {
+                let selectedCategory = categoryFilter.value;
+                let selectedCondition = conditionFilter.value;
+                let selectedPrice = priceFilter.value;
+
+                cards.forEach(card => {
+                    let match = true;
+
+                    if (selectedCategory && card.dataset.category !== selectedCategory) {
+                        match = false;
+                    }
+
+                    if (selectedCondition && card.dataset.condition !== selectedCondition) {
+                        match = false;
+                    }
+
+                    if (selectedPrice) {
+                        let [minPrice, maxPrice] = selectedPrice.split('-').map(Number);
+                        let cardPrice = parseInt(card.dataset.price);
+                        if (cardPrice < minPrice || cardPrice > maxPrice) {
+                            match = false;
+                        }
+                    }
+
+                    card.parentElement.style.display = match ? '' : 'none';
+                });
+            }
+
+            categoryFilter.addEventListener('change', applyFilters);
+            priceFilter.addEventListener('change', applyFilters);
+            conditionFilter.addEventListener('change', applyFilters);
+        });
+    </script>
+}

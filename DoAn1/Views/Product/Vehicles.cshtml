@@ -1,0 +1,128 @@
+﻿@{
+    ViewData["Title"] = "Xe Cộ";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/products.css" />
+}
+
+<div class="container mt-4">
+    <h2>Xe Cộ</h2>
+
+    <!-- Bộ lọc -->
+    <div class="filter-bar mb-4">
+        <span><i class="bi bi-funnel"></i> Lọc:</span>
+        <select class="form-select d-inline-block w-auto ms-2" id="categoryFilter">
+            <option value="">-- Loại --</option>
+            <option value="Xe Máy">Xe Máy</option>
+            <option value="Ô Tô">Ô Tô</option>
+            <option value="Xe Đạp">Xe Đạp</option>
+            <option value="Phụ tùng">Phụ tùng</option>
+        </select>
+
+        <select class="form-select d-inline-block w-auto ms-2" id="priceFilter">
+            <option value="">-- Khoảng giá --</option>
+            <option value="0-5000000">Dưới 5 triệu</option>
+            <option value="5000000-20000000">5 triệu - 20 triệu</option>
+            <option value="20000000-50000000">20 triệu - 50 triệu</option>
+            <option value="50000000-999999999">Trên 50 triệu</option>
+        </select>
+
+        <select class="form-select d-inline-block w-auto ms-2" id="conditionFilter">
+            <option value="">-- Tình trạng --</option>
+            <option value="new">Mới</option>
+            <option value="used">Cũ</option>
+        </select>
+    </div>
+
+    <div class="filter-bar mb-4">
+        <div class="product-list">
+            <!-- Xe Máy -->
+            <div class="card" data-category="Xe Máy" data-price="25000000" data-condition="new">
+                <img src="~/images/vehicles1.jpg" class="card-img-top" alt="Xe máy">
+                <div class="card-body">
+                    <h5 class="card-title">Xe Máy Yamaha</h5>
+                    <p class="card-text">25,000,000đ</p>
+                    <a href="#" class="btn btn-outline-primary">Xem chi tiết</a>
+                </div>
+            </div>
+
+            <!-- Xe Đạp -->
+            <div class="card" data-category="Xe Đạp" data-price="3000000" data-condition="new">
+                <img src="~/images/vehicles2.jpg" class="card-img-top" alt="Xe đạp">
+                <div class="card-body">
+                    <h5 class="card-title">Xe Đạp MTB</h5>
+                    <p class="card-text">3,000,000đ</p>
+                    <a href="#" class="btn btn-outline-primary">Xem chi tiết</a>
+                </div>
+            </div>
+
+            <!-- Ô Tô -->
+            <div class="card" data-category="Ô Tô" data-price="550000000" data-condition="used">
+                <img src="~/images/vehicles3.jpg" class="card-img-top" alt="Ô tô">
+                <div class="card-body">
+                    <h5 class="card-title">Ô Tô Hyundai cũ</h5>
+                    <p class="card-text">550,000,000đ</p>
+                    <a href="#" class="btn btn-outline-primary">Xem chi tiết</a>
+                </div>
+            </div>
+
+            <!-- Phụ tùng -->
+            <div class="card" data-category="Phụ tùng" data-price="800000" data-condition="new">
+                <img src="~/images/vehicles4.jpg" class="card-img-top" alt="Phụ tùng">
+                <div class="card-body">
+                    <h5 class="card-title">Bộ Phụ Tùng Xe Máy</h5>
+                    <p class="card-text">800,000đ</p>
+                    <a href="#" class="btn btn-outline-primary">Xem chi tiết</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const categoryFilter = document.getElementById('categoryFilter');
+            const priceFilter = document.getElementById('priceFilter');
+            const conditionFilter = document.getElementById('conditionFilter');
+            const cards = document.querySelectorAll('.card');
+
+            function applyFilters() {
+                let selectedCategory = categoryFilter.value;
+                let selectedCondition = conditionFilter.value;
+                let selectedPrice = priceFilter.value;
+
+                cards.forEach(card => {
+                    let match = true;
+
+                    // Lọc theo loại
+                    if (selectedCategory && card.dataset.category !== selectedCategory) {
+                        match = false;
+                    }
+
+                    // Lọc theo tình trạng
+                    if (selectedCondition && card.dataset.condition !== selectedCondition) {
+                        match = false;
+                    }
+
+                    // Lọc theo khoảng giá
+                    if (selectedPrice) {
+                        let [minPrice, maxPrice] = selectedPrice.split('-').map(Number);
+                        let cardPrice = parseInt(card.dataset.price);
+                        if (cardPrice < minPrice || cardPrice > maxPrice) {
+                            match = false;
+                        }
+                    }
+
+                    card.parentElement.style.display = match ? '' : 'none';
+                });
+            }
+
+            categoryFilter.addEventListener('change', applyFilters);
+            priceFilter.addEventListener('change', applyFilters);
+            conditionFilter.addEventListener('change', applyFilters);
+        });
+    </script>
+}

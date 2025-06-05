@@ -1,0 +1,21 @@
+﻿.cart-container {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.cart-table img.cart-img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+.quantity-input {
+    max-width: 70px;
+}
+
+.btn-danger {
+    min-width: 60px;
+}

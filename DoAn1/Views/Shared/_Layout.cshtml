@@ -1,0 +1,42 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>@ViewData["Title"] - Chợ Đồ Cũ</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+
+    @RenderSection("Styles", required: false)
+</head>
+<body>
+    <header>
+        @if (ViewData["ShowHeader"] == null || (bool)ViewData["ShowHeader"])
+        {
+            @Html.Partial("_Header")
+        }
+
+        @if (ViewData["ShowNavbar"] == null || (bool)ViewData["ShowNavbar"])
+        {
+            @Html.Partial("_Navbar")
+        }
+    </header>
+
+    <main class="container mt-4">
+        @RenderBody()
+    </main>
+
+    @if (ViewData["ShowFooter"] == null || (bool)ViewData["ShowFooter"])
+    {
+        <footer class="border-top mt-4 py-3 text-center text-muted">
+            @Html.Partial("_Footer")
+        </footer>
+    }
+
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

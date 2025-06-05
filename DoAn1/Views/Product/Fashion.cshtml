@@ -1,0 +1,107 @@
+﻿@{
+    ViewData["Title"] = "Thời trang";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/products.css" />
+}
+
+<div class="container mt-4">
+    <h2>Thời trang</h2>
+
+    <!-- Bộ lọc -->
+    <div class="filter-bar mb-4">
+        <span><i class="bi bi-funnel"></i> Lọc:</span>
+        <select class="form-select d-inline-block w-auto ms-2" id="categoryFilter">
+            <option value="">-- Loại --</option>
+            <option value="Quần áo">Quần áo</option>
+            <option value="Giày dép">Giày dép</option>
+            <option value="Túi xách">Túi xách</option>
+            <option value="Phụ kiện">Phụ kiện</option>
+        </select>
+
+        <select class="form-select d-inline-block w-auto ms-2" id="priceFilter">
+            <option value="">-- Khoảng giá --</option>
+            <option value="0-100000">Dưới 100,000đ</option>
+            <option value="100000-300000">100,000đ - 300,000đ</option>
+            <option value="300000-500000">300,000đ - 500,000đ</option>
+            <option value="500000-999999999">Trên 500,000đ</option>
+        </select>
+
+        <select class="form-select d-inline-block w-auto ms-2" id="conditionFilter">
+            <option value="">-- Tình trạng --</option>
+            <option value="new">Mới</option>
+            <option value="used">Cũ</option>
+        </select>
+    </div>
+
+    <div class="filter-bar mb-4">
+        <div class="product-list">
+            <div class="card" data-category="Quần áo" data-price="250000" data-condition="new">
+                <img src="~/images/fashion1.jpg" class="card-img-top" alt="Áo sơ mi">
+                <div class="card-body">
+                    <h5 class="card-title">Áo sơ mi</h5>
+                    <p class="card-text">250,000đ</p>
+                    <a href="#" class="btn btn-outline-primary">Xem chi tiết</a>
+                </div>
+            </div>
+
+            <div class="card" data-category="Giày dép" data-price="400000" data-condition="used">
+                <img src="~/images/fashion2.jpg" class="card-img-top" alt="Giày thể thao">
+                <div class="card-body">
+                    <h5 class="card-title">Giày thể thao</h5>
+                    <p class="card-text">400,000đ</p>
+                    <a href="#" class="btn btn-outline-primary">Xem chi tiết</a>
+                </div>
+            </div>
+            <!-- Thêm sản phẩm khác tương tự -->
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const categoryFilter = document.getElementById('categoryFilter');
+            const priceFilter = document.getElementById('priceFilter');
+            const conditionFilter = document.getElementById('conditionFilter');
+            const cards = document.querySelectorAll('.card');
+
+            function applyFilters() {
+                let selectedCategory = categoryFilter.value;
+                let selectedCondition = conditionFilter.value;
+                let selectedPrice = priceFilter.value;
+
+                cards.forEach(card => {
+                    let match = true;
+
+                    // Lọc theo loại
+                    if (selectedCategory && card.dataset.category !== selectedCategory) {
+                        match = false;
+                    }
+
+                    // Lọc theo tình trạng
+                    if (selectedCondition && card.dataset.condition !== selectedCondition) {
+                        match = false;
+                    }
+
+                    // Lọc theo khoảng giá
+                    if (selectedPrice) {
+                        let [minPrice, maxPrice] = selectedPrice.split('-').map(Number);
+                        let cardPrice = parseInt(card.dataset.price);
+                        if (cardPrice < minPrice || cardPrice > maxPrice) {
+                            match = false;
+                        }
+                    }
+
+                    card.parentElement.style.display = match ? '' : 'none';
+                });
+            }
+
+            categoryFilter.addEventListener('change', applyFilters);
+            priceFilter.addEventListener('change', applyFilters);
+            conditionFilter.addEventListener('change', applyFilters);
+        });
+    </script>
+}

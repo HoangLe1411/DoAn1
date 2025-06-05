@@ -1,0 +1,226 @@
+﻿@{
+    ViewData["Title"] = "Trang Chủ";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/Trangchu.css" />
+}
+
+<div class="full-background"></div>
+
+<div class="homepage">
+<div class="container mt-4">
+        <!-- KHUNG NGOÀI CÙNG: bo góc + đổ bóng nhẹ -->
+        <div class="outer-banner-wrapper mb-4 rounded p-3 bg-white" style="box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+
+            <!-- KHUNG BANNER + ICON -->
+            <div class="banner-section">
+
+                <!-- Banner Carousel: bo góc và đổ bóng nhẹ -->
+                <div id="mainCarousel" class="carousel slide rounded" data-bs-ride="carousel" data-bs-interval="10000" style="box-shadow: 0 2px 6px rgba(0,0,0,0.1);">
+                    <div class="carousel-inner rounded">
+                        <div class="carousel-item active">
+                            <img src="~/images/banner1.jpg" class="d-block w-100 rounded" style="height: 280px; object-fit: cover;" alt="Banner 1">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="~/images/banner2.jpg" class="d-block w-100 rounded" style="height: 280px; object-fit: cover;" alt="Banner 2">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="~/images/banner3.jpg" class="d-block w-100 rounded" style="height: 280px; object-fit: cover;" alt="Banner 3">
+                        </div>
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#mainCarousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#mainCarousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+
+
+                <!-- Các mục icon bên dưới banner -->
+                <div class="d-flex justify-content-around text-center mt-3 px-3">
+                    <div class="banner-item">
+                        <i class="bi bi-heart-fill text-danger fs-2"></i>
+                        <p class="mt-1 mb-0">Yêu thích</p>
+                    </div>
+                    <div class="banner-item">
+                        <i class="bi bi-arrow-left-right text-primary fs-2"></i>
+                        <p class="mt-1 mb-0">Trao đổi</p>
+                    </div>
+                    <div class="banner-item">
+                        <i class="bi bi-tag-fill text-warning fs-2"></i>
+                        <p class="mt-1 mb-0">Khuyến mãi</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    
+
+    <!-- Khám phá danh mục -->
+    <div class="bg-white p-3 mb-4 rounded shadow-sm">
+        <h4>Khám phá danh mục</h4>
+        <div class="row">
+            <div class="col text-center">
+                <a href="/Product/All" class="category-link">
+                    <div class="category-item">
+                        <img src="~/images/category_all.png" class="img-fluid mb-2" style="height: 60px;">
+                        <p>Tất cả</p>
+                    </div>
+                </a>
+            </div>
+            <div class="col text-center">
+                <a href="/Product/Fashion" class="category-link">
+                    <div class="category-item">
+                        <img src="~/images/category_thoitrang.png" class="img-fluid mb-2" style="height: 60px;">
+                        <p>Thời trang</p>
+                    </div>
+                </a>
+            </div>
+            <div class="col text-center">
+                <a href="/Product/Household" class="category-link">
+                    <div class="category-item">
+                        <img src="~/images/category_dogiadung.png" class="img-fluid mb-2" style="height: 60px;">
+                        <p>Đồ gia dụng</p>
+                    </div>
+                </a>
+            </div>
+            <div class="col text-center">
+                <a href="/Product/Electronics" class="category-link">
+                    <div class="category-item">
+                        <img src="~/images/category_dientu.png" class="img-fluid mb-2" style="height: 60px;">
+                        <p>Đồ điện tử</p>
+                    </div>
+                </a>
+            </div>
+            <div class="col text-center">
+                <a href="/Product/MomBaby" class="category-link">
+                    <div class="category-item">
+                        <img src="~/images/category_mebe.png" class="img-fluid mb-2" style="height: 60px;">
+                        <p>Mẹ & Bé</p>
+                    </div>
+                </a>
+            </div>
+            <div class="col text-center">
+                <a href="/Product/Vehicles" class="category-link">
+                    <div class="category-item">
+                        <img src="~/images/category_xeco.png" class="img-fluid mb-2" style="height: 60px;">
+                        <p>Xe cộ</p>
+                    </div>
+                </a>
+            </div>
+            <div class="col text-center">
+                <a href="/Product/Book" class="category-link">
+                    <div class="category-item">
+                        <img src="~/images/category_sach.png" class="img-fluid mb-2" style="height: 60px;">
+                        <p>Sách</p>
+                    </div>
+                </a>
+            </div>
+            <div class="col text-center">
+                <a href="/Product/SportsEntertainment" class="category-link">
+                    <div class="category-item">
+                        <img src="~/images/category_thethaogiai_tri.png" class="img-fluid mb-2" style="height: 60px;">
+                        <p>Thể thao</p>
+                    </div>
+                </a>
+            </div>
+            <div class="col text-center">
+                <a href="/Product/Office" class="category-link">
+                    <div class="category-item">
+                        <img src="~/images/category_vanphongpham.png" class="img-fluid mb-2" style="height: 60px;">
+                        <p>Văn phòng</p>
+                    </div>
+                </a>
+            </div>
+            <div class="col text-center">
+                <a href="/Product/Others" class="category-link">
+                    <div class="category-item">
+                        <img src="~/images/category_khac.png" class="img-fluid mb-2" style="height: 60px;">
+                        <p>Khác</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Tin đăng mới -->
+    <div class="bg-white p-3 mb-4 rounded shadow-sm">
+        <h4>Tin đăng mới</h4>
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <a asp-controller="Product" asp-action="DetailProduct" asp-route-id="1" class="text-decoration-none text-dark card-link-wrapper">
+                <div class="card shadow-sm">
+                    <img src="~/images/item1.jpg" class="card-img-top" alt="Sản phẩm 1" style="height: 200px; object-fit: cover;">
+                    <div class="card-body">
+                        <h5 class="card-title">Xe đạp cũ</h5>
+                        <p class="card-text">Giá: 1,000,000đ</p>
+                        <a asp-controller="Product" asp-action="DetailProduct" asp-route-id="1" class="btn btn-outline-primary">Xem chi tiết</a>
+                    </div>
+                </div>
+                </a>
+            </div>
+            <div class="col-md-4 mb-3">
+                <a asp-controller="Product" asp-action="DetailProduct" asp-route-id="1" class="text-decoration-none text-dark card-link-wrapper">
+                <div class="card shadow-sm">
+                    <img src="~/images/item2.jpg" class="card-img-top" alt="Sản phẩm 2" style="height: 200px; object-fit: cover;">
+                    <div class="card-body">
+                        <h5 class="card-title">Điện thoại cũ</h5>
+                        <p class="card-text">Giá: 2,000,000đ</p>
+                        <a asp-controller="Product" asp-action="DetailProduct" asp-route-id="2" class="btn btn-outline-primary">Xem chi tiết</a>
+                    </div>
+                </div>
+                </a>
+            </div>
+            <div class="col-md-4 mb-3">
+                <a asp-controller="Product" asp-action="DetailProduct" asp-route-id="1" class="text-decoration-none text-dark card-link-wrapper">
+                <div class="card shadow-sm">
+                    <img src="~/images/item3.jpg" class="card-img-top" alt="Sản phẩm 3" style="height: 200px; object-fit: cover;">
+                    <div class="card-body">
+                        <h5 class="card-title">Laptop cũ</h5>
+                        <p class="card-text">Giá: 4,500,000đ</p>
+                        <a asp-controller="Product" asp-action="DetailProduct" asp-route-id="3" class="btn btn-outline-primary">Xem chi tiết</a>
+                    </div>
+                </div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sản phẩm nổi bật -->
+    <div class="bg-white p-3 mb-4 rounded shadow-sm">
+        <h4>Sản phẩm nổi bật</h4>
+        <div class="row">
+            <!-- Bạn có thể lặp foreach với sản phẩm nổi bật tại đây -->
+            <div class="col-md-3 mb-3">
+                <div class="card h-100">
+                    <img src="~/images/featured1.jpg" class="card-img-top" style="height: 200px; object-fit: cover;">
+                    <div class="card-body">
+                        <h5 class="card-title">Máy ảnh cũ</h5>
+                        <p class="card-text">Giá: 3,000,000đ</p>
+                        <a href="#" class="btn btn-outline-primary">Xem chi tiết</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3 mb-3">
+                <div class="card h-100">
+                    <img src="~/images/featured2.jpg" class="card-img-top" style="height: 200px; object-fit: cover;">
+                    <div class="card-body">
+                        <h5 class="card-title">Máy tính cũ</h5>
+                        <p class="card-text">Giá: 5,000,000đ</p>
+                        <a href="#" class="btn btn-outline-primary">Xem chi tiết</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Thêm các sản phẩm khác -->
+        </div>
+    </div>
+</div>
+</div>

@@ -1,0 +1,47 @@
+﻿@{
+    ViewData["Title"] = "Hộp Thư Tin Nhắn";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/Inbox.css" />
+}
+
+<div class="inbox-container container mt-4">
+    <h2>📩 Hộp Thư Tin Nhắn</h2>
+
+    <table class="table table-bordered mt-3">
+        <thead class="table-light">
+            <tr>
+                <th>Người gửi</th>
+                <th>Nội dung</th>
+                <th>Thời gian</th>
+                <th>Hành động</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Nguyễn Văn A</td>
+                <td>Xin chào, bạn có thể cung cấp thêm thông tin về sản phẩm không?</td>
+                <td>01/06/2025 14:30</td>
+                <td>
+                    <button class="btn btn-info btn-sm">Xem chi tiết</button>
+                    <button class="btn btn-danger btn-sm">Xóa</button>
+                </td>
+            </tr>
+            <tr>
+                <td>Trần Thị B</td>
+                <td>Tôi đã nhận hàng, cảm ơn bạn!</td>
+                <td>31/05/2025 09:20</td>
+                <td>
+                    <button class="btn btn-info btn-sm">Xem chi tiết</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="d-flex justify-content-between mt-4">
+        <a href="@Url.Action("All", "Product")" class="btn btn-secondary">Tiếp tục mua sắm</a>
+        <a href="/" class="btn btn-outline-primary">Quay về trang chủ</a>
+    </div>
+</div>

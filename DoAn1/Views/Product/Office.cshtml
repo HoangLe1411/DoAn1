@@ -1,0 +1,101 @@
+﻿@{
+    ViewData["Title"] = "Văn Phòng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/products.css" />
+}
+
+<div class="container mt-4">
+    <h2>Văn Phòng</h2>
+    <hr />
+    <!-- Bộ lọc -->
+    <div class="filter-bar mb-4">
+        <span><i class="bi bi-funnel"></i> Lọc:</span>
+        <select class="form-select d-inline-block w-auto ms-2" id="categoryFilter">
+            <option value="">-- Loại --</option>
+            <option value="Bàn làm việc">Bàn Làm Việc</option>
+            <option value="Ghế xoay">Ghế Xoay</option>
+            <!-- Bạn có thể thêm loại khác -->
+        </select>
+
+        <select class="form-select d-inline-block w-auto ms-2" id="priceFilter">
+            <option value="">-- Khoảng giá --</option>
+            <option value="0-1000000">Dưới 1,000,000đ</option>
+            <option value="1000000-3000000">1,000,000đ - 3,000,000đ</option>
+            <option value="3000000-999999999">Trên 3,000,000đ</option>
+        </select>
+
+        <select class="form-select d-inline-block w-auto ms-2" id="conditionFilter">
+            <option value="">-- Tình trạng --</option>
+            <option value="new">Mới</option>
+            <option value="used">Cũ</option>
+        </select>
+    </div>
+
+    <div class="filter-bar mb-4">
+        <div class="product-list">
+            <div class="card" data-category="Bàn làm việc" data-price="2500000" data-condition="new">
+                <img src="~/images/office1.jpg" class="card-img-top" alt="Bàn làm việc">
+                <div class="card-body">
+                    <h5 class="card-title">Bàn Làm Việc</h5>
+                    <p class="card-text">2,500,000đ</p>
+                    <a href="#" class="btn btn-outline-primary">Xem chi tiết</a>
+                </div>
+            </div>
+
+            <div class="card" data-category="Ghế xoay" data-price="1000000" data-condition="new">
+                <img src="~/images/office2.jpg" class="card-img-top" alt="Ghế xoay">
+                <div class="card-body">
+                    <h5 class="card-title">Ghế Xoay</h5>
+                    <p class="card-text">1,000,000đ</p>
+                    <a href="#" class="btn btn-outline-primary">Xem chi tiết</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const categoryFilter = document.getElementById('categoryFilter');
+            const priceFilter = document.getElementById('priceFilter');
+            const conditionFilter = document.getElementById('conditionFilter');
+            const cards = document.querySelectorAll('.card');
+
+            function applyFilters() {
+                let selectedCategory = categoryFilter.value;
+                let selectedCondition = conditionFilter.value;
+                let selectedPrice = priceFilter.value;
+
+                cards.forEach(card => {
+                    let match = true;
+
+                    if (selectedCategory && card.dataset.category !== selectedCategory) {
+                        match = false;
+                    }
+
+                    if (selectedCondition && card.dataset.condition !== selectedCondition) {
+                        match = false;
+                    }
+
+                    if (selectedPrice) {
+                        let [minPrice, maxPrice] = selectedPrice.split('-').map(Number);
+                        let cardPrice = parseInt(card.dataset.price);
+                        if (cardPrice < minPrice || cardPrice > maxPrice) {
+                            match = false;
+                        }
+                    }
+
+                    card.parentElement.style.display = match ? '' : 'none';
+                });
+            }
+
+            categoryFilter.addEventListener('change', applyFilters);
+            priceFilter.addEventListener('change', applyFilters);
+            conditionFilter.addEventListener('change', applyFilters);
+        });
+    </script>
+}

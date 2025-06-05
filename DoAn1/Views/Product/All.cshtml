@@ -1,0 +1,147 @@
+﻿@{
+    ViewData["Title"] = "Tất Cả Sản Phẩm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/products.css" />
+}
+
+<div class="container mt-4">
+    <h2 class="mb-4">Tất Cả Sản Phẩm</h2>
+
+    <!-- Bộ lọc -->
+    <div class="filter-bar mb-4">
+        <span><i class="bi bi-funnel"></i> Lọc:</span>
+        <select class="form-select d-inline-block w-auto ms-2" id="locationFilter">
+            <option value="">-- Địa điểm --</option>
+            <option value="Toàn quốc">Toàn quốc</option>
+            <option value="Hà Nội">Hà Nội</option>
+            <option value="TP. Hồ Chí Minh">TP. Hồ Chí Minh</option>
+            <option value="Cần Thơ">Cần Thơ</option>
+        </select>
+
+        <select class="form-select d-inline-block w-auto ms-2" id="categoryFilter">
+            <option value="">-- Danh mục --</option>
+            <option value="Đồ Điện Tử">Đồ Điện Tử</option>
+            <option value="Mẹ & Bé">Mẹ & Bé</option>
+            <option value="Xe cộ">Xe cộ</option>
+            <option value="Thể thao & Giải trí">Thể thao & Giải trí</option>
+            <option value="Văn phòng">Văn phòng</option>
+            <option value="Đồ khác">Đồ khác</option>
+        </select>
+
+        <select class="form-select d-inline-block w-auto ms-2" id="priceFilter">
+            <option value="">-- Giá --</option>
+            <option value="0-1000000">Dưới 1 triệu</option>
+            <option value="1000000-5000000">1 - 5 triệu</option>
+            <option value="5000000-10000000">5 - 10 triệu</option>
+            <option value="10000000-999999999">Trên 10 triệu</option>
+        </select>
+
+        <select class="form-select d-inline-block w-auto ms-2" id="conditionFilter">
+            <option value="">-- Tình trạng --</option>
+            <option value="new">Mới</option>
+            <option value="used">Đã sử dụng</option>
+        </select>
+    </div>
+
+    <div class="filter-bar mb-4">
+        <div class="product-list">
+            <div class="card" data-location="Hà Nội" data-category="Xe cộ" data-price="1000000" data-condition="used">
+                <img src="~/images/item1.jpg" class="card-img-top" alt="Xe đạp cũ" style="height: 200px; object-fit: cover;">
+                <div class="card-body">
+                    <h5 class="card-title">Xe đạp cũ</h5>
+                    <p class="card-text">1,000,000 đ</p>
+                    <a href="#" class="btn btn-outline-primary w-100">Xem chi tiết</a>
+                </div>
+            </div>
+
+            <div class="card" data-location="TP. Hồ Chí Minh" data-category="Đồ Điện Tử" data-price="2000000" data-condition="used">
+                <img src="~/images/item2.jpg" class="card-img-top" alt="Điện thoại cũ" style="height: 200px; object-fit: cover;">
+                <div class="card-body">
+                    <h5 class="card-title">Điện thoại cũ</h5>
+                    <p class="card-text">2,000,000 đ</p>
+                    <a href="#" class="btn btn-outline-primary w-100">Xem chi tiết</a>
+                </div>
+            </div>
+
+            <div class="card" data-location="Hà Nội" data-category="Đồ Điện Tử" data-price="4500000" data-condition="used">
+                <img src="~/images/item3.jpg" class="card-img-top" alt="Laptop cũ" style="height: 200px; object-fit: cover;">
+                <div class="card-body">
+                    <h5 class="card-title">Laptop cũ</h5>
+                    <p class="card-text">4,500,000 đ</p>
+                    <a href="#" class="btn btn-outline-primary w-100">Xem chi tiết</a>
+                </div>
+            </div>
+
+            <div class="card" data-location="Cần Thơ" data-category="Đồ Điện Tử" data-price="3000000" data-condition="used">
+                <img src="~/images/item4.jpg" class="card-img-top" alt="Máy ảnh cũ" style="height: 200px; object-fit: cover;">
+                <div class="card-body">
+                    <h5 class="card-title">Máy ảnh cũ</h5>
+                    <p class="card-text">3,000,000 đ</p>
+                    <a href="#" class="btn btn-outline-primary w-100">Xem chi tiết</a>
+                </div>
+            </div>
+
+            <div class="card" data-location="Cần Thơ" data-category="Đồ Điện Tử" data-price="3000000" data-condition="used">
+                <img src="~/images/item5.jpg" class="card-img-top" alt="Máy giặc cũ" style="height: 200px; object-fit: cover;">
+                <div class="card-body">
+                    <h5 class="card-title">Máy giặc cũ</h5>
+                    <p class="card-text">5,000,000 đ</p>
+                    <a href="#" class="btn btn-outline-primary w-100">Xem chi tiết</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const locationFilter = document.getElementById('locationFilter');
+            const categoryFilter = document.getElementById('categoryFilter');
+            const priceFilter = document.getElementById('priceFilter');
+            const conditionFilter = document.getElementById('conditionFilter');
+            const cards = document.querySelectorAll('.card');
+
+            function applyFilters() {
+                let selectedLocation = locationFilter.value;
+                let selectedCategory = categoryFilter.value;
+                let selectedPrice = priceFilter.value;
+                let selectedCondition = conditionFilter.value;
+
+                cards.forEach(card => {
+                    let match = true;
+
+                    if (selectedLocation && card.dataset.location !== selectedLocation) {
+                        match = false;
+                    }
+
+                    if (selectedCategory && card.dataset.category !== selectedCategory) {
+                        match = false;
+                    }
+
+                    if (selectedCondition && card.dataset.condition !== selectedCondition) {
+                        match = false;
+                    }
+
+                    if (selectedPrice) {
+                        let [minPrice, maxPrice] = selectedPrice.split('-').map(Number);
+                        let cardPrice = parseInt(card.dataset.price);
+                        if (cardPrice < minPrice || cardPrice > maxPrice) {
+                            match = false;
+                        }
+                    }
+
+                    card.parentElement.style.display = match ? '' : 'none';
+                });
+            }
+
+            locationFilter.addEventListener('change', applyFilters);
+            categoryFilter.addEventListener('change', applyFilters);
+            priceFilter.addEventListener('change', applyFilters);
+            conditionFilter.addEventListener('change', applyFilters);
+        });
+    </script>
+}

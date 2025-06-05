@@ -1,0 +1,168 @@
+﻿/* products.css */
+
+/* Định dạng thẻ h2 */
+h2 {
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #333;
+}
+
+/* Card sản phẩm */
+.card {
+    border: none;
+    border-radius: 10px;
+    overflow: hidden;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+    .card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    }
+
+.card-img-top {
+    height: 200px;
+    object-fit: cover;
+}
+
+.card-title {
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.card-text {
+    font-size: 16px;
+    color: #555;
+}
+
+.btn-outline-primary {
+    border-radius: 20px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+    .btn-outline-primary:hover {
+        background-color: #007bff;
+        color: #fff;
+    }
+
+/* Bộ lọc (Filter) nằm giữa, có khung riêng */
+.filter-bar {
+    margin: 0 auto 30px auto; /* căn giữa */
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    display: flex; /* dùng flexbox */
+    justify-content: center; /* căn giữa theo chiều ngang */
+    align-items: center; /* căn giữa theo chiều dọc, trên 1 đường thẳng */
+    gap: 30px; /* khoảng cách đều nhau giữa các phần tử */
+    flex-wrap: nowrap; /* không xuống hàng */
+    max-width: none; /* hoặc tăng lên giá trị lớn hơn 700px nếu bạn muốn */
+    width: auto; /* để nó tự giãn theo nội dung */
+}
+
+    /* Chữ "Lọc:" và icon nằm sát nhau */
+    .filter-bar span {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-weight: 600;
+        white-space: nowrap; /* giữ nguyên dòng, không xuống hàng */
+    }
+
+    /* Các select bộ lọc */
+    .filter-bar select {
+        min-width: 180px; /* tăng min-width để đủ chỗ chữ dài */
+        max-width: 220px; /* giới hạn max-width */
+        white-space: nowrap; /* không xuống dòng */
+        text-overflow: ellipsis; /* nếu chữ quá dài, hiển thị dấu ... */
+        overflow: hidden;
+        padding: 6px 10px; /* padding để chữ không sát viền */
+        font-size: 16px; /* chữ dễ đọc */
+        border-radius: 6px;
+        border: 1px solid #ccc;
+        background-color: white;
+        appearance: none; /* loại bỏ style mặc định của trình duyệt */
+    }
+
+        /* Khi dropdown hiển thị, option có thể xuống dòng nếu dài */
+        .filter-bar select option {
+            white-space: normal;
+        }
+
+/* Viền cho sản phẩm */
+.product-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px; /* Khoảng cách giữa các card */
+    justify-content: space-between; /* Canh đều 2 bên */
+}
+/* Giữ cho card có kích thước rộng hơn */
+.card {
+    width: 240px; /* Chiều rộng cố định */
+    height: 320px; /* Chiều cao cố định */
+    border-radius: 10px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+    /* Hiệu ứng hover giống trang chủ */
+    .card:hover {
+        transform: scale(1.05);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        cursor: pointer;
+        z-index: 10;
+    }
+
+/* Ảnh sản phẩm to hơn */
+.card-img-top {
+    height: 250px;
+    object-fit: cover;
+}
+
+/* Body card chiếm không gian còn lại */
+.card-body {
+    flex-grow: 1;
+    padding: 15px;
+}
+
+/* Nút rộng full card */
+.btn-outline-primary {
+    width: 100%;
+    border-radius: 20px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+    .btn-outline-primary:hover {
+        background-color: #007bff;
+        color: #fff;
+    }
+
+
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+body {
+    background-image: url('/images/nen.jpg'); /* Thay bằng đường dẫn ảnh thật */
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
+}
+
+footer {
+    position: relative;
+    z-index: 1;
+    background-color: #fff; /* hoặc màu phù hợp */
+    padding: 20px;
+}
+
+
+

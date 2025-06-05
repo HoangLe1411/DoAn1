@@ -1,0 +1,39 @@
+﻿@{
+    ViewData["Title"] = "Đăng ký";
+    ViewData["ShowHeader"] = false;
+    ViewData["ShowNavbar"] = false;
+    ViewData["ShowFooter"] = false;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/Register.css" />
+}
+
+<div class="container mt-4">
+    <h2 class="text-center mb-4">Đăng ký</h2>
+
+    <form asp-action="Register" method="post">
+        <div class="mb-3">
+            <label class="form-label">Tên đăng nhập</label>
+            <input type="text" name="Username" class="form-control" required />
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Email</label>
+            <input type="email" name="Email" class="form-control" required />
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Mật khẩu</label>
+            <input type="password" name="Password" class="form-control" required />
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Xác nhận mật khẩu</label>
+            <input type="password" name="ConfirmPassword" class="form-control" required />
+        </div>
+        <button type="submit" class="btn btn-success">Đăng ký</button>
+    </form>
+
+    <div class="mt-3">
+        <a asp-action="Login">Đã có tài khoản? Đăng nhập</a>
+    </div>
+</div>

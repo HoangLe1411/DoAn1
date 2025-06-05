@@ -1,0 +1,64 @@
+﻿@{
+    ViewData["Title"] = "Giỏ Hàng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/Cart.css" />
+}
+
+
+<div class="cart-container container mt-4">
+    <h2>Giỏ hàng của bạn</h2>
+
+    <table class="table table-bordered mt-3 cart-table">
+        <thead class="table-light">
+            <tr>
+                <th>Sản phẩm</th>
+                <th>Ảnh</th>
+                <th>Đơn giá</th>
+                <th>Số lượng</th>
+                <th>Thành tiền</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Áo thun nam</td>
+                <td><img src="~/images/item1.jpg" alt="Áo thun nam" class="cart-img"></td>
+                <td>200,000₫</td>
+                <td>
+                    <input type="number" value="1" min="1" class="form-control quantity-input" />
+                </td>
+                <td>200,000₫</td>
+                <td>
+                    <button class="btn btn-danger btn-sm">Xóa</button>
+                </td>
+            </tr>
+            <tr>
+                <td>Điện thoại cũ</td>
+                <td><img src="~/images/item2.jpg" alt="Điện thoại cũ" class="cart-img"></td>
+                <td>2,000,000₫</td>
+                <td>
+                    <input type="number" value="2" min="1" class="form-control quantity-input" />
+                </td>
+                <td>4,000,000₫</td>
+                <td>
+                    <button class="btn btn-danger btn-sm">Xóa</button>
+                </td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="4" class="text-end fw-bold">Tổng cộng:</td>
+                <td class="fw-bold">4,200,000₫</td>
+                <td></td>
+            </tr>
+        </tfoot>
+    </table>
+
+    <div class="d-flex justify-content-between mt-4">
+        <a href="/" class="btn btn-secondary">Tiếp tục mua hàng</a>
+        <button class="btn btn-primary">Thanh toán</button>
+    </div>
+</div>

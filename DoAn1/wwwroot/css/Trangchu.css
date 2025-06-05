@@ -1,0 +1,216 @@
+﻿/* Trang chủ - bổ sung */
+body {
+    background-color: #f8f9fa;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+
+.homepage h1,
+.homepage h2,
+.homepage h3 {
+    color: #2c3e50;
+}
+
+.homepage .card-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #555;
+}
+
+.homepage .card-text {
+    font-size: 1rem;
+    color: #777;
+}
+
+.homepage .btn-outline-primary {
+    width: 100%;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+    .homepage .btn-outline-primary:hover {
+        background-color: #007bff;
+        color: #fff;
+    }
+
+/* Section nổi bật */
+.homepage .featured-section {
+    margin-bottom: 50px;
+}
+
+.homepage .featured-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    text-align: center;
+    position: relative;
+}
+
+    .homepage .featured-title::after {
+        content: '';
+        display: block;
+        width: 60px;
+        height: 4px;
+        background-color: #007bff;
+        margin: 10px auto 0;
+        border-radius: 2px;
+    }
+
+.full-background {
+    position: fixed; /* Cố định nền màn hình */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh; /* Chiều cao full màn hình */
+    background-image: url('/images/nen1.jpg'); /* Thay đổi theo ảnh của bạn */
+    background-size: cover;
+    background-position: center;
+    z-index: -1; /* Quan trọng: đặt thấp hơn tất cả các phần tử khác */
+}
+
+footer {
+    position: relative;
+    z-index: 1;
+    background-color: #fff; /* hoặc màu phù hợp */
+    padding: 20px;
+}
+
+.outer-banner-wrapper,
+.bg-white {
+    background-color: rgba(255, 255, 255, 0.9); /* nền trắng hơi trong suốt để thấy được ảnh nền dưới */
+    /* Hoặc nếu bạn muốn nền hoàn toàn trắng thì dùng background-color: #fff; */
+}
+
+
+/* Footer riêng trong homepage (nếu có phần footer riêng) */
+.homepage footer {
+    background-color: #343a40;
+    color: #fff;
+    padding: 20px 0;
+    text-align: center;
+}
+
+    .homepage footer a {
+        color: #ffc107;
+        text-decoration: none;
+    }
+
+        .homepage footer a:hover {
+            text-decoration: underline;
+        }
+
+.homepage .card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+    .homepage .card:hover {
+        transform: scale(1.05);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        z-index: 10;
+        cursor: pointer;
+    }
+
+.homepage .card-link-wrapper {
+    display: block;
+    color: inherit;
+}
+
+    .homepage .card-link-wrapper:hover .card {
+        transform: scale(1.03);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        cursor: pointer;
+        transition: all 0.3s ease;
+        z-index: 10;
+    }
+
+/* Khám phá danh mục */
+.category-link {
+    text-decoration: none;
+    color: #333;
+    display: block;
+    height: 100%;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.category-item {
+    width: 100%;
+    height: 150px; /* Chiều cao cố định */
+    background-color: #fff;
+    border-radius: 16px;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start; /* Đẩy nội dung lên đầu */
+    gap: 10px; /* Khoảng cách ảnh-chữ */
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+    .category-item img {
+        width: 80px;
+        height: 80px;
+        object-fit: cover;
+        border-radius: 12px; /* Bo góc ảnh */
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        flex-shrink: 0;
+    }
+
+    .category-item p {
+        width: 100%;
+        text-align: center;
+        font-weight: 600;
+        font-size: 16px;
+        margin: 0;
+        line-height: 1.2;
+        min-height: 40px; /* Đảm bảo chữ không bị nhảy */
+        display: block;
+    }
+
+.category-link:hover .category-item {
+    box-shadow: 0 12px 30px rgba(0, 123, 255, 0.3);
+    transform: translateY(-8px);
+    background-color: #007bff;
+}
+
+    .category-link:hover .category-item p {
+        color: #fff;
+    }
+
+    .category-link:hover .category-item img {
+        transform: scale(1.1);
+        box-shadow: 0 8px 25px rgba(0, 123, 255, 0.6);
+    }
+
+
+
+
+.category-item:hover {
+    transform: scale(1.05);
+    transition: transform 0.3s ease;
+    cursor: pointer;
+}
+
+
+/* Giữ banner sát với thanh navbar */
+/* Loại bỏ margin/padding phía dưới navbar */
+.navbar {
+    margin-bottom: 0;
+}
+
+/* Nếu khung chứa banner có margin/padding phía trên */
+.banner-wrapper, .banner-container, .banner {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
+/* Nếu container trong homepage cũng có khoảng cách, loại bỏ */
+.homepage .container {
+    padding-top: 0;
+    margin-top: 0;
+}
