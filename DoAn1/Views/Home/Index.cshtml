@@ -1,4 +1,6 @@
-﻿@{
+﻿@model List<DoAn1.Areas.Admin.Models.Product>
+
+@{
     ViewData["Title"] = "Trang Chủ";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -42,20 +44,31 @@
 
 
                 <!-- Các mục icon bên dưới banner -->
+                <!-- Các mục icon bên dưới banner -->
                 <div class="d-flex justify-content-around text-center mt-3 px-3">
-                    <div class="banner-item">
-                        <i class="bi bi-heart-fill text-danger fs-2"></i>
-                        <p class="mt-1 mb-0">Yêu thích</p>
-                    </div>
+
+                    <!-- Yêu thích: Thêm liên kết -->
+                    <a href="@Url.Action("MyWishlist", "Wishlists")" class="text-decoration-none text-dark">
+                        <div class="banner-item">
+                            <i class="bi bi-heart-fill text-danger fs-2"></i>
+                            <p class="mt-1 mb-0">Yêu thích</p>
+                        </div>
+                    </a>
+
+                    <!-- Trao đổi (tạm thời không có liên kết) -->
                     <div class="banner-item">
                         <i class="bi bi-arrow-left-right text-primary fs-2"></i>
                         <p class="mt-1 mb-0">Trao đổi</p>
                     </div>
+
+                    <!-- Khuyến mãi (tạm thời không có liên kết) -->
                     <div class="banner-item">
                         <i class="bi bi-tag-fill text-warning fs-2"></i>
                         <p class="mt-1 mb-0">Khuyến mãi</p>
                     </div>
+
                 </div>
+
 
             </div>
         </div>
@@ -67,7 +80,7 @@
         <h4>Khám phá danh mục</h4>
         <div class="row">
             <div class="col text-center">
-                <a href="/Product/All" class="category-link">
+                <a href="/Products/AllProducts" class="category-link">
                     <div class="category-item">
                         <img src="~/images/category_all.png" class="img-fluid mb-2" style="height: 60px;">
                         <p>Tất cả</p>
@@ -75,7 +88,7 @@
                 </a>
             </div>
             <div class="col text-center">
-                <a href="/Product/Fashion" class="category-link">
+                <a asp-controller="Products" asp-action="ByCategory" asp-route-categoryId="2" class="category-link">
                     <div class="category-item">
                         <img src="~/images/category_thoitrang.png" class="img-fluid mb-2" style="height: 60px;">
                         <p>Thời trang</p>
@@ -83,7 +96,7 @@
                 </a>
             </div>
             <div class="col text-center">
-                <a href="/Product/Household" class="category-link">
+                <a asp-controller="Products" asp-action="ByCategory" asp-route-categoryId="1" class="category-link">
                     <div class="category-item">
                         <img src="~/images/category_dogiadung.png" class="img-fluid mb-2" style="height: 60px;">
                         <p>Đồ gia dụng</p>
@@ -91,7 +104,7 @@
                 </a>
             </div>
             <div class="col text-center">
-                <a href="/Product/Electronics" class="category-link">
+                <a asp-controller="Products" asp-action="ByCategory" asp-route-categoryId="3" class="category-link">
                     <div class="category-item">
                         <img src="~/images/category_dientu.png" class="img-fluid mb-2" style="height: 60px;">
                         <p>Đồ điện tử</p>
@@ -99,7 +112,7 @@
                 </a>
             </div>
             <div class="col text-center">
-                <a href="/Product/MomBaby" class="category-link">
+                <a asp-controller="Products" asp-action="ByCategory" asp-route-categoryId="5" class="category-link">
                     <div class="category-item">
                         <img src="~/images/category_mebe.png" class="img-fluid mb-2" style="height: 60px;">
                         <p>Mẹ & Bé</p>
@@ -107,7 +120,7 @@
                 </a>
             </div>
             <div class="col text-center">
-                <a href="/Product/Vehicles" class="category-link">
+                <a asp-controller="Products" asp-action="ByCategory" asp-route-categoryId="4" class="category-link">
                     <div class="category-item">
                         <img src="~/images/category_xeco.png" class="img-fluid mb-2" style="height: 60px;">
                         <p>Xe cộ</p>
@@ -115,7 +128,7 @@
                 </a>
             </div>
             <div class="col text-center">
-                <a href="/Product/Book" class="category-link">
+                <a asp-controller="Products" asp-action="ByCategory" asp-route-categoryId="6" class="category-link">
                     <div class="category-item">
                         <img src="~/images/category_sach.png" class="img-fluid mb-2" style="height: 60px;">
                         <p>Sách</p>
@@ -123,7 +136,7 @@
                 </a>
             </div>
             <div class="col text-center">
-                <a href="/Product/SportsEntertainment" class="category-link">
+                <a asp-controller="Products" asp-action="ByCategory" asp-route-categoryId="8" class="category-link">
                     <div class="category-item">
                         <img src="~/images/category_thethaogiai_tri.png" class="img-fluid mb-2" style="height: 60px;">
                         <p>Thể thao</p>
@@ -131,7 +144,7 @@
                 </a>
             </div>
             <div class="col text-center">
-                <a href="/Product/Office" class="category-link">
+                <a asp-controller="Products" asp-action="ByCategory" asp-route-categoryId="7" class="category-link">
                     <div class="category-item">
                         <img src="~/images/category_vanphongpham.png" class="img-fluid mb-2" style="height: 60px;">
                         <p>Văn phòng</p>
@@ -139,7 +152,7 @@
                 </a>
             </div>
             <div class="col text-center">
-                <a href="/Product/Others" class="category-link">
+                <a asp-controller="Products" asp-action="ByCategory" asp-route-categoryId="9" class="category-link">
                     <div class="category-item">
                         <img src="~/images/category_khac.png" class="img-fluid mb-2" style="height: 60px;">
                         <p>Khác</p>
@@ -151,76 +164,78 @@
 
 
     <!-- Tin đăng mới -->
-    <div class="bg-white p-3 mb-4 rounded shadow-sm">
-        <h4>Tin đăng mới</h4>
-        <div class="row">
-            <div class="col-md-4 mb-3">
-                <a asp-controller="Product" asp-action="DetailProduct" asp-route-id="1" class="text-decoration-none text-dark card-link-wrapper">
-                <div class="card shadow-sm">
-                    <img src="~/images/item1.jpg" class="card-img-top" alt="Sản phẩm 1" style="height: 200px; object-fit: cover;">
-                    <div class="card-body">
-                        <h5 class="card-title">Xe đạp cũ</h5>
-                        <p class="card-text">Giá: 1,000,000đ</p>
-                        <a asp-controller="Product" asp-action="DetailProduct" asp-route-id="1" class="btn btn-outline-primary">Xem chi tiết</a>
+        <!-- Tin đăng mới -->
+        <div class="bg-white p-3 mb-4 rounded shadow-sm">
+            <h4>Tin đăng mới</h4>
+            <div class="row">
+                @foreach (var product in Model.Take(6))
+                {
+                    var imageUrl = product.ProductImages?.FirstOrDefault()?.ImageUrl ?? "/images/no-image.png";
+                    <div class="col-md-4 mb-3">
+                        <div class="card shadow-sm h-100">
+                            <a asp-controller="Products" asp-action="DetailProduct" asp-route-id="@product.ProductId">
+                                <img src="@imageUrl" class="card-img-top" style="height: 200px; object-fit: cover;"
+                                     onerror="this.onerror=null;this.src='/images/no-image.png';" />
+                            </a>
+
+                            <div class="card-body">
+                                <h5 class="card-title text-truncate">@product.Title</h5>
+                                <p class="card-text text-danger fw-bold">@string.Format("{0:N0} đ", product.Price)</p>
+                                <p class="card-text"><i class="bi bi-geo-alt"></i> @product.Location</p>
+                                <a asp-controller="Products" asp-action="DetailProduct" asp-route-id="@product.ProductId"
+                                   class="btn btn-outline-primary w-100 mt-2">Xem chi tiết</a>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                </a>
-            </div>
-            <div class="col-md-4 mb-3">
-                <a asp-controller="Product" asp-action="DetailProduct" asp-route-id="1" class="text-decoration-none text-dark card-link-wrapper">
-                <div class="card shadow-sm">
-                    <img src="~/images/item2.jpg" class="card-img-top" alt="Sản phẩm 2" style="height: 200px; object-fit: cover;">
-                    <div class="card-body">
-                        <h5 class="card-title">Điện thoại cũ</h5>
-                        <p class="card-text">Giá: 2,000,000đ</p>
-                        <a asp-controller="Product" asp-action="DetailProduct" asp-route-id="2" class="btn btn-outline-primary">Xem chi tiết</a>
-                    </div>
-                </div>
-                </a>
-            </div>
-            <div class="col-md-4 mb-3">
-                <a asp-controller="Product" asp-action="DetailProduct" asp-route-id="1" class="text-decoration-none text-dark card-link-wrapper">
-                <div class="card shadow-sm">
-                    <img src="~/images/item3.jpg" class="card-img-top" alt="Sản phẩm 3" style="height: 200px; object-fit: cover;">
-                    <div class="card-body">
-                        <h5 class="card-title">Laptop cũ</h5>
-                        <p class="card-text">Giá: 4,500,000đ</p>
-                        <a asp-controller="Product" asp-action="DetailProduct" asp-route-id="3" class="btn btn-outline-primary">Xem chi tiết</a>
-                    </div>
-                </div>
-                </a>
+                }
+
             </div>
         </div>
-    </div>
+
 
     <!-- Sản phẩm nổi bật -->
-    <div class="bg-white p-3 mb-4 rounded shadow-sm">
-        <h4>Sản phẩm nổi bật</h4>
-        <div class="row">
-            <!-- Bạn có thể lặp foreach với sản phẩm nổi bật tại đây -->
-            <div class="col-md-3 mb-3">
-                <div class="card h-100">
-                    <img src="~/images/featured1.jpg" class="card-img-top" style="height: 200px; object-fit: cover;">
-                    <div class="card-body">
-                        <h5 class="card-title">Máy ảnh cũ</h5>
-                        <p class="card-text">Giá: 3,000,000đ</p>
-                        <a href="#" class="btn btn-outline-primary">Xem chi tiết</a>
-                    </div>
-                </div>
-            </div>
+        <!-- Sản phẩm nổi bật -->
+        <div class="bg-white p-3 mb-4 rounded shadow-sm">
+            <div class="row">
+                @{
+                    var featuredProducts = ViewBag.FeaturedProducts as List<DoAn1.Areas.Admin.Models.Product>;
+                }
 
-            <div class="col-md-3 mb-3">
-                <div class="card h-100">
-                    <img src="~/images/featured2.jpg" class="card-img-top" style="height: 200px; object-fit: cover;">
-                    <div class="card-body">
-                        <h5 class="card-title">Máy tính cũ</h5>
-                        <p class="card-text">Giá: 5,000,000đ</p>
-                        <a href="#" class="btn btn-outline-primary">Xem chi tiết</a>
+                @if (featuredProducts != null && featuredProducts.Any())
+                {
+                    <div class="bg-white p-3 mb-4 rounded shadow-sm">
+                        <h4 class="mb-3">🔥 Sản phẩm nổi bật</h4>
+                        <div class="row">
+                            @foreach (var product in featuredProducts)
+                            {
+                                var avg = (product.RatingCount ?? 0) > 0
+                                ? ((double)(product.TotalRating ?? 0) / (product.RatingCount ?? 1))
+                                : 0;
+
+                                <div class="col-md-3 mb-3">
+                                    <div class="card h-100">
+                                        <img src="@(product.ProductImages?.FirstOrDefault()?.ImageUrl ?? "/images/no-image.png")"
+                                             class="card-img-top" style="height: 200px; object-fit: cover;" />
+                                        <div class="card-body d-flex flex-column">
+                                            <h5 class="card-title">@product.Title</h5>
+                                            <p class="card-text text-danger">@product.Price?.ToString("N0") ₫</p>
+                                            <p>⭐ @avg.ToString("0.0")/5 (@product.RatingCount đánh giá)</p>
+                                            <a asp-action="DetailProduct" asp-controller="Products" asp-route-id="@product.ProductId"
+                                               class="btn btn-outline-primary mt-auto">Xem chi tiết</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
                     </div>
-                </div>
+                }
+                else
+                {
+                    <p class="text-muted">Không có sản phẩm nổi bật.</p>
+                }
             </div>
-            <!-- Thêm các sản phẩm khác -->
         </div>
-    </div>
+
+
 </div>
 </div>

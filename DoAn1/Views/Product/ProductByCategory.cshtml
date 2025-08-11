@@ -1,0 +1,109 @@
+﻿@model List<DoAn1.Areas.Admin.Models.Product>
+
+@{
+    ViewData["Title"] = ViewBag.CategoryName ?? "Tất cả sản phẩm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/products.css" />
+}
+
+<div class="container mt-4">
+    <h2>@ViewBag.CategoryName</h2>
+
+    <!-- Bộ lọc -->
+    <div class="filter-bar mb-4">
+        <span><i class="bi bi-funnel"></i> Lọc:</span>
+        <select class="form-select d-inline-block w-auto ms-2" id="categoryFilter">
+            <option value="">-- Thể loại phụ --</option>
+            @foreach (var sub in Model.Select(p => p.SubCategory).DistinctBy(sc => sc?.SubCategoryId))
+            {
+                if (sub != null)
+                {
+                    <option value="@sub.SubCategoryId">@sub.SubCategoryName</option>
+                }
+            }
+        </select>
+
+        <select class="form-select d-inline-block w-auto ms-2" id="priceFilter">
+            <option value="">-- Giá --</option>
+            <option value="asc">Giá tăng dần</option>
+            <option value="desc">Giá giảm dần</option>
+        </select>
+
+        <select class="form-select d-inline-block w-auto ms-2" id="conditionFilter">
+            <option value="">-- Tình trạng --</option>
+            <option value="Mới">Mới</option>
+            <option value="Cũ">Cũ</option>
+        </select>
+    </div>
+
+    <div class="row product-list">
+        @foreach (var item in Model)
+        {
+            var imageUrl = item.ProductImages.FirstOrDefault()?.ImageUrl ?? "~/images/default.jpg";
+
+            <div class="col-md-3 mb-3">
+                <div class="card"
+                     data-category="@item.SubCategoryId"
+                     data-price="@((int)item.Price)"
+                     data-condition="@item.Condition">
+                    <img src="@imageUrl" class="card-img-top" alt="@item.Title" />
+                    <div class="card-body">
+                        <h5 class="card-title">@item.Title</h5>
+                        <p class="card-text">@item.Price?.ToString("N0") đ</p>
+                        <a href="/Products/Details/@item.ProductId" class="btn btn-outline-primary">Xem chi tiết</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const categoryFilter = document.getElementById('categoryFilter');
+            const priceFilter = document.getElementById('priceFilter');
+            const conditionFilter = document.getElementById('conditionFilter');
+            const cards = document.querySelectorAll('.card');
+
+            function applyFilters() {
+                let selectedCategory = categoryFilter.value;
+                let selectedCondition = conditionFilter.value;
+
+                cards.forEach(card => {
+                    let match = true;
+
+                    if (selectedCategory && card.dataset.category !== selectedCategory) {
+                        match = false;
+                    }
+
+                    if (selectedCondition && card.dataset.condition !== selectedCondition) {
+                        match = false;
+                    }
+
+                    card.closest('.col-md-3').style.display = match ? '' : 'none';
+                });
+
+                if (priceFilter.value) {
+                    let sortedCards = Array.from(cards).sort((a, b) => {
+                        let priceA = parseInt(a.dataset.price);
+                        let priceB = parseInt(b.dataset.price);
+                        return priceFilter.value === 'asc' ? priceA - priceB : priceB - priceA;
+                    });
+
+                    let row = document.querySelector('.product-list');
+                    sortedCards.forEach(card => {
+                        row.appendChild(card.closest('.col-md-3'));
+                    });
+                }
+            }
+
+            categoryFilter.addEventListener('change', applyFilters);
+            priceFilter.addEventListener('change', applyFilters);
+            conditionFilter.addEventListener('change', applyFilters);
+        });
+    </script>
+}

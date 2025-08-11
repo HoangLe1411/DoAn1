@@ -1,0 +1,16 @@
+﻿@model DoAn1.Areas.Admin.Models.Report
+
+<h2>Báo cáo người dùng</h2>
+
+<form asp-action="Create" method="post">
+    <input type="hidden" asp-for="ReportedUserId" />
+
+    <div class="mb-3">
+        <label class="form-label">Lý do báo cáo</label>
+        <textarea asp-for="Reason" class="form-control"></textarea>
+        <span asp-validation-for="Reason" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-danger">Gửi báo cáo</button>
+    <a asp-controller="Home" asp-action="Index" class="btn btn-secondary">Hủy</a>
+</form>

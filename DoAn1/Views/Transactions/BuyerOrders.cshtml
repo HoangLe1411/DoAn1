@@ -1,0 +1,110 @@
+﻿@model List<DoAn1.Areas.Admin.Models.Transaction>
+
+@{
+    ViewData["Title"] = "Đơn Mua Của Tôi";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/BuyerOrders.css" />
+}
+
+<div class="orders-container container mt-4">
+    <h2>Đơn mua của bạn</h2>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+    }
+
+    <table class="table table-bordered mt-3">
+        <thead class="table-light">
+            <tr>
+                <th>Sản phẩm</th>
+                <th>Ảnh</th>
+                <th>Giá</th>
+                <th>Người bán</th>
+                <th>Ngày mua</th>
+                <th>Trạng thái thanh toán</th>
+                <th>Trạng thái giao hàng</th>
+                <th>Hành động</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (!Model.Any())
+            {
+                <tr>
+                    <td colspan="8" class="text-center text-muted">Bạn chưa có đơn mua nào.</td>
+                </tr>
+            }
+            else
+            {
+                @foreach (var item in Model)
+                {
+                    var product = item.Product;
+                    <tr>
+                        <td>@product?.Title</td>
+                        <td>
+                            @if (product?.ProductImages != null && product.ProductImages.Any())
+                            {
+                                <img src="@product.ProductImages.First().ImageUrl" alt="@product.Title" class="order-img" />
+                            }
+                            else
+                            {
+                                <span>Không có ảnh</span>
+                            }
+                    </td>
+                    <td>@String.Format("{0:N0}₫", item.Amount)</td>
+                    <td>@item.Seller?.FullName</td>
+                    <td>@item.TransactionDate?.ToString("dd/MM/yyyy")</td>
+                    <td>
+                        <span class="badge @(item.PaymentStatus == "Completed" ? "bg-success" : "bg-warning")">
+                            @item.PaymentStatus
+                        </span>
+                    </td>
+                    <td>
+                        <span class="badge
+                                    @(item.ShippingStatus == "Delivered" ? "bg-success"
+                                                              : item.ShippingStatus == "Cancelled" ? "bg-danger"
+                                                              : "bg-secondary")">
+                        @item.ShippingStatus
+                    </span>
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.TransactionId" class="btn btn-info btn-sm">Chi tiết</a>
+
+                    @if (item.ShippingStatus != "Shipping" &&
+                                        item.ShippingStatus != "Delivered" &&
+                                        item.ShippingStatus != "Received" &&
+                                        item.ShippingStatus != "Cancelled")
+                            {
+                                <!-- Nút Hủy -->
+                                <form asp-action="Cancel" asp-route-id="@item.TransactionId" method="post" class="d-inline">
+                                    <button type="submit" class="btn btn-danger btn-sm">Hủy</button>
+                                </form>
+                            }
+
+                            @if (item.ShippingStatus == "Cancelled")
+                            {
+                                <!-- Nút Xóa -->
+                                <form asp-action="DeleteOrder" asp-route-id="@item.TransactionId" method="post" class="d-inline"
+                                      onsubmit="return confirm('Bạn có chắc muốn xóa đơn hàng này không?');">
+                                    <button type="submit" class="btn btn-outline-danger btn-sm">Xóa</button>
+                                </form>
+                            }
+
+                            <a asp-controller="Transactions" asp-action="Track" asp-route-id="@item.TransactionId" class="btn btn-outline-primary btn-sm">
+                                Xem đơn hàng
+                            </a>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+
+    <div class="d-flex justify-content-between mt-4">
+        <a href="@Url.Action("All", "Product")" class="btn btn-secondary">Tiếp tục mua sắm</a>
+        <a href="/" class="btn btn-outline-primary">Trang chủ</a>
+    </div>
+</div>

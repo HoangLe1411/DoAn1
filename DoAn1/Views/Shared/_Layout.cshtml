@@ -38,5 +38,55 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 
     @RenderSection("Scripts", required: false)
+
+    <!-- ... cuối trang trước </body> -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        // Khởi tạo tooltip Bootstrap
+        document.addEventListener("DOMContentLoaded", function () {
+            const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $("#searchInput").on("keyup", function () {
+                let query = $(this).val();
+
+                if (query.length === 0) {
+                    $("#suggestions").empty();
+                    return;
+                }
+
+                $.ajax({
+                    url: '/Product/SearchSuggestions',
+                    data: { term: query },
+                    success: function (data) {
+                        let suggestionsList = data.map(item => `<li class="list-group-item suggestion-item">${item}</li>`);
+                        $("#suggestions").html(suggestionsList.join(""));
+                    }
+                });
+            });
+
+            // Khi click vào gợi ý
+            $(document).on("click", ".suggestion-item", function () {
+                $("#searchInput").val($(this).text());
+                $("#suggestions").empty();
+                $("#searchForm").submit();
+            });
+
+            // Ẩn gợi ý khi click ra ngoài
+            $(document).click(function (e) {
+                if (!$(e.target).closest("#searchForm").length) {
+                    $("#suggestions").empty();
+                }
+            });
+        });
+    </script>
+
 </body>
+
+
 </html>

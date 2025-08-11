@@ -129,3 +129,138 @@
         border: none;
         border-radius: 4px;
     }
+
+.image-container {
+    position: relative;
+    width: 400px; /* Kích thước khung cố định */
+    height: 400px;
+    margin: 0 auto;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #fff;
+    overflow: hidden;
+}
+
+    .image-container img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain; /* Đảm bảo ảnh không bị méo */
+    }
+
+.btn-prev,
+.btn-next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(255, 255, 255, 0.8);
+    border: none;
+    padding: 8px 12px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 18px;
+    z-index: 10;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+    .btn-prev:hover,
+    .btn-next:hover {
+        background-color: rgba(255, 255, 255, 1);
+    }
+
+.btn-prev {
+    left: 10px;
+}
+
+.btn-next {
+    right: 10px;
+}
+
+/* Thumbnails */
+.thumb-img {
+    border: 2px solid transparent;
+    border-radius: 6px;
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    transition: transform 0.2s, border 0.3s;
+    cursor: pointer;
+}
+
+    .thumb-img:hover {
+        transform: scale(1.1);
+    }
+
+    .thumb-img.active-thumb {
+        border: 2px solid #007bff;
+    }
+
+#phoneNumber {
+    transition: opacity 0.3s ease;
+    opacity: 0;
+}
+
+    #phoneNumber.show {
+        opacity: 1;
+    }
+
+/* Breadcrumb */
+.breadcrumb {
+    background-color: #f8f9fa;
+    padding: 10px 15px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    user-select: none; /* tránh chọn nhầm khi rê chuột */
+    transition: background-color 0.3s ease;
+}
+
+    .breadcrumb:hover {
+        background-color: #e9ecef; /* sáng nhẹ khi hover toàn bộ breadcrumb */
+    }
+
+.breadcrumb-item a {
+    color: #007bff;
+    text-decoration: none;
+    transition: color 0.3s ease;
+    font-weight: 500;
+}
+
+    .breadcrumb-item a:hover {
+        color: #0056b3;
+        text-decoration: underline;
+    }
+
+.breadcrumb-item + .breadcrumb-item::before {
+    content: "›";
+    color: #6c757d;
+    margin: 0 8px;
+    font-weight: bold;
+}
+
+.breadcrumb-item.active {
+    color: #495057;
+    font-weight: 600;
+    cursor: default;
+}
+
+    /* Thêm hiệu ứng mượt cho active */
+    .breadcrumb-item.active:hover {
+        text-decoration: none;
+        color: #495057;
+    }
+
+/* Responsive */
+@media (max-width: 576px) {
+    .breadcrumb {
+        font-size: 0.8rem;
+        padding: 8px 12px;
+    }
+
+    .breadcrumb-item + .breadcrumb-item::before {
+        margin: 0 5px;
+    }
+}
+

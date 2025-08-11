@@ -1,0 +1,101 @@
+﻿@model DoAn1.Areas.Admin.Models.Transaction
+
+@{
+    ViewData["Title"] = "Đặt hàng";
+    var product = ViewBag.Product as DoAn1.Areas.Admin.Models.Product;
+    var currentUser = ViewBag.CurrentUser as DoAn1.Areas.Admin.Models.User;
+}
+
+<h2>Đặt hàng sản phẩm</h2>
+<hr />
+
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Create" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <!-- Hidden -->
+            <input type="hidden" asp-for="BuyerId" value="@currentUser?.UserId" />
+            <input type="hidden" asp-for="SellerId" value="@product?.UserId" />
+            <input type="hidden" asp-for="ProductId" value="@product?.ProductId" />
+
+            <!-- Giá -->
+            <div class="form-group">
+                <label>Giá sản phẩm</label>
+                <input class="form-control" id="price" value="@(product?.Price?.ToString("N0") + " đ")" readonly />
+                <input type="hidden" asp-for="Amount" value="@product?.Price" />
+            </div>
+
+            <!-- Số lượng -->
+            <div class="form-group">
+                <label for="quantity">Số lượng</label>
+                <input type="number" id="quantity" name="quantity" value="1" min="1" class="form-control" />
+            </div>
+
+            <!-- Tổng tiền -->
+            <div class="form-group">
+                <label for="totalAmount">Tổng tiền</label>
+                <input type="text" id="totalAmount" class="form-control" readonly />
+            </div>
+
+            <!-- Phương thức thanh toán -->
+            <div class="form-group">
+                <label asp-for="PaymentMethodId" class="control-label">Phương thức thanh toán</label>
+                <select asp-for="PaymentMethodId" class="form-control" asp-items="ViewBag.PaymentMethodId" id="paymentMethod"></select>
+            </div>
+
+            <!-- ExchangeType -->
+            <input type="hidden" asp-for="ExchangeType" value="Mua" />
+            <input type="hidden" asp-for="PaymentStatus" value="Pending" />
+
+            <!-- QR thanh toán -->
+            <div id="qr-section" style="display:none;" class="mt-3">
+                <label>Quét mã QR để thanh toán</label>
+                <div>
+                    <img id="qrImage" src="" alt="QR code" width="200" />
+                </div>
+                <p>Mã tham chiếu: <strong id="paymentRef"></strong></p>
+            </div>
+
+            <div class="form-group mt-3">
+                <input type="submit" value="Đặt hàng" class="btn btn-success" />
+                <a asp-action="Index" class="btn btn-secondary">Hủy</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        const price = parseFloat("@(product?.Price ?? 0)");
+        const quantityInput = document.getElementById('quantity');
+        const totalAmountInput = document.getElementById('totalAmount');
+        const paymentMethod = document.getElementById('paymentMethod');
+        const qrSection = document.getElementById('qr-section');
+        const qrImage = document.getElementById('qrImage');
+        const paymentRef = document.getElementById('paymentRef');
+
+        function updateTotal() {
+            const qty = parseInt(quantityInput.value) || 1;
+            totalAmountInput.value = (price * qty).toLocaleString() + ' đ';
+        }
+
+        quantityInput.addEventListener('input', updateTotal);
+        updateTotal();
+
+        paymentMethod.addEventListener('change', () => {
+            const methodText = paymentMethod.options[paymentMethod.selectedIndex].text;
+
+            if (methodText.includes('Chuyển khoản') || methodText === 'Momo') {
+                qrSection.style.display = 'block';
+                const qty = parseInt(quantityInput.value) || 1;
+                const amount = price * qty;
+                const refCode = 'REF' + Date.now();
+                paymentRef.innerText = refCode;
+                qrImage.src = `/Transactions/GenerateQR?refCode=${refCode}&amount=${amount}`;
+            } else {
+                qrSection.style.display = 'none';
+            }
+        });
+    </script>
+}

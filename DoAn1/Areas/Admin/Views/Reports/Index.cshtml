@@ -1,0 +1,55 @@
+﻿@model IEnumerable<DoAn1.Areas.Admin.Models.Report>
+
+@{
+    ViewData["Title"] = "Quản lý báo cáo";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>Danh sách báo cáo</h2>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Người báo cáo</th>
+            <th>Người bị báo cáo</th>
+            <th>Lý do</th>
+            <th>Ngày báo cáo</th>
+            <th>Trạng thái</th>
+            <th>Thao tác</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var report in Model)
+        {
+            <tr>
+                <td>@report.Reporter?.Username</td>
+                <td>@report.ReportedUser?.Username</td>
+                <td>@report.Reason</td>
+                <td>@report.ReportedAt?.ToString("dd/MM/yyyy HH:mm")</td>
+                <td>
+                    @(report.IsResolved == true ? "Đã xử lý" : "Chưa xử lý")
+                </td>
+                <td>
+                    @if (report.IsResolved == false)
+                    {
+                        <form asp-action="Approve" method="post" style="display:inline">
+                            <input type="hidden" name="id" value="@report.ReportId" />
+                            <button class="btn btn-success btn-sm">Duyệt</button>
+                        </form>
+                        <form asp-action="Reject" method="post" style="display:inline">
+                            <input type="hidden" name="id" value="@report.ReportId" />
+                            <button class="btn btn-danger btn-sm">Từ chối</button>
+                        </form>
+                    }
+                    else
+                    {
+                        <form asp-action="UndoApproval" method="post" style="display:inline">
+                            <input type="hidden" name="id" value="@report.ReportId" />
+                            <button class="btn btn-warning btn-sm">Hủy duyệt</button>
+                        </form>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
