@@ -1,85 +1,170 @@
-﻿<nav class="navbar navbar-expand-lg" style="background-color: #ffc107;">
+﻿@using DoAn1.Areas.Admin.Models
+@inject CsdlDoAn1Context _context
+
+@{
+    var userId = Context.Session.GetInt32("UserId");
+    int unreadNotificationCount = 0;
+    int unreadMessageCount = 0;
+
+    if (userId != null)
+    {
+        unreadNotificationCount = _context.Notifications
+            .Where(n => n.UserId == userId && n.IsRead == false)
+            .Count();
+
+        // Lấy số lượng tin nhắn chưa đọc mà receiver là user hiện tại
+        unreadMessageCount = _context.Messages
+            .Where(m => m.ReceiverId == userId && (m.IsRead == false || m.IsRead == null))
+            .Count();
+    }
+
+    // Logic hiển thị "5+" nếu vượt quá 5
+    string messageBadgeText = unreadMessageCount > 5 ? "5+" : unreadMessageCount.ToString();
+}
+
+
+<style>
+    /* Dropdown mở khi hover */
+    .nav-item.dropdown:hover .dropdown-menu {
+        display: block;
+        margin-top: 0;
+    }
+
+    .dropdown-menu {
+        margin-top: 0;
+        transition: all 0.3s ease;
+    }
+</style>
+
+<nav class="navbar navbar-expand-lg" style="background-color: #ffc107;">
     <div class="container">
 
-        <!-- Logo thay cho Trang Chủ -->
+        <!-- Logo -->
         <a class="navbar-brand" asp-controller="Home" asp-action="Index">
             <span class="fw-bold text-dark">Tên Shop</span>
         </a>
 
-        <!-- Nút toggle (dấu ba gạch) -->
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <!-- Nút toggle mobile -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>
         </button>
 
         <div class="collapse navbar-collapse" id="navbarNav">
+            <!-- Menu trái -->
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-
-                <!-- Mục Sản phẩm (có dropdown) -->
+                <!-- Dropdown Sản phẩm -->
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="productDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <a class="nav-link dropdown-toggle" href="#" id="productDropdown" data-bs-toggle="dropdown">
                         <i class="bi bi-list"></i> Sản phẩm
                     </a>
-                    <ul class="dropdown-menu" aria-labelledby="productDropdown">
-                        <li><a class="dropdown-item" asp-controller="Product" asp-action="All">Tất cả sản phẩm</a></li>
-                        <li><a class="dropdown-item" asp-controller="Product" asp-action="Fashion">Thời trang</a></li>
-                        <li><a class="dropdown-item" asp-controller="Product" asp-action="Household">Đồ gia dụng</a></li>
-                        <li><a class="dropdown-item" asp-controller="Product" asp-action="Electronics">Đồ điện tử</a></li>
-                        <li><a class="dropdown-item" asp-controller="Product" asp-action="MomBaby">Mẹ & Bé</a></li>
-                        <li><a class="dropdown-item" asp-controller="Product" asp-action="Vehicles">Xe cộ</a></li>
-                        <li><a class="dropdown-item" asp-controller="Product" asp-action="Book">Sách</a></li>
-                        <li><a class="dropdown-item" asp-controller="Product" asp-action="SportsEntertainment">Thể thao & Giải trí</a></li>
-                        <li><a class="dropdown-item" asp-controller="Product" asp-action="Office">Đồ dùng văn phòng</a></li>
-                        <li><a class="dropdown-item" asp-controller="Product" asp-action="Others">Khác</a></li>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" asp-controller="Products" asp-action="AllProducts">Tất cả sản phẩm</a></li>
+                        <li><a class="dropdown-item" asp-controller="Products" asp-action="ByCategory" asp-route-categoryId="1">Đồ gia dụng</a></li>
+                        <li><a class="dropdown-item" asp-controller="Products" asp-action="ByCategory" asp-route-categoryId="2">Thời trang</a></li>
+                        <li><a class="dropdown-item" asp-controller="Products" asp-action="ByCategory" asp-route-categoryId="3">Đồ điện tử</a></li>
+                        <li><a class="dropdown-item" asp-controller="Products" asp-action="ByCategory" asp-route-categoryId="4">Xe cộ</a></li>
+                        <li><a class="dropdown-item" asp-controller="Products" asp-action="ByCategory" asp-route-categoryId="5">Mẹ và bé</a></li>
+                        <li><a class="dropdown-item" asp-controller="Products" asp-action="ByCategory" asp-route-categoryId="6">Sách</a></li>
+                        <li><a class="dropdown-item" asp-controller="Products" asp-action="ByCategory" asp-route-categoryId="7">Đồ dùng văn phòng</a></li>
+                        <li><a class="dropdown-item" asp-controller="Products" asp-action="ByCategory" asp-route-categoryId="8">Thể thao và giải trí</a></li>
+                        <li><a class="dropdown-item" asp-controller="Products" asp-action="ByCategory" asp-route-categoryId="9">Khác</a></li>
                     </ul>
                 </li>
 
-                <li class="nav-item">
-                    <a class="nav-link text-dark" asp-controller="Account" asp-action="Login">Đăng Nhập</a>
+                <!-- Dropdown Mua hàng -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="buyDropdown" data-bs-toggle="dropdown">
+                        <i class="bi bi-basket"></i> Mua hàng
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" asp-controller="Transactions" asp-action="OrderHistory">Lịch sử mua</a></li>
+                        <li><a class="dropdown-item" asp-controller="Transactions" asp-action="BuyerOrders">Đơn mua</a></li>
+                    </ul>
+                </li>
+
+                <!-- Dropdown Bán hàng -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="sellDropdown" data-bs-toggle="dropdown">
+                        <i class="bi bi-bag-check"></i> Bán hàng
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" asp-controller="Transactions" asp-action="SellerOrderHistory">Lịch sử bán</a></li>
+                        <li><a class="dropdown-item" asp-controller="Transactions" asp-action="SellerOrthers">Đơn bán</a></li>
+                        <li><a class="dropdown-item" asp-controller="Products" asp-action="MyProducts">Sản phẩm của tôi</a></li>
+                    </ul>
                 </li>
             </ul>
 
             <!-- Ô tìm kiếm -->
-            <form class="d-flex flex-grow-1 me-3" asp-controller="Products" asp-action="Search" method="get">
-                <input class="form-control me-2 w-100" type="search" name="query" placeholder="Tìm kiếm sản phẩm" aria-label="Search">
-                <button class="btn btn-outline-dark" type="submit">Tìm</button>
+            <form id="searchForm" class="d-flex position-relative" asp-controller="Products" asp-action="Search" method="get" autocomplete="off">
+                <input class="form-control me-2" type="search" placeholder="Tìm sản phẩm..." name="query" id="searchInput" />
+                <button class="btn btn-outline-success" type="submit">Tìm</button>
+                <ul id="suggestionsList" class="list-group position-absolute w-100" style="z-index: 1000;"></ul>
             </form>
 
-            <!-- Các icon bên phải -->
-            <a class="btn btn-sm btn-outline-dark position-relative mx-2" asp-controller="Cart" asp-action="Cart">
+            <!-- Icon bên phải -->
+            <!-- Giỏ hàng -->
+            <a class="btn btn-sm btn-outline-dark position-relative mx-2"
+               asp-controller="Products" asp-action="Cart"
+               data-bs-toggle="tooltip" title="Giỏ hàng">
                 <i class="bi bi-cart"></i>
-                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.7rem;">
-                    0
-                    <span class="visually-hidden">số sản phẩm trong giỏ</span>
-                </span>
+                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.7rem;">0</span>
             </a>
 
-            <a class="btn btn-sm btn-outline-dark position-relative mx-2" href="#">
+            <!-- Thông báo -->
+            <a class="btn btn-sm btn-outline-dark position-relative mx-2"
+               asp-controller="Notifications" asp-action="NewNotifications"
+               data-bs-toggle="tooltip" title="Thông báo">
                 <i class="bi bi-bell"></i>
-                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.7rem;">
-                    3
-                    <span class="visually-hidden">số thông báo mới</span>
-                </span>
+                @if (unreadNotificationCount > 0)
+                {
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.7rem;">
+                        @unreadNotificationCount
+                    </span>
+                }
             </a>
 
-            <a class="btn btn-sm btn-outline-dark position-relative mx-2" asp-controller="Messages" asp-action="Inbox">
+            <!-- Tin nhắn -->
+            <a class="btn btn-sm btn-outline-dark position-relative mx-2"
+               asp-controller="Messages" asp-action="Inbox"
+               data-bs-toggle="tooltip" title="Tin nhắn">
                 <i class="bi bi-envelope"></i>
-                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.7rem;">
-                    2
-                    <span class="visually-hidden">số tin nhắn mới</span>
-                </span>
+                @if (unreadMessageCount > 0)
+                {
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.7rem;">
+                        @messageBadgeText
+                    </span>
+                }
             </a>
 
-            <a class="btn btn-sm btn-outline-dark mx-2" asp-controller="Buyer" asp-action="BuyerOrders">
-                <i class="bi bi-clipboard-check"></i>
+
+            <!-- Đăng tin -->
+            <a class="btn btn-sm btn-outline-success ms-3"
+               asp-controller="Products" asp-action="Create"
+               data-bs-toggle="tooltip" title="Đăng sản phẩm mới">
+                Đăng tin
             </a>
 
-            <a class="btn btn-sm btn-outline-dark mx-2" asp-controller="Seller" asp-action="SellerOrders">
-                <i class="bi bi-clipboard-data"></i>
-            </a>
-
-            <!-- Nút Đăng tin -->
-            <a class="btn btn-sm btn-outline-success ms-3" asp-controller="Product" asp-action="Create">Đăng tin</a>
+            <!-- User -->
+            @{
+                var username = Context.Session.GetString("Username");
+            }
+            @if (!string.IsNullOrEmpty(username))
+            {
+                <li class="nav-item dropdown list-unstyled ms-3">
+                    <a class="nav-link dropdown-toggle text-dark" href="#" id="userDropdown" data-bs-toggle="dropdown">
+                        <i class="bi bi-person-circle"></i> @username
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" asp-controller="Users" asp-action="Details">Tài khoản</a></li>
+                        <li><a class="dropdown-item" asp-controller="Users" asp-action="Logout">Đăng xuất</a></li>
+                    </ul>
+                </li>
+            }
+            else
+            {
+                <a class="nav-link text-dark ms-3" asp-controller="Users" asp-action="Login">Đăng Nhập</a>
+            }
         </div>
     </div>
 </nav>

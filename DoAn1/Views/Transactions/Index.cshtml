@@ -1,0 +1,46 @@
+﻿@model IEnumerable<DoAn1.Areas.Admin.Models.Transaction>
+@{
+    ViewData["Title"] = "Danh sách đơn hàng";
+}
+<h1>Danh sách đơn hàng</h1>
+
+<table class="table table-bordered">
+    <thead class="thead-dark">
+        <tr>
+            <th>Trạng thái thanh toán</th>
+            <th>Số tiền</th>
+            <th>Hình thức giao dịch</th>
+            <th>Ngày đặt</th>
+            <th>Trạng thái giao hàng</th>
+            <th>Người mua</th>
+            <th>Người bán</th>
+            <th>Sản phẩm</th>
+            <th>Phương thức TT</th>
+            <th>Thao tác</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            var shippingClass = item.ShippingStatus == "Chờ xác nhận" ? "text-warning" :
+            item.ShippingStatus == "Đang giao" ? "text-primary" :
+            "text-success";
+            <tr>
+                <td>@item.PaymentStatus</td>
+                <td>@item.Amount?.ToString("N0") đ</td>
+                <td>@item.ExchangeType</td>
+                <td>@item.TransactionDate?.ToString("dd/MM/yyyy")</td>
+                <td class="@shippingClass"><strong>@item.ShippingStatus</strong></td>
+                <td>@item.Buyer?.FullName</td>
+                <td>@item.Seller?.FullName</td>
+                <td>@item.Product?.Title</td>
+                <td>@item.PaymentMethod?.MethodName</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.TransactionId">Cập nhật</a> |
+                    <a asp-action="Details" asp-route-id="@item.TransactionId">Chi tiết</a> |
+                    <a asp-action="Delete" asp-route-id="@item.TransactionId">Xóa</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

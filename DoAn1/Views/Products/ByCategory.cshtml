@@ -1,0 +1,108 @@
+﻿@model List<DoAn1.Areas.Admin.Models.Product>
+@{
+    ViewData["Title"] = ViewBag.CategoryName;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/products.css" />
+}
+
+<div class="container mt-4">
+    <h2>@ViewData["Title"]</h2>
+
+    <!-- Bộ lọc -->
+    <div class="filter-bar mb-4">
+        <span><i class="bi bi-funnel"></i> Lọc:</span>
+        <select class="form-select d-inline-block w-auto ms-2" id="subcategoryFilter">
+            <option value="">-- Loại --</option>
+            @foreach (var sub in ViewBag.SubCategories)
+            {
+                <option value="@sub.SubCategoryName">@sub.SubCategoryName</option>
+            }
+        </select>
+
+        <select class="form-select d-inline-block w-auto ms-2" id="priceFilter">
+            <option value="">-- Khoảng giá --</option>
+            <option value="0-100000">Dưới 100,000đ</option>
+            <option value="100000-300000">100,000đ - 300,000đ</option>
+            <option value="300000-500000">300,000đ - 500,000đ</option>
+            <option value="500000-999999999">Trên 500,000đ</option>
+        </select>
+
+        <select class="form-select d-inline-block w-auto ms-2" id="conditionFilter">
+            <option value="">-- Tình trạng --</option>
+            <option value="Mới">Mới</option>
+            <option value="Cũ">Cũ</option>
+        </select>
+    </div>
+
+    <div class="row" id="productList">
+        @foreach (var product in Model)
+        {
+            <div class="col-md-3 mb-4">
+                <div class="card"
+                     data-category="@product.SubCategory?.SubCategoryName"
+                     data-price="@product.Price"
+                     data-condition="@product.Condition">
+                    @{
+                        string imageUrl = "/images/no-image.png";
+                        if (product.ProductImages != null && product.ProductImages.Any())
+                        {
+                            var firstImage = product.ProductImages.FirstOrDefault();
+                            if (!string.IsNullOrEmpty(firstImage?.ImageUrl))
+                            {
+                                imageUrl = firstImage.ImageUrl;
+                            }
+                        }
+                    }
+                    <img src="@imageUrl" class="card-img-top" alt="@product.Title"
+                         onerror="this.onerror=null;this.src='/images/no-image.png';" />
+
+
+                    
+                    <div class="card-body">
+                        <h5 class="card-title">@product.Title</h5>
+                        <p class="card-text">@string.Format("{0:N0} đ", product.Price)</p>
+                        <a href="@Url.Action("DetailProduct", "Products", new { id = product.ProductId })" class="btn btn-outline-primary">Xem chi tiết</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const subcategoryFilter = document.getElementById('subcategoryFilter');
+            const priceFilter = document.getElementById('priceFilter');
+            const conditionFilter = document.getElementById('conditionFilter');
+            const cards = document.querySelectorAll('.card');
+
+            function applyFilters() {
+                let selectedSub = subcategoryFilter.value;
+                let selectedCondition = conditionFilter.value;
+                let selectedPrice = priceFilter.value;
+
+                cards.forEach(card => {
+                    let match = true;
+
+                    if (selectedSub && card.dataset.category !== selectedSub) match = false;
+                    if (selectedCondition && card.dataset.condition !== selectedCondition) match = false;
+                    if (selectedPrice) {
+                        let [min, max] = selectedPrice.split('-').map(Number);
+                        let price = parseInt(card.dataset.price);
+                        if (price < min || price > max) match = false;
+                    }
+
+                    card.closest('.col-md-3').style.display = match ? '' : 'none';
+                });
+            }
+
+            subcategoryFilter.addEventListener('change', applyFilters);
+            priceFilter.addEventListener('change', applyFilters);
+            conditionFilter.addEventListener('change', applyFilters);
+        });
+    </script>
+}

@@ -1,0 +1,368 @@
+﻿@model DoAn1.Areas.Admin.Models.Product
+
+@{
+    ViewData["Title"] = "Chi tiết sản phẩm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/DetailProduct.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+}
+
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-success mt-2">
+        @TempData["Message"]
+    </div>
+}
+
+
+<div class="container mt-4">
+    <nav aria-label="breadcrumb" class="mb-3">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Trang chủ</a></li>
+            <li class="breadcrumb-item"><a asp-controller="Products" asp-action="AllProducts">Sản phẩm</a></li>
+            @if (Model.Category != null)
+            {
+                <li class="breadcrumb-item">
+                    <a asp-controller="Products" asp-action="Category" asp-route-id="@Model.Category.CategoryId">
+                        @Model.Category.CategoryName
+                    </a>
+                </li>
+            }
+            @if (Model.SubCategory != null)
+            {
+                <li class="breadcrumb-item">
+                    <a asp-controller="Products" asp-action="SubCategory" asp-route-id="@Model.SubCategory.SubCategoryId">
+                        @Model.SubCategory.SubCategoryName
+                    </a>
+                </li>
+            }
+            <li class="breadcrumb-item active" aria-current="page">@Model.Title</li>
+        </ol>
+    </nav>
+    <div class="row">
+        <!-- Hình ảnh sản phẩm -->
+        <div class="col-md-6">
+            <div class="border p-2 image-container">
+                <button class="btn btn-light btn-prev" type="button" onclick="prevImage()">❮</button>
+
+                <img id="mainImage"
+                     src="@(Model.ProductImages.FirstOrDefault()?.ImageUrl ?? "/images/no-image.png")"
+                     alt="Ảnh sản phẩm chính"
+                     class="img-fluid rounded"
+                     style="max-width: 100%; height: 100%; object-fit: contain;" />
+
+                <button class="btn btn-light btn-next" type="button" onclick="nextImage()">❯</button>
+            </div>
+
+
+            @if (Model.ProductImages != null && Model.ProductImages.Any())
+            {
+                <div class="d-flex mt-2 justify-content-center">
+                    @foreach (var img in Model.ProductImages)
+                    {
+                        <img src="@img.ImageUrl"
+                             class="img-thumbnail me-2 thumb-img"
+                             style="width: 80px; height: 80px; object-fit: cover; cursor:pointer;"
+                             onclick="changeImage(this)" />
+                    }
+                </div>
+            }
+        </div>
+
+        <!-- Thông tin sản phẩm -->
+        <div class="col-md-6 position-relative">
+            <h2 class="d-flex justify-content-between align-items-center">
+                @Model.Title
+                <button id="addToWishlistBtn" data-product-id="@Model.ProductId" class="btn btn-outline-danger">❤️ Thêm yêu thích</button>
+                
+            </h2>
+            @if (Model.Status == "Đã bán")
+            {
+                <span class="badge bg-danger mb-2">Sản phẩm đã hết hàng</span>
+            }
+            else
+            {
+                <span class="badge bg-success mb-2">Còn hàng</span>
+            }
+
+            <div id="wishlistMessage" class="mt-2"></div>
+
+            <form asp-controller="Products" asp-action="AddToCart" method="post">
+                <input type="hidden" name="productId" value="@Model.ProductId" />
+                <button type="submit" class="btn btn-primary">🛒 Thêm vào giỏ hàng</button>
+            </form>
+
+
+            <h4 class="text-danger fw-bold">@Model.Price?.ToString("N0") ₫</h4>
+            <p><i class="bi bi-geo-alt"></i> @Model.Location</p>
+
+            @if (Context.Session.GetInt32("UserId") != null && Model.User?.Phone != null)
+            {
+                <div class="mb-3">
+                    <button class="btn btn-success w-100 mb-2" onclick="showPhone()">📞 Hiện số điện thoại</button>
+                    <div id="phoneNumber" class="mt-2 fw-bold text-primary text-center" style="display: none;">
+                        @Model.User.Phone
+                    </div>
+                </div>
+            }
+            else
+            {
+                <a asp-controller="Users" asp-action="Login" class="btn btn-outline-success w-100 mb-2">
+                    Đăng nhập để xem số điện thoại
+                </a>
+            }
+
+            @if (Context.Session.GetInt32("UserId") != null && Model.User != null)
+            {
+                <a asp-controller="Messages" asp-action="Chat" asp-route-userId="@Model.User.UserId" class="btn btn-primary w-100 mb-2">
+                    <i class="fas fa-comment-dots"></i> Chat với người bán
+                </a>
+            }
+            else
+            {
+                <a asp-controller="Users" asp-action="Login" class="btn btn-primary w-100 mb-2">
+                    <i class="fas fa-sign-in-alt"></i> Đăng nhập để chat
+                </a>
+            }
+
+
+            @if (Model.Status != "Đã bán")
+            {
+                <a asp-controller="Transactions" asp-action="Create" asp-route-productId="@Model.ProductId" class="btn btn-primary mt-3">
+                    <i class="bi bi-cart-check"></i> Đặt hàng
+                </a>
+            }
+            else
+            {
+                <button class="btn btn-secondary mt-3" disabled>Hết hàng</button>
+            }
+
+
+
+            @{
+                var avgRating = (Model.RatingCount ?? 0) > 0
+                ? ((double)(Model.TotalRating ?? 0) / (Model.RatingCount ?? 1))
+                : 0;
+
+                // Tính số sản phẩm đã bán
+                var soldCount = Model.User?.TransactionSellers?.Count(t => t.ShippingStatus == "Delivered") ?? 0;
+            }
+            <div class="mt-4 p-3 bg-light rounded">
+                <h5>@Model.User?.FullName</h5>
+                <p>
+                    Điểm uy tín: <strong>@(Model.User?.ReputationScore ?? 0)</strong> |
+                    Đã bán: <strong>@ViewBag.SoldCount</strong> sản phẩm
+                </p>
+                <p>Đánh giá: ⭐ <strong>@avgRating.ToString("0.0")</strong> trên 5 từ <strong>@(Model.RatingCount ?? 0)</strong> lượt đánh giá</p>
+
+                @if (Context.Session.GetInt32("UserId") != null && Model.User != null)
+                {
+                    <a asp-controller="Reports" asp-action="Create" asp-route-reportedUserId="@Model.User.UserId" class="btn btn-danger mt-2">
+                        🚨 Báo cáo người bán
+                    </a>
+                }
+                else
+                {
+                    <a asp-controller="Users" asp-action="Login" class="btn btn-outline-danger mt-2">
+                        🚨 Đăng nhập để báo cáo
+                    </a>
+                }
+            </div>
+
+
+        </div>
+    </div>
+
+    <!-- Mô tả sản phẩm -->
+    <div class="mt-5">
+        <h3>Mô tả chi tiết</h3>
+        <p>@Model.Description</p>
+
+        <h4 class="mt-4">Thông tin chi tiết</h4>
+        <table class="table table-bordered">
+            <tr><th>Tình trạng</th><td>@Model.Condition</td></tr>
+            <tr><th>Trạng thái</th><td>@Model.Status</td></tr>
+            <tr><th>Loại sản phẩm</th><td>@Model.Category?.CategoryName</td></tr>
+            <tr><th>Danh mục con</th><td>@Model.SubCategory?.SubCategoryName</td></tr>
+            <tr><th>Thương hiệu</th><td>@Model.Brand</td></tr>
+            <tr><th>Thời gian đã dùng</th><td>@Model.UsedDuration</td></tr>
+            <tr><th>Bảo hành</th><td>@Model.WarrantyPeriod</td></tr>
+            <tr><th>Ngày đăng</th><td>@Model.CreatedAt?.ToString("dd/MM/yyyy HH:mm")</td></tr>
+        </table>
+    </div>
+
+    <!-- Bình luận -->
+    <div class="mt-5">
+        <h3>Đánh giá & Bình luận</h3>
+
+        @if (!Model.Reviews.Any())
+        {
+            <p>Chưa có bình luận nào.</p>
+        }
+        else
+        {
+            var sortedReviews = Model.Reviews.OrderByDescending(r => r.CreatedAt).ToList();
+            var displayLimit = 3;
+            var totalReviews = sortedReviews.Count;
+
+            <ul class="list-group mb-3" id="reviewList">
+                @for (int i = 0; i < sortedReviews.Count; i++)
+                {
+                    var review = sortedReviews[i];
+                    var isHidden = i >= displayLimit ? "d-none extra-review" : "";
+                    <li class="list-group-item @isHidden">
+                        <strong>@review.Reviewer?.FullName:</strong> @review.Comment <br />
+                        <small class="text-muted">Đánh giá: @review.Rating ★</small>
+
+                        @* Hiển thị phản hồi từ người bán *@
+                        @if (!string.IsNullOrEmpty(review.SellerReply))
+                        {
+                            <div class="mt-2 ms-4 p-2 bg-light border rounded">
+                                <strong>Phản hồi từ người bán:</strong> @review.SellerReply <br />
+                                <small class="text-muted">@review.SellerReplyAt?.ToString("dd/MM/yyyy HH:mm")</small>
+                            </div>
+                        }
+                        else if (Context.Session.GetInt32("UserId") == Model.User?.UserId)
+                        {
+                            <form asp-action="ReplyReview" method="post">
+                                <input type="hidden" name="reviewId" value="@review.ReviewId" />
+                                <div class="input-group mt-2">
+                                    <input type="text" name="reply" class="form-control" placeholder="Phản hồi đánh giá..." required />
+                                    <button class="btn btn-secondary" type="submit">Gửi</button>
+                                </div>
+                            </form>
+                        }
+                    </li>
+                }
+            </ul>
+
+
+            @if (totalReviews > displayLimit)
+            {
+                <button id="toggleReviewsBtn" class="btn btn-link">Xem thêm bình luận</button>
+            }
+        }
+
+        <hr />
+        <form method="post" asp-action="AddComment" asp-route-id="@Model.ProductId">
+            <div class="mb-2">
+                <label for="rating">Chọn số sao đánh giá:</label>
+                <select class="form-select w-auto d-inline-block" name="Rating" required>
+                    <option value="" disabled selected>--Chọn--</option>
+                    @for (int i = 1; i <= 5; i++)
+                    {
+                        <option value="@i">@i ★</option>
+                    }
+                </select>
+            </div>
+            <div class="input-group">
+                <input type="text" name="Comment" class="form-control" placeholder="Viết bình luận..." required />
+                <button class="btn btn-primary" type="submit">Gửi</button>
+            </div>
+        </form>
+    </div>
+
+</div>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        function showPhone() {
+            const phoneEl = document.getElementById("phoneNumber");
+            if (phoneEl.style.display === "none") {
+                phoneEl.style.display = "block";
+                setTimeout(() => phoneEl.classList.add('show'), 10);
+            } else {
+                phoneEl.classList.remove('show');
+                setTimeout(() => phoneEl.style.display = "none", 300);
+            }
+        }
+    </script>
+    <script>
+        // Lấy danh sách ảnh từ server, nếu không có ảnh thì thêm ảnh mặc định
+        let images = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(
+                    (Model?.ProductImages?.Any() == true
+                            ? Model.ProductImages.Select(i => i.ImageUrl)
+                            : new List<string> { "/images/no-image.png" })
+                            .ToList()
+            ));
+
+    let currentIndex = 0;
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const thumbs = document.querySelectorAll('.thumb-img');
+            if (thumbs.length > 0) thumbs[0].classList.add('active-thumb');
+        });
+
+        function changeImage(thumb) {
+            const mainImage = document.getElementById('mainImage');
+            mainImage.src = thumb.src;
+            currentIndex = [...document.querySelectorAll('.thumb-img')].indexOf(thumb);
+
+            document.querySelectorAll('.thumb-img').forEach(img => img.classList.remove('active-thumb'));
+            thumb.classList.add('active-thumb');
+        }
+
+        function prevImage() {
+            if (!images.length) return;
+            currentIndex = (currentIndex - 1 + images.length) % images.length;
+            updateMainImage();
+        }
+
+        function nextImage() {
+            if (!images.length) return;
+            currentIndex = (currentIndex + 1) % images.length;
+            updateMainImage();
+        }
+
+        function updateMainImage() {
+            const mainImage = document.getElementById('mainImage');
+            mainImage.src = images[currentIndex];
+
+            const thumbs = document.querySelectorAll('.thumb-img');
+            thumbs.forEach(img => img.classList.remove('active-thumb'));
+            if (thumbs[currentIndex]) {
+                thumbs[currentIndex].classList.add('active-thumb');
+            }
+        }
+    </script>
+    <script>
+        $("#addToWishlistBtn").click(function () {
+            var productId = $(this).data("product-id");
+
+            $.ajax({
+                type: "POST",
+                url: "/Wishlists/AddToWishlist",
+                data: { productId: productId },
+                success: function (response) {
+                    $("#wishlistMessage").html(`<div class="alert alert-${response.success ? 'success' : 'warning'}">${response.message}</div>`);
+                },
+                error: function () {
+                    $("#wishlistMessage").html(`<div class="alert alert-danger">Lỗi khi thêm vào mục yêu thích.</div>`);
+                }
+            });
+        });
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const toggleBtn = document.getElementById("toggleReviewsBtn");
+            const extraReviews = document.querySelectorAll(".extra-review");
+            let expanded = false;
+
+            if (toggleBtn) {
+                toggleBtn.addEventListener("click", function () {
+                    expanded = !expanded;
+                    extraReviews.forEach(item => {
+                        item.classList.toggle("d-none");
+                    });
+                    toggleBtn.textContent = expanded ? "Ẩn bớt bình luận" : "Xem thêm bình luận";
+                });
+            }
+        });
+    </script>
+
+}
+

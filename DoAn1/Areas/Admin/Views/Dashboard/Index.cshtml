@@ -1,0 +1,96 @@
+﻿@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2 class="mb-4">Chào mừng quản trị viên</h2>
+<p>Bạn đã đăng nhập thành công vào khu vực quản trị.</p>
+
+<div class="row mt-4">
+    <!-- Quản lý Người dùng -->
+    <div class="col-md-3 mb-3">
+        <div class="card shadow text-center">
+            <div class="card-body">
+                <i class="bi bi-people-fill display-4 text-primary"></i>
+                <h5 class="mt-2">Người dùng</h5>
+                <a asp-area="Admin" asp-controller="Users" asp-action="Index" class="btn btn-primary btn-sm mt-2">Quản lý</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quản lý Danh mục -->
+    <div class="col-md-3 mb-3">
+        <div class="card shadow text-center">
+            <div class="card-body">
+                <i class="bi bi-tags-fill display-4 text-success"></i>
+                <h5 class="mt-2">Danh mục</h5>
+                <a asp-area="Admin" asp-controller="Categories" asp-action="Index" class="btn btn-success btn-sm mt-2">Quản lý</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quản lý Sản phẩm -->
+    <div class="col-md-3 mb-3">
+        <div class="card shadow text-center">
+            <div class="card-body">
+                <i class="bi bi-box-seam display-4 text-warning"></i>
+                <h5 class="mt-2">Sản phẩm</h5>
+                <a asp-area="Admin" asp-controller="Products" asp-action="Index" class="btn btn-warning btn-sm mt-2">Quản lý</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quản lý Giao dịch -->
+    <div class="col-md-3 mb-3">
+        <div class="card shadow text-center">
+            <div class="card-body">
+                <i class="bi bi-cash-coin display-4 text-info"></i>
+                <h5 class="mt-2">Giao dịch</h5>
+                <a asp-area="Admin" asp-controller="Transactions" asp-action="Index" class="btn btn-info btn-sm mt-2">Quản lý</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quản lý Báo cáo -->
+    <div class="col-md-3 mb-3">
+        <div class="card shadow text-center">
+            <div class="card-body">
+                <i class="bi bi-flag-fill display-4 text-danger"></i>
+                <h5 class="mt-2">Báo cáo</h5>
+                <a asp-area="Admin" asp-controller="Reports" asp-action="Index" class="btn btn-danger btn-sm mt-2">Quản lý</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quản lý Đánh giá -->
+    <div class="col-md-3 mb-3">
+        <div class="card shadow text-center">
+            <div class="card-body">
+                <i class="bi bi-star-fill display-4 text-warning"></i>
+                <h5 class="mt-2">Đánh giá</h5>
+                <a asp-area="Admin" asp-controller="Reviews" asp-action="Index" class="btn btn-warning btn-sm mt-2">Quản lý</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quản lý Phương thức thanh toán -->
+    <div class="col-md-3 mb-3">
+        <div class="card shadow text-center">
+            <div class="card-body">
+                <i class="bi bi-credit-card-fill display-4 text-primary"></i>
+                <h5 class="mt-2">Thanh toán</h5>
+                <a asp-area="Admin" asp-controller="PaymentMethods" asp-action="Index" class="btn btn-primary btn-sm mt-2">Quản lý</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quản lý Thông báo -->
+    <div class="col-md-3 mb-3">
+        <div class="card shadow text-center">
+            <div class="card-body">
+                <i class="bi bi-bell-fill display-4 text-secondary"></i>
+                <h5 class="mt-2">Thông báo</h5>
+                <a asp-area="Admin" asp-controller="SystemNotifications" asp-action="Index" class="btn btn-secondary btn-sm mt-2">Quản lý</a>
+            </div>
+        </div>
+    </div>
+</div>

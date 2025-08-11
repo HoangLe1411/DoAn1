@@ -1,0 +1,58 @@
+﻿@model List<DoAn1.Areas.Admin.Models.Transaction>
+
+@{
+    ViewData["Title"] = "Đơn Hàng Khách Đặt";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Đơn Hàng Khách Đặt</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Sản phẩm</th>
+            <th>Người mua</th>
+            <th>Ngày đặt</th>
+            <th>Trạng thái</th>
+            <th>Hành động</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Product?.Title</td>
+                <td>@item.Buyer?.FullName (@item.Buyer?.Email)</td>
+                <td>@item.TransactionDate?.ToString("dd/MM/yyyy")</td>
+                <td>
+                    <span class="badge bg-info">@item.ShippingStatus</span>
+                </td>
+                <td>
+                    @if (item.ShippingStatus == "Pending")
+                    {
+                        <form asp-action="XacNhanDon" asp-route-id="@item.TransactionId" method="post" class="d-inline">
+                            <button type="submit" class="btn btn-success btn-sm">Xác nhận</button>
+                        </form>
+                        <form asp-action="SellerCancelOrder" asp-route-id="@item.TransactionId" method="post" class="d-inline">
+                            <button type="submit" class="btn btn-warning btn-sm">Hủy</button>
+                        </form>
+                    }
+                    else if (item.ShippingStatus == "Cancelled")
+                    {
+                        <form asp-action="DeleteOrder" asp-route-id="@item.TransactionId" method="post" class="d-inline">
+                            <button type="submit" class="btn btn-danger btn-sm">Xóa</button>
+                        </form>
+                    }
+                    else if (item.ShippingStatus == "Received")
+                    {
+                        <span class="badge bg-success">Hoàn thành</span>
+                    }
+                    else
+                    {
+                        <span>Đã xác nhận</span>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

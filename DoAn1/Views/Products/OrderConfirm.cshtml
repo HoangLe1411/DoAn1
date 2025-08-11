@@ -1,0 +1,23 @@
+﻿@model List<DoAn1.Areas.Admin.Models.Product>
+
+<h2>🧾 Xác nhận đơn hàng</h2>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Tên</th>
+            <th>Giá</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Title</td>
+                <td>@item.Price</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<p><strong>Tổng tiền: </strong>@Model.Sum(p => p.Price ?? 0) đ</p>

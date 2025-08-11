@@ -23,9 +23,13 @@ h2 {
     }
 
 .card-img-top {
+    width: 100%;
     height: 200px;
     object-fit: cover;
+    border-top-left-radius: 0.5rem;
+    border-top-right-radius: 0.5rem;
 }
+
 
 .card-title {
     font-size: 18px;
@@ -93,16 +97,18 @@ h2 {
         }
 
 /* Viền cho sản phẩm */
-.product-list {
+/*.product-list {
     display: flex;
     flex-wrap: wrap;
-    gap: 20px; /* Khoảng cách giữa các card */
-    justify-content: space-between; /* Canh đều 2 bên */
-}
+    gap: 20px;*/ /* Khoảng cách giữa các card */
+    /*justify-content: space-between;*/ /* Canh đều 2 bên */
+/*}*/
+
 /* Giữ cho card có kích thước rộng hơn */
 .card {
-    width: 240px; /* Chiều rộng cố định */
-    height: 320px; /* Chiều cao cố định */
+    /*width: 240px !important;
+    height: auto !important;*/
+    min-height: 320px;
     border-radius: 10px;
     overflow: hidden;
     display: flex;
@@ -121,15 +127,23 @@ h2 {
 
 /* Ảnh sản phẩm to hơn */
 .card-img-top {
+    width: 100%;
     height: 250px;
     object-fit: cover;
+    border-top-left-radius: 0.5rem;
+    border-top-right-radius: 0.5rem;
 }
+
 
 /* Body card chiếm không gian còn lại */
 .card-body {
     flex-grow: 1;
     padding: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
+
 
 /* Nút rộng full card */
 .btn-outline-primary {

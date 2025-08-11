@@ -1,0 +1,90 @@
+﻿@model List<DoAn1.Areas.Admin.Models.Message>
+@{
+    var otherUser = ViewBag.OtherUser as DoAn1.Areas.Admin.Models.User;
+    var currentUserId = Context.Session.GetInt32("UserId");
+    ViewData["Title"] = $"Chat với {otherUser?.FullName}";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .chat-box {
+        max-height: 400px;
+        overflow-y: auto;
+        border: 1px solid #ccc;
+        padding: 10px;
+        background-color: #f8f9fa;
+        border-radius: 8px;
+    }
+
+    .msg-left {
+        background-color: #e9ecef;
+        border-radius: 10px;
+        padding: 8px;
+        margin-bottom: 5px;
+        max-width: 60%;
+        display: inline-block;
+    }
+
+    .msg-right {
+        background-color: #d1e7dd;
+        border-radius: 10px;
+        padding: 8px;
+        margin-bottom: 5px;
+        max-width: 60%;
+        display: inline-block;
+        text-align: right;
+    }
+</style>
+
+<h3>💬 Đoạn chat với @otherUser?.FullName</h3>
+
+<div id="chatBox" class="chat-box mb-3">
+    @foreach (var msg in Model)
+    {
+        bool isSender = msg.SenderId == currentUserId;
+        bool isReceiver = msg.ReceiverId == currentUserId;
+
+        // Nếu bị xóa với người hiện tại thì ẩn đi
+        if ((isSender && msg.IsDeletedBySender == true) || (isReceiver && msg.IsDeletedByReceiver == true))
+        {
+            continue;
+        }
+
+        <div class="@(isSender ? "text-end" : "text-start")">
+            <div class="@(isSender ? "msg-right" : "msg-left")">
+                @if (msg.Content == "[Tin nhắn đã được thu hồi]")
+                {
+                    <i class="text-muted">@msg.Content</i>
+                }
+                else
+                {
+                    <span>@msg.Content</span>
+                }
+                <br />
+                <small class="text-muted">@msg.SentAt?.ToString("HH:mm dd/MM")</small>
+            </div>
+
+            @if (isSender && msg.Content != "[Tin nhắn đã được thu hồi]")
+            {
+                <div>
+                    <a asp-action="Recall" asp-route-id="@msg.MessageId" class="btn btn-sm btn-warning">↩ Thu hồi</a>
+                    <a asp-action="Delete" asp-route-id="@msg.MessageId" class="btn btn-sm btn-danger" onclick="return confirm('Bạn có chắc muốn xoá?')">🗑 Xoá</a>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+<form asp-action="Send" method="post" class="mt-3">
+    <input type="hidden" name="receiverId" value="@otherUser?.UserId" />
+    <div class="input-group">
+        <input type="text" name="content" class="form-control" placeholder="Nhập tin nhắn..." required />
+        <button type="submit" class="btn btn-primary">Gửi</button>
+    </div>
+</form>
+
+<script>
+    // Cuộn xuống cuối
+    var chatBox = document.getElementById("chatBox");
+    chatBox.scrollTop = chatBox.scrollHeight;
+</script>

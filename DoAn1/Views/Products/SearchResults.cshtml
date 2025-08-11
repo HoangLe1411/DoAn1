@@ -1,0 +1,25 @@
+﻿@model List<DoAn1.Areas.Admin.Models.Product>
+
+<h2>Kết quả tìm kiếm</h2>
+@if (!Model.Any())
+{
+    <p>Không tìm thấy sản phẩm nào.</p>
+}
+else
+{
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            <div class="col-md-3 mb-4">
+                <div class="card">
+                    <img src="@item.ProductImages.FirstOrDefault()?.ImageUrl" class="card-img-top" alt="@item.Title" />
+                    <div class="card-body">
+                        <h5 class="card-title">@item.Title</h5>
+                        <p class="card-text">@item.Price?.ToString("N0") VNĐ</p>
+                        <a href="@Url.Action("DetailProduct", "Products", new { id = item.ProductId })" class="btn btn-primary">Xem chi tiết</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}

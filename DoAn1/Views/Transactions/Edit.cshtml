@@ -1,0 +1,61 @@
+﻿@model DoAn1.Areas.Admin.Models.Transaction
+@{
+    ViewData["Title"] = "Cập nhật trạng thái đơn hàng";
+}
+
+<h2>Cập nhật đơn hàng</h2>
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Edit">
+            <input type="hidden" asp-for="TransactionId" />
+
+            <div class="form-group">
+                <label>Người mua:</label>
+                <input class="form-control" value="@Model.Buyer?.FullName" readonly />
+            </div>
+            <div class="form-group">
+                <label>Người bán:</label>
+                <input class="form-control" value="@Model.Seller?.FullName" readonly />
+            </div>
+            <div class="form-group">
+                <label>Sản phẩm:</label>
+                <input class="form-control" value="@Model.Product?.Title" readonly />
+            </div>
+            <div class="form-group">
+                <label>Trạng thái giao hàng:</label>
+                <select asp-for="ShippingStatus" class="form-control">
+                    <option>Chờ xác nhận</option>
+                    <option>Đang giao</option>
+                    <option>Hoàn tất</option>
+                    <option>Hủy đơn</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Trạng thái thanh toán:</label>
+                <input asp-for="PaymentStatus" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label>Số tiền:</label>
+                <input asp-for="Amount" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label>Hình thức giao dịch:</label>
+                <input asp-for="ExchangeType" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label>Ngày giao dịch:</label>
+                <input asp-for="TransactionDate" class="form-control" readonly />
+            </div>
+
+            <button type="submit" class="btn btn-success">Lưu thay đổi</button>
+            <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

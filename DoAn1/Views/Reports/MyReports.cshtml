@@ -1,0 +1,24 @@
+﻿@model IEnumerable<DoAn1.Areas.Admin.Models.Report>
+
+<h2>Lịch sử cảnh báo</h2>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Lý do</th>
+            <th>Ngày báo cáo</th>
+            <th>Trạng thái</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var report in Model)
+        {
+            <tr>
+                <td>@report.Reason</td>
+                <td>@report.ReportedAt?.ToString("dd/MM/yyyy HH:mm")</td>
+                <td>
+                    @(report.IsResolved == true ? "Đã duyệt" : "Đang chờ")
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

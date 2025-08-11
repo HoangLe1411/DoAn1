@@ -3,4 +3,15 @@
     <a href="/guide" class="mx-2">Hướng dẫn</a>
     <a href="/contact" class="mx-2">Liên hệ</a>
     <a href="/faq" class="mx-2">FAQ</a>
+
+    @if (Context.Session.GetString("AdminUsername") == null)
+    {
+        <a asp-area="Admin" asp-controller="Users" asp-action="Login" class="mx-2">Quản trị viên</a>
+    }
+    else
+    {
+        <a asp-area="Admin" asp-controller="Dashboard" asp-action="Index" class="mx-2">Trang quản trị</a>
+        <a asp-area="Admin" asp-controller="Users" asp-action="Logout" class="mx-2">Đăng xuất</a>
+    }
+
 </div>

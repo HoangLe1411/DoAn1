@@ -1,0 +1,86 @@
+﻿@model DoAn1.Areas.Admin.Models.Transaction
+
+@{
+    ViewData["Title"] = "Theo dõi đơn hàng";
+    var steps = new[] { "Pending", "Confirmed", "Shipping", "Delivered", "Received" };
+    int currentStep = Array.IndexOf(steps, Model.ShippingStatus ?? "Pending");
+}
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["Success"]
+    </div>
+}
+
+<h2 class="mb-4">📦 Theo dõi đơn hàng</h2>
+
+<div class="card shadow p-4 mb-4">
+    <p><strong>Sản phẩm:</strong> @Model.Product?.Title</p>
+    <p><strong>Người bán:</strong> @Model.Seller?.FullName</p>
+    <p><strong>Giá:</strong> <span class="text-danger fw-bold">@Model.Amount?.ToString("N0") VNĐ</span></p>
+    <p>
+        <strong>Trạng thái hiện tại:</strong>
+        <span class="badge bg-info">@Model.ShippingStatus</span>
+    </p>
+
+    <!-- ✅ Nút cập nhật trạng thái cho người bán -->
+    @if (Context.Session.GetInt32("UserId") == Model.SellerId)
+    {
+        if (Model.ShippingStatus == "Cancelled")
+        {
+            <div class="alert alert-warning mt-3">
+                🚫 Đơn hàng này đã bị hủy, bạn không thể cập nhật trạng thái nữa.
+            </div>
+        }
+        else
+        {
+            <form asp-action="UpdateStatus" method="post" class="d-inline mt-3">
+                <input type="hidden" name="id" value="@Model.TransactionId" />
+                <select name="status" class="form-select form-select-sm d-inline w-auto">
+                    <option value="Pending" selected="@(Model.ShippingStatus == "Pending")">Pending</option>
+                    <option value="Confirmed" selected="@(Model.ShippingStatus == "Confirmed")">Confirmed</option>
+                    <option value="Shipping" selected="@(Model.ShippingStatus == "Shipping")">Shipping</option>
+                    <option value="Delivered" selected="@(Model.ShippingStatus == "Delivered")">Delivered</option>
+                </select>
+                <button class="btn btn-primary btn-sm">Cập nhật</button>
+            </form>
+        }
+    }
+
+</div>
+
+
+<!-- Timeline -->
+<div class="d-flex justify-content-between align-items-center position-relative mb-4" style="max-width: 800px;">
+    @for (int i = 0; i < steps.Length; i++)
+    {
+        var isActive = i <= currentStep;
+        <div class="text-center flex-fill position-relative">
+            <div class="rounded-circle mx-auto mb-2"
+                 style="width: 40px; height: 40px; line-height: 40px;
+                            background-color:@(isActive ? "#28a745" : "#ccc");
+                            color: white;">
+                @(i + 1)
+            </div>
+            <div>@steps[i]</div>
+            @if (i < steps.Length - 1)
+            {
+                <div class="position-absolute top-50 start-100 translate-middle-y w-100"
+                     style="height: 4px; background:@(i < currentStep ? "#28a745" : "#ccc"); z-index:-1;"></div>
+            }
+        </div>
+    }
+</div>
+
+@if (Model.ShippingStatus != "Received" && Context.Session.GetInt32("UserId") == Model.BuyerId)
+{
+    <form asp-action="ConfirmReceived" method="post">
+        <input type="hidden" name="id" value="@Model.TransactionId" />
+        <button class="btn btn-success mt-3">✅ Tôi đã nhận hàng</button>
+    </form>
+}
+else if (Model.ShippingStatus == "Received")
+{
+    <div class="alert alert-success mt-3">🎉 Bạn đã xác nhận đã nhận hàng!</div>
+}

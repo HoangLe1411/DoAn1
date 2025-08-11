@@ -1,0 +1,42 @@
+﻿@model IEnumerable<DoAn1.Areas.Admin.Models.PaymentMethod>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-area="Admin" asp-controller="PaymentMethods" asp-action="Create" class="btn btn-success">+ Thêm mới</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.MethodName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsActive)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.MethodName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsActive)
+            </td>
+            <td>
+                <a asp-area="Admin" asp-controller="PaymentMethods" asp-action="Edit" asp-route-id="@item.PaymentMethodId" class="btn btn-sm btn-warning">Sửa</a>
+                <a asp-area="Admin" asp-controller="PaymentMethods" asp-action="Details" asp-route-id="@item.PaymentMethodId" class="btn btn-sm btn-info text-white">Chi tiết</a>
+                <a asp-area="Admin" asp-controller="PaymentMethods" asp-action="Delete" asp-route-id="@item.PaymentMethodId" class="btn btn-sm btn-danger">Xóa</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

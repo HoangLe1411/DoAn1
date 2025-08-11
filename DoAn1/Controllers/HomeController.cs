@@ -1,22 +1,50 @@
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using DoAn1.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using DoAn1.Areas.Admin.Models; // namespace chứa Product
 
 namespace DoAn1.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly CsdlDoAn1Context _context;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(CsdlDoAn1Context context)
         {
-            _logger = logger;
+            _context = context;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            // 1. Sản phẩm mới nhất (đã có sẵn)
+            var latestProducts = await _context.Products
+                .Where(p => p.IsActive == true && p.Status != "Đã bán")
+                .OrderByDescending(p => p.CreatedAt)
+                .Include(p => p.ProductImages)
+                .Take(6)
+                .ToListAsync();
+
+            // 2. Sản phẩm nổi bật theo sao
+            var featuredProducts = await _context.Products
+                .Where(p => p.IsActive == true && p.RatingCount > 0)
+                .OrderByDescending(p =>
+                    (p.TotalRating ?? 0) == 0 || (p.RatingCount ?? 0) == 0
+                        ? 0
+                        : (double)(p.TotalRating ?? 0) / (p.RatingCount ?? 1)
+                )
+
+                .ThenByDescending(p => p.CreatedAt)
+                .Include(p => p.ProductImages)
+                .Take(6)
+                .ToListAsync();
+
+            // Gửi vào ViewBag
+            ViewBag.FeaturedProducts = featuredProducts;
+
+            return View(latestProducts); // Dùng model chính là sản phẩm mới
         }
+
 
         public IActionResult Privacy()
         {

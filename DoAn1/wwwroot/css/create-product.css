@@ -1,0 +1,52 @@
+﻿/* create-product.css */
+
+/* Giao diện form tạo sản phẩm */
+.create-product-form {
+    background-color: #ffffff;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+    .create-product-form h4 {
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 20px;
+    }
+
+    .create-product-form .form-group {
+        margin-bottom: 20px;
+    }
+
+    .create-product-form label {
+        font-weight: 500;
+        color: #555;
+    }
+
+    .create-product-form input.form-control,
+    .create-product-form select.form-control {
+        border-radius: 8px;
+        border: 1px solid #ced4da;
+        padding: 10px;
+        transition: all 0.2s;
+    }
+
+        .create-product-form input.form-control:focus,
+        .create-product-form select.form-control:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 0 2px rgba(0,123,255,0.25);
+        }
+
+    .create-product-form input[type="submit"] {
+        padding: 10px 25px;
+        border-radius: 8px;
+        font-weight: 500;
+        background-color: #007bff;
+        color: white;
+        border: none;
+    }
+
+    .create-product-form a {
+        margin-top: 20px;
+        display: inline-block;
+    }

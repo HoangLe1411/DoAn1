@@ -1,0 +1,80 @@
+﻿@model List<DoAn1.Areas.Admin.Models.Product>
+
+@{
+    ViewData["Title"] = "Đơn Bán Của Tôi";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/SellerOrders.css" />
+}
+
+<div class="orders-container container mt-4">
+    <h2>Đơn bán của bạn</h2>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+    }
+
+
+    <table class="table table-bordered mt-3">
+        <thead class="table-light">
+            <tr>
+                <th>Sản phẩm</th>
+                <th>Ảnh</th>
+                <th>Giá</th>
+                <th>Trạng thái</th>
+                <th>Hành động</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (!Model.Any())
+            {
+                <tr>
+                    <td colspan="6" class="text-center text-muted">
+                        Bạn chưa có đơn bán nào.
+                    </td>
+                </tr>
+            }
+            else
+            {
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Title</td>
+                        <td>
+                            @if (item.ProductImages != null && item.ProductImages.Any())
+                            {
+                                <img src="@item.ProductImages.First().ImageUrl" alt="@item.Title" class="order-img" />
+                            }
+                            else
+                            {
+                                <span>Không có ảnh</span>
+                            }
+                        </td>
+
+                        <td>@String.Format("{0:N0}₫", item.Price)</td>
+                        <td>
+                            <span class="badge @(item.Status == "Đã bán" ? "bg-success" : "bg-warning")">@item.Status</span>
+                        </td>
+                        <td>
+                            <form asp-action="ToggleAvailability" asp-route-id="@item.ProductId" method="post" class="d-inline">
+                                <button class="btn @(item.Status == "Đã bán" ? "btn-warning" : "btn-success") btn-sm">
+                                    @(item.Status == "Đã bán" ? "Có hàng" : "Hết hàng")
+                                </button>
+                            </form>
+                            <a asp-action="Edit" asp-route-id="@item.ProductId" class="btn btn-primary btn-sm">Sửa</a>
+                            <a asp-action="Delete" asp-route-id="@item.ProductId" class="btn btn-danger btn-sm">Xóa</a>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+
+    <div class="d-flex justify-content-between mt-4">
+        <a href="/Products/Create" class="btn btn-secondary">Tạo bài đăng mới</a>
+        <a href="/" class="btn btn-outline-primary">Về trang chủ</a>
+    </div>
+</div>
