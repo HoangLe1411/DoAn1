@@ -40,9 +40,11 @@
     <div class="container">
 
         <!-- Logo -->
+        <!-- Logo -->
         <a class="navbar-brand" asp-controller="Home" asp-action="Index">
-            <span class="fw-bold text-dark">Tên Shop</span>
+            <img src="~/images/logo.png" alt="Logo" class="logo">
         </a>
+
 
         <!-- Nút toggle mobile -->
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -89,7 +91,7 @@
                     </a>
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" asp-controller="Transactions" asp-action="SellerOrderHistory">Lịch sử bán</a></li>
-                        <li><a class="dropdown-item" asp-controller="Transactions" asp-action="SellerOrthers">Đơn bán</a></li>
+                        @* <li><a class="dropdown-item" asp-controller="Transactions" asp-action="SellerOrthers">Đơn bán</a></li> *@
                         <li><a class="dropdown-item" asp-controller="Products" asp-action="MyProducts">Sản phẩm của tôi</a></li>
                     </ul>
                 </li>
@@ -97,19 +99,38 @@
 
             <!-- Ô tìm kiếm -->
             <form id="searchForm" class="d-flex position-relative" asp-controller="Products" asp-action="Search" method="get" autocomplete="off">
-                <input class="form-control me-2" type="search" placeholder="Tìm sản phẩm..." name="query" id="searchInput" />
+                <input class="form-control me-2" type="search" placeholder="Tìm sản phẩm..." name="query" id="searchInput" autocomplete="off" />
                 <button class="btn btn-outline-success" type="submit">Tìm</button>
-                <ul id="suggestionsList" class="list-group position-absolute w-100" style="z-index: 1000;"></ul>
+                <ul id="suggestionsList" class="list-group position-absolute"
+                    style="z-index: 1000; top: 100%; left: 0; width: auto; min-width: 100px; max-width: 400px; display: none; max-height: 250px; overflow-y: auto;">
+                </ul>
             </form>
+
 
             <!-- Icon bên phải -->
             <!-- Giỏ hàng -->
+            @{
+                var currentUserId = Context.Session.GetInt32("UserId");
+                int cartCount = 0;
+                if (currentUserId != null)
+                {
+                    cartCount = _context.ShoppingCarts
+                    .Where(c => c.UserId == currentUserId && c.IsCheckedOut == false)
+                    .Sum(c => c.Quantity ?? 0);
+                }
+            }
             <a class="btn btn-sm btn-outline-dark position-relative mx-2"
-               asp-controller="Products" asp-action="Cart"
+               asp-controller="ShoppingCarts" asp-action="Index"
                data-bs-toggle="tooltip" title="Giỏ hàng">
                 <i class="bi bi-cart"></i>
-                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.7rem;">0</span>
+                @if (cartCount > 0)
+                {
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.7rem;">
+                        @(cartCount > 99 ? "99+" : cartCount.ToString())
+                    </span>
+                }
             </a>
+
 
             <!-- Thông báo -->
             <a class="btn btn-sm btn-outline-dark position-relative mx-2"

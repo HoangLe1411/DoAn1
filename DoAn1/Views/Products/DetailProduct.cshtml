@@ -90,10 +90,11 @@
 
             <div id="wishlistMessage" class="mt-2"></div>
 
-            <form asp-controller="Products" asp-action="AddToCart" method="post">
+            <form asp-controller="ShoppingCarts" asp-action="AddToCart" method="post">
                 <input type="hidden" name="productId" value="@Model.ProductId" />
                 <button type="submit" class="btn btn-primary">🛒 Thêm vào giỏ hàng</button>
             </form>
+
 
 
             <h4 class="text-danger fw-bold">@Model.Price?.ToString("N0") ₫</h4>

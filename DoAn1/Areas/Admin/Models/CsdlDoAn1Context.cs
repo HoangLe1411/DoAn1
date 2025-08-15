@@ -40,6 +40,9 @@ public partial class CsdlDoAn1Context : DbContext
     public virtual DbSet<User> Users { get; set; }
 
     public virtual DbSet<Wishlist> Wishlists { get; set; }
+    public virtual DbSet<ShoppingCart> ShoppingCarts { get; set; }
+
+    
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
@@ -240,14 +243,32 @@ public partial class CsdlDoAn1Context : DbContext
             entity.Property(e => e.Title).HasMaxLength(150);
         });
 
+        modelBuilder.Entity<ShoppingCart>(entity =>
+        {
+            entity.HasKey(e => e.CartItemId).HasName("PK__Shopping__488B0B2AA037BFB5");
+
+            entity.ToTable("ShoppingCart");
+
+            entity.Property(e => e.CartItemId).HasColumnName("CartItemID");
+            entity.Property(e => e.AddedAt)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime");
+            entity.Property(e => e.IsCheckedOut).HasDefaultValue(false);
+            entity.Property(e => e.ProductId).HasColumnName("ProductID");
+            entity.Property(e => e.Quantity).HasDefaultValue(1);
+            entity.Property(e => e.UserId).HasColumnName("UserID");
+        });
+
         modelBuilder.Entity<Transaction>(entity =>
         {
             entity.HasKey(e => e.TransactionId).HasName("PK__Transact__55433A4B43288029");
 
             entity.Property(e => e.TransactionId).HasColumnName("TransactionID");
             entity.Property(e => e.Amount).HasColumnType("decimal(18, 2)");
+            entity.Property(e => e.BankTransactionCode).HasMaxLength(100);
             entity.Property(e => e.BuyerId).HasColumnName("BuyerID");
             entity.Property(e => e.ExchangeType).HasMaxLength(20);
+            entity.Property(e => e.PaymentGateway).HasMaxLength(50);
             entity.Property(e => e.PaymentMethodId).HasColumnName("PaymentMethodID");
             entity.Property(e => e.PaymentStatus).HasMaxLength(50);
             entity.Property(e => e.ProductId).HasColumnName("ProductID");
@@ -259,24 +280,30 @@ public partial class CsdlDoAn1Context : DbContext
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
 
-            entity.HasOne(d => d.Buyer).WithMany(p => p.TransactionBuyers)
+            // Thiết lập quan hệ
+            entity.HasOne(d => d.Buyer)
+                .WithMany(p => p.TransactionBuyers)
                 .HasForeignKey(d => d.BuyerId)
                 .HasConstraintName("FK__Transacti__Buyer__44FF419A");
 
-            entity.HasOne(d => d.PaymentMethod).WithMany(p => p.Transactions)
+            entity.HasOne(d => d.PaymentMethod)
+                .WithMany(p => p.Transactions)
                 .HasForeignKey(d => d.PaymentMethodId)
                 .OnDelete(DeleteBehavior.SetNull)
                 .HasConstraintName("FK__Transacti__Payme__47DBAE45");
 
-            entity.HasOne(d => d.Product).WithMany(p => p.Transactions)
+            entity.HasOne(d => d.Product)
+                .WithMany(p => p.Transactions)
                 .HasForeignKey(d => d.ProductId)
                 .OnDelete(DeleteBehavior.SetNull)
                 .HasConstraintName("FK__Transacti__Produ__46E78A0C");
 
-            entity.HasOne(d => d.Seller).WithMany(p => p.TransactionSellers)
+            entity.HasOne(d => d.Seller)
+                .WithMany(p => p.TransactionSellers)
                 .HasForeignKey(d => d.SellerId)
                 .HasConstraintName("FK__Transacti__Selle__45F365D3");
         });
+
 
         modelBuilder.Entity<User>(entity =>
         {

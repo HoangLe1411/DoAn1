@@ -1,0 +1,44 @@
+﻿@{
+    var active = (ViewBag.Active as string) ?? "";
+}
+
+<nav class="policy-sidebar" style="width:250px; padding:10px; border-right:1px solid #ddd;">
+    <ul>
+        <li><a href="@Url.Action("GioiThieu", "Cart")" class="@(active == "gioithieu" ? "active" : "")">Giới thiệu</a></li>
+        <li><a href="@Url.Action("QuyCheHoatDong", "Cart")" class="@(active == "quychehoatdong" ? "active" : "")">Quy chế hoạt động</a></li>
+        <li><a href="@Url.Action("QuyCheHoatDongUngDung", "Cart")" class="@(active == "quychehoatdongungdung" ? "active" : "")">Quy chế hoạt động (ứng dụng)</a></li>
+        <li><a href="@Url.Action("BaoMat", "Cart")" class="@(active == "baomat" ? "active" : "")">Chính sách bảo mật</a></li>
+        <li><a href="@Url.Action("GiaiQuyetTranhChap", "Cart")" class="@(active == "giaiquyettranhchap" ? "active" : "")">Giải quyết tranh chấp</a></li>
+        <li><a href="@Url.Action("QuyCheTaiKhoan", "Cart")" class="@(active == "quychetaikhoan" ? "active" : "")">Quy chế tài khoản</a></li>
+        <li><a href="@Url.Action("ThoaThuanCungCap", "Cart")" class="@(active == "thoathuancungcap" ? "active" : "")">Thỏa thuận cung cấp</a></li>
+        <li><a href="@Url.Action("ChinhSachHoanTien", "Cart")" class="@(active == "chinh-sach-hoan-tien" ? "active" : "")">Chính sách hoàn tiền</a></li>
+        <li><a href="@Url.Action("ChinhSachDoiTra", "Cart")" class="@(active == "chinhsachdoitra" ? "active" : "")">Chính sách đổi trả</a></li>
+        <li><a href="@Url.Action("ChinhSachBaoHanh", "Cart")" class="@(active == "chinhsachbaohanh" ? "active" : "")">Chính sách bảo hành</a></li>
+        <li><a href="@Url.Action("ChinhSachVanChuyen", "Cart")" class="@(active == "chinhsachvanchuyen" ? "active" : "")">Chính sách vận chuyển</a></li>
+    </ul>
+</nav>
+
+<style>
+    .policy-sidebar ul {
+        list-style: none;
+        padding-left: 0;
+        margin: 0;
+    }
+
+        .policy-sidebar ul li a {
+            color: #333;
+            text-decoration: none;
+            font-weight: 600;
+            display: block;
+            padding: 8px 12px;
+            border-left: 3px solid transparent;
+            transition: all 0.3s ease;
+            border-radius: 4px;
+        }
+
+            .policy-sidebar ul li a.active {
+                color: #007bff;
+                border-left-color: #007bff;
+                background-color: #e7f1ff;
+            }
+</style>

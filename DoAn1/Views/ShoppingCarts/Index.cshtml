@@ -1,0 +1,49 @@
+﻿@model List<DoAn1.Areas.Admin.Models.ShoppingCart>
+
+<h2>Giỏ hàng của bạn</h2>
+
+@if (!Model.Any())
+{
+    <p>Giỏ hàng đang trống.</p>
+}
+else
+{
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Sản phẩm</th>
+                <th>Số lượng</th>
+                <th>Đơn giá</th>
+                <th>Tổng tiền</th>
+                <th>Hành động</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Product?.Title</td>
+                    <td>
+                        <form asp-action="UpdateQuantity" method="post" style="display:inline;">
+                            <input type="hidden" name="cartItemId" value="@item.CartItemId" />
+                            <input type="number" name="quantity" value="@item.Quantity ?? 1" min="1" style="width:60px;" />
+                            <button type="submit" class="btn btn-sm btn-primary">Cập nhật</button>
+                        </form>
+                    </td>
+                    <td>@(item.Product?.Price?.ToString("N0") ?? "0") đ</td>
+                    <td>@((item.Quantity ?? 1) * (item.Product?.Price ?? 0)).ToString("N0") đ</td>
+                    <td>
+                        <form asp-action="Remove" method="post" style="display:inline;">
+                            <input type="hidden" name="cartItemId" value="@item.CartItemId" />
+                            <button type="submit" class="btn btn-sm btn-danger">Xóa</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <p><strong>Tổng cộng: @Model.Sum(i => (i.Quantity ?? 1) * (i.Product?.Price ?? 0)).ToString("N0") đ</strong></p>
+
+    <a asp-action="Checkout" class="btn btn-success">Thanh toán</a>
+}

@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DoAn1.Areas.Admin.Models;
 using Newtonsoft.Json;
+using PagedList.Core; // chứa IPagedList<> và ToPagedList()
+
 
 
 namespace DoAn1.Controllers
@@ -163,45 +165,133 @@ namespace DoAn1.Controllers
         }
 
 
-        public IActionResult ByCategory(int categoryId)
+        public IActionResult ByCategory(int categoryId, int? subCategoryId, string? location, string? price, string? condition, int? page)
         {
-            var category = _context.Categories.FirstOrDefault(c => c.CategoryId == categoryId);
-            if (category == null)
-            {
-                return NotFound();
-            }
+            int pageSize = 8;
+            int pageNumber = page ?? 1;
 
-            var products = _context.Products
+            // Lấy thông tin category và SubCategories
+            var category = _context.Categories
+                .Include(c => c.SubCategories)
+                .FirstOrDefault(c => c.CategoryId == categoryId);
+
+            if (category == null)
+                return NotFound();
+
+            var productsQuery = _context.Products
                 .Include(p => p.ProductImages)
                 .Include(p => p.SubCategory)
-                .Where(p => p.CategoryId == categoryId
-                       && p.IsActive == true
-                       && (p.Status == "Bán" || p.Status == "Trao đổi")
-                       && p.IsSold == false)
-                .ToList();
+                .Where(p => p.CategoryId == categoryId && p.IsActive == true && (p.Status == "Bán" || p.Status == "Trao đổi") && p.IsSold == false)
+                .AsQueryable();
 
-            var subCategories = _context.SubCategories
-                .Where(s => s.CategoryId == categoryId)
-                .ToList();
+            // Lọc SubCategory
+            if (subCategoryId.HasValue)
+                productsQuery = productsQuery.Where(p => p.SubCategoryId == subCategoryId.Value);
 
+            // Lọc Location
+            if (!string.IsNullOrEmpty(location))
+                productsQuery = productsQuery.Where(p => p.Location == location);
+
+            // Lọc Condition
+            if (!string.IsNullOrEmpty(condition))
+            {
+                string cond = condition.ToLower();
+                productsQuery = productsQuery.Where(p =>
+                    (cond == "new" && p.Condition != null && p.Condition.ToLower() == "mới") ||
+                    (cond == "used" && p.Condition != null && p.Condition.ToLower() == "đã sử dụng")
+                );
+            }
+
+
+            // Lọc Price
+            if (!string.IsNullOrEmpty(price))
+            {
+                var prices = price.Split('-').Select(s => decimal.TryParse(s, out decimal val) ? val : 0).ToArray();
+                if (prices.Length == 2)
+                {
+                    decimal minPrice = prices[0];
+                    decimal maxPrice = prices[1];
+                    productsQuery = productsQuery.Where(p => (p.Price ?? 0) >= minPrice && (p.Price ?? 0) <= maxPrice);
+                }
+            }
+
+            // Sắp xếp
+            productsQuery = productsQuery.OrderByDescending(p => p.CreatedAt);
+
+            // Phân trang
+            var pagedProducts = new PagedList<Product>(productsQuery.OrderBy(p => p.ProductId),pageNumber,pageSize);
+
+
+            // ViewBag để giữ trạng thái filter
+            ViewBag.CategoryId = categoryId;
             ViewBag.CategoryName = category.CategoryName;
-            ViewBag.SubCategories = subCategories;
+            ViewBag.SubCategories = category.SubCategories.ToList();
+            ViewBag.SubCategoryId = subCategoryId;
+            ViewBag.Location = location;
+            ViewBag.Price = price;
+            ViewBag.Condition = condition;
 
-            return View("ByCategory", products); // dùng chung view
+            return View(pagedProducts);
         }
 
-        public IActionResult AllProducts()
+
+
+        public IActionResult AllProducts(string? location, string? category, string? price, string? condition, int? page)
         {
-            var products = _context.Products
+            int pageSize = 8;
+            int pageNumber = page ?? 1;
+
+            var productsQuery = _context.Products
                 .Include(p => p.ProductImages)
                 .Include(p => p.Category)
                 .Include(p => p.SubCategory)
                 .Include(p => p.User)
                 .Where(p => p.IsActive == true && p.IsSold == false && (p.Status == "Bán" || p.Status == "Trao đổi"))
-                .ToList();
+                .AsQueryable();
 
-            return View(products);
+            // Filter Location
+            if (!string.IsNullOrEmpty(location))
+            {
+                productsQuery = productsQuery.Where(p => p.Location == location);
+            }
+
+            // Filter Category
+            if (!string.IsNullOrEmpty(category))
+            {
+                productsQuery = productsQuery.Where(p => p.Category != null && p.Category.CategoryName == category);
+            }
+
+            // Filter Condition
+            if (!string.IsNullOrEmpty(condition))
+            {
+                productsQuery = productsQuery.Where(p => p.Condition != null &&
+                    ((condition == "new" && p.Condition.ToLower() == "mới") ||
+                     (condition == "used" && p.Condition.ToLower() == "cũ")));
+            }
+
+            // Filter Price
+            if (!string.IsNullOrEmpty(price))
+            {
+                var parts = price.Split('-');
+                if (parts.Length == 2 && decimal.TryParse(parts[0], out var minPrice) && decimal.TryParse(parts[1], out var maxPrice))
+                {
+                    productsQuery = productsQuery.Where(p => p.Price >= minPrice && p.Price <= maxPrice);
+                }
+            }
+
+            productsQuery = productsQuery.OrderBy(p => p.ProductId);
+
+            var pagedProducts = new PagedList<Product>(productsQuery, pageNumber, pageSize);
+
+            // Truyền filter sang View để giữ giá trị
+            ViewBag.Location = location;
+            ViewBag.Category = category;
+            ViewBag.Condition = condition;
+            ViewBag.Price = price;
+
+            return View(pagedProducts);
         }
+
 
         public IActionResult DetailProduct(int id)
         {
@@ -625,8 +715,15 @@ namespace DoAn1.Controllers
         [HttpGet]
         public JsonResult SearchSuggestions(string term)
         {
+            if (string.IsNullOrWhiteSpace(term))
+                return Json(new List<string>());
+
             var suggestions = _context.Products
-                .Where(p => p.Title != null && p.Title.Contains(term) && p.IsActive == true)
+                .Where(p => (p.IsActive ?? false)
+                    && !string.IsNullOrEmpty(p.Title)
+                    && EF.Functions.Like(
+                        EF.Functions.Collate(p.Title, "SQL_Latin1_General_CP1_CI_AI"),
+                        $"%{term}%"))
                 .Select(p => p.Title)
                 .Distinct()
                 .Take(5)
@@ -636,19 +733,77 @@ namespace DoAn1.Controllers
         }
 
 
+        [HttpGet]
         public IActionResult Search(string query)
         {
-            if (string.IsNullOrEmpty(query))
-            {
+            if (string.IsNullOrWhiteSpace(query))
                 return View("SearchResults", new List<Product>());
+
+            string normalizedQuery = RemoveDiacritics(query).ToLower();
+
+            // 1️⃣ Danh sách từ đồng nghĩa
+            var synonyms = new Dictionary<string, string[]>(StringComparer.OrdinalIgnoreCase)
+            {
+                { "laptop", new[] { "máy tính", "máy tính xách tay", "notebook" } },
+                { "lap top", new[] { "máy tính", "máy tính xách tay", "notebook" } },
+                { "điện thoại", new[] { "smartphone", "mobile", "phone" } },
+                { "tủ lạnh", new[] { "refrigerator", "fridge" } }
+            };
+
+            // 2️⃣ Tạo danh sách từ khóa tìm kiếm
+            var searchTerms = new List<string> { normalizedQuery };
+            if (synonyms.ContainsKey(normalizedQuery))
+            {
+                // Thêm các từ đồng nghĩa đã bỏ dấu và chuyển thường
+                searchTerms.AddRange(synonyms[normalizedQuery]
+                    .Select(s => RemoveDiacritics(s).ToLower()));
             }
 
-            var results = _context.Products
-                .Where(p => p.IsActive == true && p.Title != null && p.Title.Contains(query))
-                .Include(p => p.ProductImages) // thêm dòng này để nạp ảnh
-                .ToList();
+            // 3️⃣ Lấy dữ liệu từ DB
+            var products = _context.Products
+                .Include(p => p.ProductImages)
+                .Include(p => p.Category)
+                .Include(p => p.SubCategory)
+                .Where(p => p.IsActive ?? false)
+                .ToList(); // Chạy truy vấn DB trước
+
+            // 4️⃣ Lọc trong bộ nhớ với danh sách từ khóa
+            var results = products.Where(p =>
+                searchTerms.Any(term =>
+                    (!string.IsNullOrEmpty(p.Title) &&
+                     RemoveDiacritics(p.Title).ToLower().Contains(term))
+                    || (p.Category != null &&
+                        !string.IsNullOrEmpty(p.Category.CategoryName) &&
+                        RemoveDiacritics(p.Category.CategoryName).ToLower().Contains(term))
+                    || (p.SubCategory != null &&
+                        !string.IsNullOrEmpty(p.SubCategory.SubCategoryName) &&
+                        RemoveDiacritics(p.SubCategory.SubCategoryName).ToLower().Contains(term))
+                )
+            ).ToList();
 
             return View("SearchResults", results);
+        }
+
+
+        // Hàm bỏ dấu tiếng Việt
+        private string RemoveDiacritics(string text)
+        {
+            if (string.IsNullOrEmpty(text))
+                return text;
+
+            var normalized = text.Normalize(System.Text.NormalizationForm.FormD);
+            var builder = new System.Text.StringBuilder();
+
+            foreach (var c in normalized)
+            {
+                var unicodeCategory = System.Globalization.CharUnicodeInfo.GetUnicodeCategory(c);
+                if (unicodeCategory != System.Globalization.UnicodeCategory.NonSpacingMark)
+                {
+                    builder.Append(c);
+                }
+            }
+
+            return builder.ToString().Normalize(System.Text.NormalizationForm.FormC);
         }
 
 

@@ -1,0 +1,83 @@
+﻿@{
+    ViewData["Title"] = "Trung tâm Hỗ trợ";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<main class="help-container">
+    <div class="help-inner">
+        <!-- SIDEBAR -->
+        <aside class="help-sidebar">
+            <h3>Danh mục trợ giúp</h3>
+            <ul>
+                <li><a asp-controller="HoTro" asp-action="HuongDanMuaBan">Hướng dẫn mua bán</a></li>
+                <li><a asp-controller="HoTro" asp-action="LienHeHoTro">Liên hệ hỗ trợ</a></li>
+                <li><a asp-controller="HoTro" asp-action="CauHoiThuongGap">Câu hỏi thường gặp</a></li>
+                <li><a asp-controller="HoTro" asp-action="QuyDinhCongDong">Quy định cộng đồng</a></li>
+                <li><a asp-controller="HoTro" asp-action="HuongDanBaoMat">Hướng dẫn bảo mật giao dịch</a></li>
+                <li><a asp-controller="HoTro" asp-action="DieuKhoanSuDung">Điều khoản sử dụng</a></li>
+            </ul>
+        </aside>
+
+        <!-- MAIN: CARDS -->
+        <section class="help-cards">
+            <article class="help-card">
+                <div class="help-card-body">
+                    <h3>Hướng dẫn mua bán</h3>
+                    <p>Tất cả bước từ đăng ký, đăng tin, thương lượng tới nhận hàng — dành cho người mua & người bán.</p>
+                </div>
+                <div class="help-card-footer">
+                    <a class="btn-hotro" asp-controller="HoTro" asp-action="HuongDanMuaBan">Xem chi tiết</a>
+                </div>
+            </article>
+
+            <article class="help-card">
+                <div class="help-card-body">
+                    <h3>Liên hệ hỗ trợ</h3>
+                    <p>Hotline, email, form khiếu nại và thời gian phản hồi — cách gửi yêu cầu nhanh chóng.</p>
+                </div>
+                <div class="help-card-footer">
+                    <a class="btn-hotro" asp-controller="HoTro" asp-action="LienHeHoTro">Xem chi tiết</a>
+                </div>
+            </article>
+
+            <article class="help-card">
+                <div class="help-card-body">
+                    <h3>Câu hỏi thường gặp</h3>
+                    <p>Tập hợp FAQ các vấn đề: đăng tin, phí dịch vụ, quên mật khẩu, thanh toán...</p>
+                </div>
+                <div class="help-card-footer">
+                    <a class="btn-hotro" asp-controller="HoTro" asp-action="CauHoiThuongGap">Xem chi tiết</a>
+                </div>
+            </article>
+
+            <article class="help-card">
+                <div class="help-card-body">
+                    <h3>Quy định cộng đồng</h3>
+                    <p>Quy tắc đăng tin, hành vi bị cấm, xử lý vi phạm và báo cáo.</p>
+                </div>
+                <div class="help-card-footer">
+                    <a class="btn-hotro" asp-controller="HoTro" asp-action="QuyDinhCongDong">Xem chi tiết</a>
+                </div>
+            </article>
+
+            <article class="help-card">
+                <div class="help-card-body">
+                    <h3>Hướng dẫn bảo mật giao dịch</h3>
+                    <p>Mẹo tránh lừa đảo, kiểm tra hàng, lưu bằng chứng khi mua đồ cũ.</p>
+                </div>
+                <div class="help-card-footer">
+                    <a class="btn-hotro" asp-controller="HoTro" asp-action="HuongDanBaoMat">Xem chi tiết</a>
+                </div>
+            </article>
+
+            <article class="help-card">
+                <div class="help-card-body">
+                    <h3>Điều khoản sử dụng</h3>
+                    <p>Quyền & trách nhiệm người dùng khi sử dụng nền tảng mua bán đồ cũ.</p>
+                </div>
+                <div class="help-card-footer">
+                    <a class="btn-hotro" asp-controller="HoTro" asp-action="DieuKhoanSuDung">Xem chi tiết</a>
+                </div>
+            </article>
+        </section>
+    </div>
+</main>
