@@ -26,19 +26,28 @@
             @if (Model.Category != null)
             {
                 <li class="breadcrumb-item">
-                    <a asp-controller="Products" asp-action="Category" asp-route-id="@Model.Category.CategoryId">
+                    <a asp-controller="Products" asp-action="ByCategory"
+                       asp-route-categoryId="@Model.Category.CategoryId"
+                       asp-route-price=""
+                       asp-route-condition="">
                         @Model.Category.CategoryName
                     </a>
                 </li>
             }
-            @if (Model.SubCategory != null)
+
+            @if (Model.Category != null && Model.SubCategory != null)
             {
                 <li class="breadcrumb-item">
-                    <a asp-controller="Products" asp-action="SubCategory" asp-route-id="@Model.SubCategory.SubCategoryId">
+                    <a asp-controller="Products" asp-action="ByCategory"
+                       asp-route-categoryId="@Model.Category.CategoryId"
+                       asp-route-subCategoryId="@Model.SubCategory.SubCategoryId"
+                       asp-route-price=""
+                       asp-route-condition="">
                         @Model.SubCategory.SubCategoryName
                     </a>
                 </li>
             }
+
             <li class="breadcrumb-item active" aria-current="page">@Model.Title</li>
         </ol>
     </nav>
@@ -90,10 +99,11 @@
 
             <div id="wishlistMessage" class="mt-2"></div>
 
-            <form asp-controller="Products" asp-action="AddToCart" method="post">
+            <form asp-controller="ShoppingCarts" asp-action="AddToCart" method="post">
                 <input type="hidden" name="productId" value="@Model.ProductId" />
                 <button type="submit" class="btn btn-primary">🛒 Thêm vào giỏ hàng</button>
             </form>
+
 
 
             <h4 class="text-danger fw-bold">@Model.Price?.ToString("N0") ₫</h4>

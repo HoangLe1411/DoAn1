@@ -25,11 +25,12 @@ public partial class Transaction
 
     public string? ShippingStatus { get; set; }
 
+    public string? BankTransactionCode { get; set; }
+
+    public string? PaymentGateway { get; set; }
+
     public virtual User? Buyer { get; set; }
-
-    public virtual PaymentMethod? PaymentMethod { get; set; }
-
-    public virtual Product? Product { get; set; }
-
     public virtual User? Seller { get; set; }
+    public virtual Product? Product { get; set; }
+    public virtual PaymentMethod? PaymentMethod { get; set; }
 }

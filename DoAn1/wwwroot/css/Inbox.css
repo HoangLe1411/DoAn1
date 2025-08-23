@@ -45,3 +45,11 @@
         background-color: #bb2d3b;
         border-color: #b02a37;
     }
+/*
+body {
+    background-image: url('/images/nen.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
+}*/

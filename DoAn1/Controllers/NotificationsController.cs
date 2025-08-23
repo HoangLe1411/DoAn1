@@ -82,7 +82,7 @@ namespace DoAn1.Controllers
                 }
 
                 // Các thông báo khác liên quan đến giao dịch => SellerOrthers
-                return RedirectToAction("SellerOrthers", "Transactions", new { id = notify.TransactionId });
+                return RedirectToAction("Track", "Transactions", new { id = notify.TransactionId });
             }
             else if (notify != null && !string.IsNullOrEmpty(notify.Title) && notify.Title.StartsWith("Cảnh báo"))
             {

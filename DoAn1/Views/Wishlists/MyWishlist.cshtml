@@ -5,63 +5,117 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="wishlist-container">
+@section Styles {
+    <style>
+        body {
+            background-image: url('/images/nen.jpg'); /* Ảnh nền chung */
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-position: center;
+        }
+
+        /* Ghi đè nền cho wishlist */
+        .wishlist-container {
+            background-color: rgba(255, 255, 255, 0.9); /* nền trắng mờ */
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        .wishlist-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .wishlist-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            border-bottom: 1px solid #ddd;
+            transition: background 0.2s;
+        }
+
+            .wishlist-item:hover {
+                background-color: #f8f9fa;
+            }
+
+        .wishlist-info {
+            flex: 1;
+            margin-right: 10px;
+        }
+
+        .wishlist-title {
+            font-weight: 600;
+            font-size: 1rem;
+            margin-bottom: 4px;
+        }
+
+        .wishlist-description {
+            font-size: 0.9rem;
+            color: #6c757d;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .wishlist-price {
+            font-weight: bold;
+            color: #dc3545;
+            margin-top: 4px;
+        }
+
+        .wishlist-actions button,
+        .wishlist-actions a {
+            margin-left: 5px;
+        }
+
+        .wishlist-title, .wishlist-description {
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+    </style>
+    <link rel="stylesheet" href="~/css/background.css" />
+}
+
+<div class="wishlist-container mt-4">
     <h2 class="text-center my-4">
         <span style="color:red;">❤️</span>
         <span class="fw-bold text-primary">Sản phẩm yêu thích</span>
     </h2>
 
-    <div class="row">
-        @foreach (var item in Model)
-        {
-            <div class="col-md-4 col-lg-3 mb-4">
-                <div class="card h-100 shadow-sm border-0 d-flex flex-column p-3">
-                    <div class="card-body d-flex flex-column flex-grow-1">
-                        <h5 class="card-title text-truncate">@item.Product?.Title</h5>
-                        <p class="card-text text-muted" style="font-size:0.9rem; min-height:60px;">
-                            @item.Product?.Description
-                        </p>
-                        <p class="fw-bold text-danger">
-                            @item.Product?.Price?.ToString("N0") VNĐ
-                        </p>
-                        <div class="mt-auto d-flex justify-content-between">
-                            <a href="@Url.Action("DetailProduct", "Products", new { id = item.ProductId })"
-                               class="btn btn-outline-primary btn-sm">
-                                🔍 Xem chi tiết
-                            </a>
-                            <form asp-action="RemoveFromWishlist" asp-controller="Wishlists" method="post">
-                                <input type="hidden" name="wishlistId" value="@item.WishlistId" />
-                                <button type="submit" class="btn btn-danger btn-sm">🗑 Xoá</button>
-                            </form>
+    @if (!Model.Any())
+    {
+        <p class="text-center text-muted">Chưa có sản phẩm yêu thích nào.</p>
+    }
+    else
+    {
+        <div class="wishlist-list">
+            @foreach (var item in Model)
+            {
+                <div class="wishlist-item">
+                    <div class="wishlist-info">
+                        <div class="wishlist-title text-truncate" style="max-width: 250px;" title="@item.Product?.Title">
+                            @item.Product?.Title
                         </div>
+                        <div class="wishlist-description text-truncate" style="max-width: 250px;" title="@item.Product?.Description">
+                            @item.Product?.Description
+                        </div>
+                        <div class="wishlist-price">@item.Product?.Price?.ToString("N0") VNĐ</div>
+                    </div>
+                    <div class="wishlist-actions">
+                        <a href="@Url.Action("DetailProduct", "Products", new { id = item.ProductId })" class="btn btn-outline-primary btn-sm">
+                            🔍 Xem chi tiết
+                        </a>
+                        <form asp-action="RemoveFromWishlist" asp-controller="Wishlists" method="post" style="display:inline;">
+                            <input type="hidden" name="wishlistId" value="@item.WishlistId" />
+                            <button type="submit" class="btn btn-danger btn-sm">🗑 Xoá</button>
+                        </form>
                     </div>
                 </div>
-            </div>
-        }
-    </div>
+            }
+        </div>
+    }
 </div>
 
-<style>
-    .wishlist-container .card {
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-
-        .wishlist-container .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-        }
-
-    .wishlist-container .card-title {
-        font-weight: 600;
-        font-size: 1.1rem;
-        min-height: 45px;
-    }
-
-    .wishlist-container .card-text {
-        flex-grow: 1;
-    }
-
-    .wishlist-container .btn {
-        min-width: 100px;
-    }
-</style>

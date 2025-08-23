@@ -22,7 +22,7 @@ namespace DoAn1.Controllers
                 .Where(p => p.IsActive == true && p.Status != "Đã bán")
                 .OrderByDescending(p => p.CreatedAt)
                 .Include(p => p.ProductImages)
-                .Take(6)
+                .Take(8)
                 .ToListAsync();
 
             // 2. Sản phẩm nổi bật theo sao

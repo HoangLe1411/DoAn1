@@ -1,0 +1,74 @@
+﻿@* Views/Shared/_GuidePartial.cshtml *@
+
+<div class="header-actions">
+    <button class="hd-btn hd-btn--support" onclick="location.href='@Url.Action("Index", "HoTro")'">Hỗ trợ</button>
+    <button class="hd-btn hd-btn--guide js-open-guide" type="button">Hướng dẫn</button>
+    <a class="hd-btn hd-btn--contact" asp-controller="LienHe" asp-action="Index">Liên hệ</a>
+</div>
+
+<!-- Popup hướng dẫn -->
+<div id="hdOverlay" class="hd-overlay" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="hd-panel" tabindex="-1" aria-label="Hướng dẫn sử dụng">
+        <button class="hd-close js-close-guide" aria-label="Đóng">&times;</button>
+
+        <!-- Sidebar mục lục -->
+        <aside class="hd-sidebar">
+            <h3>Mục lục</h3>
+            <ul>
+                <li data-target="#intro">Giới thiệu</li>
+                <li data-target="#dang-ky">Đăng ký & Đăng nhập</li>
+                <li data-target="#tim-kiem">Tìm kiếm & Lọc</li>
+                <li data-target="#dang-tin">Đăng tin bán</li>
+                <li data-target="#giao-dich">Giao dịch an toàn</li>
+                <li data-target="#hotro">Liên hệ & Hỗ trợ</li>
+            </ul>
+        </aside>
+
+        <!-- Nội dung hướng dẫn -->
+        <div class="hd-content">
+            <h1 id="intro">Hướng dẫn sử dụng Website Mua Bán Đồ Cũ</h1>
+            <p>Chào mừng bạn! Hướng dẫn này giúp bạn sử dụng website: tìm, đăng bán, giao dịch an toàn và liên hệ khi cần.</p>
+
+            <h2 id="dang-ky">1. Đăng ký & Đăng nhập</h2>
+            <p>Để sử dụng đầy đủ tính năng (đăng tin, chat, quản lý tin), bạn cần tạo tài khoản:</p>
+            <ol>
+                <li>Nhấn <strong>Đăng ký</strong> → nhập tên, email hoặc số điện thoại, mật khẩu.</li>
+                <li>Xác thực tài khoản bằng email hoặc OTP SMS để nâng cao độ tin cậy.</li>
+                <li>Nếu quên mật khẩu: chọn <strong>Quên mật khẩu</strong>, nhập email/sdt để nhận mã/ link đặt lại.</li>
+            </ol>
+
+            <h2 id="tim-kiem">2. Tìm kiếm & Lọc sản phẩm</h2>
+            <p>Sử dụng thanh tìm kiếm và bộ lọc:</p>
+            <ul>
+                <li>Nhập từ khóa, chọn danh mục, khu vực, khoảng giá và tình trạng sản phẩm.</li>
+                <li>Sắp xếp: Mới nhất / Giá thấp → cao / Giá cao → thấp.</li>
+            </ul>
+
+            <h2 id="dang-tin">3. Đăng tin bán hàng</h2>
+            <ol>
+                <li>Chuẩn bị ảnh: ít nhất 3 ảnh, nhiều góc, nền sạch, ánh sáng tốt.</li>
+                <li>Tiêu đề súc tích, chứa model & tình trạng (ví dụ: “Laptop HP 15 – 98%”).</li>
+                <li>Mô tả chi tiết: tình trạng, lỗi, phụ kiện, bảo hành, nguồn gốc.</li>
+                <li>Ghi rõ phương thức giao dịch & chính sách đổi trả (nếu có).</li>
+                <li>Kiểm tra lại và nhấn <strong>Đăng</strong>. Quản lý tin tại “Quản lý tin”.</li>
+            </ol>
+
+            <h2 id="giao-dich">4. Giao dịch an toàn</h2>
+            <ul>
+                <li>Gặp mặt tại nơi công cộng, có camera, đông người.</li>
+                <li>Kiểm tra kỹ: bật máy, thử các chức năng, kiểm tra phụ kiện.</li>
+                <li>Không chuyển tiền trước khi kiểm tra hàng; nếu chuyển khoản, giữ biên lai.</li>
+                <li>Lưu tin nhắn, hình ảnh, mã giao dịch làm bằng chứng khi cần.</li>
+            </ul>
+
+            <h2 id="hotro">5. Liên hệ & Hỗ trợ</h2>
+            <ul>
+                <li><strong>Hotline:</strong> 0123 456 789 (8:00 – 21:00)</li>
+                <li><strong>Email:</strong> <a href="mailto:support@do-cu.com">support@do-cu.com</a></li>
+                <li>Form hỗ trợ: Trang Hỗ Trợ → Gửi yêu cầu kèm ảnh minh chứng.</li>
+            </ul>
+
+            <p style="margin-top:18px;"><em>Lưu ý:</em> Nếu nghi ngờ gian lận, báo ngay cho bộ phận hỗ trợ và lưu giữ bằng chứng.</p>
+        </div>
+    </div>
+</div>

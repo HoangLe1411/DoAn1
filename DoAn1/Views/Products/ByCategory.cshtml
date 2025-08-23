@@ -1,7 +1,13 @@
-﻿@model List<DoAn1.Areas.Admin.Models.Product>
+﻿@model PagedList.Core.IPagedList<DoAn1.Areas.Admin.Models.Product>
+
 @{
-    ViewData["Title"] = ViewBag.CategoryName;
+    ViewData["Title"] = ViewBag.CategoryName ?? "Sản Phẩm";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var subCategories = ViewBag.SubCategories as List<DoAn1.Areas.Admin.Models.SubCategory> ?? new List<DoAn1.Areas.Admin.Models.SubCategory>();
+    int? selectedSubCategoryId = ViewBag.SubCategoryId;
+    string selectedPrice = ViewBag.Price ?? "";
+    string selectedCondition = ViewBag.Condition ?? "";
 }
 
 @section Styles {
@@ -12,97 +18,124 @@
     <h2>@ViewData["Title"]</h2>
 
     <!-- Bộ lọc -->
-    <div class="filter-bar mb-4">
+    <form method="get" class="filter-bar mb-4">
+        <input type="hidden" name="categoryId" value="@ViewBag.CategoryId" />
+
         <span><i class="bi bi-funnel"></i> Lọc:</span>
-        <select class="form-select d-inline-block w-auto ms-2" id="subcategoryFilter">
+
+        <select name="subCategoryId" class="form-select d-inline-block w-auto ms-2">
             <option value="">-- Loại --</option>
-            @foreach (var sub in ViewBag.SubCategories)
+            @foreach (var sub in subCategories)
             {
-                <option value="@sub.SubCategoryName">@sub.SubCategoryName</option>
+                if (selectedSubCategoryId == sub.SubCategoryId)
+                {
+                    <option value="@sub.SubCategoryId" selected>@sub.SubCategoryName</option>
+                }
+                else
+                {
+                    <option value="@sub.SubCategoryId">@sub.SubCategoryName</option>
+                }
             }
         </select>
 
-        <select class="form-select d-inline-block w-auto ms-2" id="priceFilter">
+        <select name="price" class="form-select d-inline-block w-auto ms-2">
             <option value="">-- Khoảng giá --</option>
-            <option value="0-100000">Dưới 100,000đ</option>
-            <option value="100000-300000">100,000đ - 300,000đ</option>
-            <option value="300000-500000">300,000đ - 500,000đ</option>
-            <option value="500000-999999999">Trên 500,000đ</option>
+            @if (selectedPrice == "0-100000")
+            {
+                <option value="0-100000" selected>Dưới 100,000đ</option>
+            }
+            else
+            {
+                <option value="0-100000">Dưới 100,000đ</option>
+            }
+            @if (selectedPrice == "100000-300000")
+            {
+                <option value="100000-300000" selected>100,000đ - 300,000đ</option>
+            }
+            else
+            {
+                <option value="100000-300000">100,000đ - 300,000đ</option>
+            }
+            @if (selectedPrice == "300000-500000")
+            {
+                <option value="300000-500000" selected>300,000đ - 500,000đ</option>
+            }
+            else
+            {
+                <option value="300000-500000">300,000đ - 500,000đ</option>
+            }
+            @if (selectedPrice == "500000-999999999")
+            {
+                <option value="500000-999999999" selected>Trên 500,000đ</option>
+            }
+            else
+            {
+                <option value="500000-999999999">Trên 500,000đ</option>
+            }
         </select>
 
-        <select class="form-select d-inline-block w-auto ms-2" id="conditionFilter">
+        <select name="condition" class="form-select d-inline-block w-auto ms-2">
             <option value="">-- Tình trạng --</option>
-            <option value="Mới">Mới</option>
-            <option value="Cũ">Cũ</option>
+            @if (selectedCondition == "Mới")
+            {
+                <option value="Mới" selected>Mới</option>
+            }
+            else
+            {
+                <option value="Mới">Mới</option>
+            }
+            @if (selectedCondition == "Cũ")
+            {
+                <option value="Cũ" selected>Cũ</option>
+            }
+            else
+            {
+                <option value="Cũ">Cũ</option>
+            }
         </select>
-    </div>
 
-    <div class="row" id="productList">
+        <button type="submit" class="btn btn-primary ms-2">Lọc</button>
+    </form>
+
+    <div class="row">
         @foreach (var product in Model)
         {
+            var imageUrl = product.ProductImages?.FirstOrDefault()?.ImageUrl ?? "/images/no-image.png";
+            var price = product.Price ?? 0;
             <div class="col-md-3 mb-4">
-                <div class="card"
-                     data-category="@product.SubCategory?.SubCategoryName"
-                     data-price="@product.Price"
-                     data-condition="@product.Condition">
-                    @{
-                        string imageUrl = "/images/no-image.png";
-                        if (product.ProductImages != null && product.ProductImages.Any())
-                        {
-                            var firstImage = product.ProductImages.FirstOrDefault();
-                            if (!string.IsNullOrEmpty(firstImage?.ImageUrl))
-                            {
-                                imageUrl = firstImage.ImageUrl;
-                            }
-                        }
-                    }
-                    <img src="@imageUrl" class="card-img-top" alt="@product.Title"
-                         onerror="this.onerror=null;this.src='/images/no-image.png';" />
-
-
-                    
+                <div class="card h-100">
+                    <img src="@imageUrl" class="card-img-top" alt="@product.Title" onerror="this.onerror=null;this.src='/images/no-image.png';" />
                     <div class="card-body">
                         <h5 class="card-title">@product.Title</h5>
-                        <p class="card-text">@string.Format("{0:N0} đ", product.Price)</p>
-                        <a href="@Url.Action("DetailProduct", "Products", new { id = product.ProductId })" class="btn btn-outline-primary">Xem chi tiết</a>
+                        <p class="card-text">@string.Format("{0:N0} đ", price)</p>
+                        <a href="@Url.Action("DetailProduct", "Products", new { id = product.ProductId })" class="btn btn-outline-primary w-100">Xem chi tiết</a>
                     </div>
                 </div>
             </div>
         }
     </div>
-</div>
 
-@section Scripts {
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const subcategoryFilter = document.getElementById('subcategoryFilter');
-            const priceFilter = document.getElementById('priceFilter');
-            const conditionFilter = document.getElementById('conditionFilter');
-            const cards = document.querySelectorAll('.card');
-
-            function applyFilters() {
-                let selectedSub = subcategoryFilter.value;
-                let selectedCondition = conditionFilter.value;
-                let selectedPrice = priceFilter.value;
-
-                cards.forEach(card => {
-                    let match = true;
-
-                    if (selectedSub && card.dataset.category !== selectedSub) match = false;
-                    if (selectedCondition && card.dataset.condition !== selectedCondition) match = false;
-                    if (selectedPrice) {
-                        let [min, max] = selectedPrice.split('-').map(Number);
-                        let price = parseInt(card.dataset.price);
-                        if (price < min || price > max) match = false;
-                    }
-
-                    card.closest('.col-md-3').style.display = match ? '' : 'none';
-                });
+    <!-- Phân trang -->
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+            @if (Model.HasPreviousPage)
+            {
+                <li class="page-item">
+                    <a class="page-link" href="@Url.Action("ByCategory", new { categoryId = ViewBag.CategoryId, page = Model.PageNumber - 1, subCategoryId = selectedSubCategoryId, price = selectedPrice, condition = selectedCondition })">«</a>
+                </li>
             }
-
-            subcategoryFilter.addEventListener('change', applyFilters);
-            priceFilter.addEventListener('change', applyFilters);
-            conditionFilter.addEventListener('change', applyFilters);
-        });
-    </script>
-}
+            @for (int i = 1; i <= Model.PageCount; i++)
+            {
+                <li class="page-item @(i == Model.PageNumber ? "active" : "")">
+                    <a class="page-link" href="@Url.Action("ByCategory", new { categoryId = ViewBag.CategoryId, page = i, subCategoryId = selectedSubCategoryId, price = selectedPrice, condition = selectedCondition })">@i</a>
+                </li>
+            }
+            @if (Model.HasNextPage)
+            {
+                <li class="page-item">
+                    <a class="page-link" href="@Url.Action("ByCategory", new { categoryId = ViewBag.CategoryId, page = Model.PageNumber + 1, subCategoryId = selectedSubCategoryId, price = selectedPrice, condition = selectedCondition })">»</a>
+                </li>
+            }
+        </ul>
+    </nav>
+</div>

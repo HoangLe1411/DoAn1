@@ -6,108 +6,153 @@
 }
 
 @section Styles {
+    <style>
+        /* Ảnh nền toàn bộ view */
+        body {
+            background-image: url('/images/nen.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-position: center;
+        }
+
+        /* Bao khung form */
+        .create-product-form-container {
+            background-color: rgba(255,255,255,0.95);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            margin: 20px auto;
+            max-width: 800px;
+        }
+
+        .create-product-form h2 {
+            text-align: center;
+            margin-bottom: 25px;
+            font-weight: 600;
+        }
+
+        .create-product-form .form-group {
+            margin-bottom: 15px;
+        }
+
+        .create-product-form .form-control,
+        .create-product-form select,
+        .create-product-form textarea {
+            border-radius: 8px;
+            padding: 8px 12px;
+        }
+
+        .create-product-form button {
+            min-width: 120px;
+        }
+
+        .alert {
+            border-radius: 8px;
+        }
+    </style>
+
     <link rel="stylesheet" href="~/css/create-product.css" />
 }
 
-<h2 class="mb-4">@ViewData["Title"]</h2>
+<div class="create-product-form-container">
+    <h2>@ViewData["Title"]</h2>
 
-<div class="row">
-    <div class="col-md-8">
-        @if (TempData["SuccessMessage"] != null)
-        {
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                @TempData["SuccessMessage"]
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        }
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
 
-        <form asp-action="Create" enctype="multipart/form-data" class="create-product-form">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <form asp-action="Create" enctype="multipart/form-data" class="create-product-form">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-            <div class="form-group">
-                <label asp-for="Title" class="control-label">Tên sản phẩm</label>
-                <input asp-for="Title" class="form-control" />
-                <span asp-validation-for="Title" class="text-danger"></span>
-            </div>
+        <div class="form-group">
+            <label asp-for="Title">Tên sản phẩm</label>
+            <input asp-for="Title" class="form-control" />
+            <span asp-validation-for="Title" class="text-danger"></span>
+        </div>
 
-            <div class="form-group">
-                <label asp-for="Description" class="control-label">Mô tả</label>
-                <textarea asp-for="Description" class="form-control"></textarea>
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
+        <div class="form-group">
+            <label asp-for="Description">Mô tả</label>
+            <textarea asp-for="Description" class="form-control"></textarea>
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
 
-            <div class="form-group">
-                <label asp-for="Price" class="control-label">Giá</label>
-                <input asp-for="Price" class="form-control" />
-                <span asp-validation-for="Price" class="text-danger"></span>
-            </div>
+        <div class="form-group">
+            <label asp-for="Price">Giá</label>
+            <input asp-for="Price" class="form-control" />
+            <span asp-validation-for="Price" class="text-danger"></span>
+        </div>
 
-            <div class="form-group">
-                <label asp-for="Condition" class="control-label">Tình trạng</label>
-                <input asp-for="Condition" class="form-control" placeholder="Mới, đã sử dụng..." />
-                <span asp-validation-for="Condition" class="text-danger"></span>
-            </div>
+        <div class="form-group">
+            <label asp-for="Condition">Tình trạng</label>
+            <input asp-for="Condition" class="form-control" placeholder="Mới, đã sử dụng..." />
+            <span asp-validation-for="Condition" class="text-danger"></span>
+        </div>
 
-            <div class="form-group">
-                <label asp-for="Location" class="control-label">Địa điểm</label>
-                <input asp-for="Location" class="form-control" />
-                <span asp-validation-for="Location" class="text-danger"></span>
-            </div>
+        <div class="form-group">
+            <label asp-for="Location">Địa điểm</label>
+            <input asp-for="Location" class="form-control" />
+            <span asp-validation-for="Location" class="text-danger"></span>
+        </div>
 
-            <div class="form-group">
-                <label asp-for="CategoryId">Danh mục</label>
-                <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.CategoryId" id="CategoryId">
-                    <option value="">-- Chọn danh mục --</option>
-                </select>
-                <span asp-validation-for="CategoryId" class="text-danger"></span>
-            </div>
+        <div class="form-group">
+            <label asp-for="CategoryId">Danh mục</label>
+            <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.CategoryId">
+                <option value="">-- Chọn danh mục --</option>
+            </select>
+            <span asp-validation-for="CategoryId" class="text-danger"></span>
+        </div>
 
-            <div class="form-group">
-                <label asp-for="SubCategoryId">Danh mục phụ</label>
-                <select asp-for="SubCategoryId" class="form-control" id="SubCategoryId">
-                    <option value="">-- Chọn danh mục phụ --</option>
-                </select>
-                <span asp-validation-for="SubCategoryId" class="text-danger"></span>
-            </div>
+        <div class="form-group">
+            <label asp-for="SubCategoryId">Danh mục phụ</label>
+            <select asp-for="SubCategoryId" class="form-control" id="SubCategoryId">
+                <option value="">-- Chọn danh mục phụ --</option>
+            </select>
+            <span asp-validation-for="SubCategoryId" class="text-danger"></span>
+        </div>
 
-            <div class="form-group">
-                <label asp-for="Brand" class="control-label">Thương hiệu</label>
-                <input asp-for="Brand" class="form-control" />
-                <span asp-validation-for="Brand" class="text-danger"></span>
-            </div>
+        <div class="form-group">
+            <label asp-for="Brand">Thương hiệu</label>
+            <input asp-for="Brand" class="form-control" />
+            <span asp-validation-for="Brand" class="text-danger"></span>
+        </div>
 
-            <div class="form-group">
-                <label asp-for="WarrantyPeriod" class="control-label">Thời gian bảo hành</label>
-                <input asp-for="WarrantyPeriod" class="form-control" placeholder="6 tháng, 1 năm..." />
-                <span asp-validation-for="WarrantyPeriod" class="text-danger"></span>
-            </div>
+        <div class="form-group">
+            <label asp-for="WarrantyPeriod">Thời gian bảo hành</label>
+            <input asp-for="WarrantyPeriod" class="form-control" placeholder="6 tháng, 1 năm..." />
+            <span asp-validation-for="WarrantyPeriod" class="text-danger"></span>
+        </div>
 
-            <div class="form-group">
-                <label asp-for="UsedDuration" class="control-label">Đã sử dụng bao lâu</label>
-                <input asp-for="UsedDuration" class="form-control" />
-                <span asp-validation-for="UsedDuration" class="text-danger"></span>
-            </div>
+        <div class="form-group">
+            <label asp-for="UsedDuration">Đã sử dụng bao lâu</label>
+            <input asp-for="UsedDuration" class="form-control" />
+            <span asp-validation-for="UsedDuration" class="text-danger"></span>
+        </div>
 
-            <div class="form-group">
-                <label asp-for="Type" class="control-label">Loại hình sản phẩm</label>
-                <input asp-for="Type" class="form-control" />
-                <span asp-validation-for="Type" class="text-danger"></span>
-            </div>
+        <div class="form-group">
+            <label asp-for="Type">Loại hình sản phẩm</label>
+            <input asp-for="Type" class="form-control" />
+            <span asp-validation-for="Type" class="text-danger"></span>
+        </div>
 
-            <div class="form-group">
-                <label>Hình ảnh sản phẩm</label>
-                <input type="file" name="Images" multiple class="form-control" />
-                <small class="form-text text-muted">Bạn có thể chọn nhiều ảnh.</small>
-            </div>
+        <div class="form-group">
+            <label>Hình ảnh sản phẩm</label>
+            <input type="file" name="Images" multiple class="form-control" />
+            <small class="form-text text-muted">Bạn có thể chọn nhiều ảnh.</small>
+        </div>
 
-            <!-- Ẩn status và userId: hệ thống tự gán -->
-            <input asp-for="Status" type="hidden" value="Chờ duyệt" />
-            <input asp-for="UserId" type="hidden" />
+        <input asp-for="Status" type="hidden" value="Chờ duyệt" />
+        <input asp-for="UserId" type="hidden" />
 
+        <div class="mt-3">
             <button type="submit" class="btn btn-success">Đăng sản phẩm</button>
             <a asp-action="Index" class="btn btn-secondary ml-2">Hủy</a>
-        </form>
-    </div>
+        </div>
+    </form>
 </div>
 
 @section Scripts {
@@ -115,7 +160,6 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function () {
-
             function loadSubCategories(categoryId, selectedId) {
                 var subSelect = $('#SubCategoryId');
                 subSelect.empty();
@@ -127,38 +171,23 @@
                         type: 'GET',
                         success: function (data) {
                             $.each(data, function (i, item) {
-                                var option = $('<option>', {
-                                    value: item.value,
-                                    text: item.text
-                                });
-                                if (selectedId && selectedId == item.value) {
-                                    option.attr('selected', 'selected');
-                                }
+                                var option = $('<option>', { value: item.value, text: item.text });
+                                if (selectedId && selectedId == item.value) option.attr('selected','selected');
                                 subSelect.append(option);
                             });
                         },
-                        error: function () {
-                            alert('Không tải được danh mục phụ.');
-                        }
+                        error: function () { alert('Không tải được danh mục phụ.'); }
                     });
                 }
             }
 
-            // Khi thay đổi danh mục
             $('#CategoryId').on('change', function () {
-                var categoryId = $(this).val();
-                loadSubCategories(categoryId, null);
+                loadSubCategories($(this).val(), null);
             });
 
-            // Nếu đang ở chế độ Edit, load sẵn danh mục phụ (Create thì không cần)
             var selectedCategoryId = $('#CategoryId').val();
-            var selectedSubCategoryId = $('#SubCategoryId').data('selected'); // Nếu có dữ liệu
-            if (selectedCategoryId) {
-                loadSubCategories(selectedCategoryId, selectedSubCategoryId);
-            }
+            var selectedSubCategoryId = $('#SubCategoryId').data('selected');
+            if (selectedCategoryId) loadSubCategories(selectedCategoryId, selectedSubCategoryId);
         });
     </script>
 }
-
-
-

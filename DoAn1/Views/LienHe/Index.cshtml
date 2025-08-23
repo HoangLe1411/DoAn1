@@ -1,0 +1,86 @@
+﻿@{
+    ViewData["Title"] = "Liên hệ";
+}
+
+<link rel="stylesheet" href="~/css/lienhe.css" />
+
+<div class="contact-container">
+    <h1>Liên hệ với Loop Store</h1>
+    <p>Chúng tôi luôn sẵn sàng hỗ trợ bạn 24/7. Hãy liên hệ qua các phương thức dưới đây.</p>
+
+    <div class="contact-grid">
+        <!-- Thông tin liên hệ -->
+        <div class="contact-info">
+            <h2>📞 Hotline</h2>
+            <p><strong>0123 456 789</strong> (8:00 – 21:00)</p>
+
+            <h2>📧 Email</h2>
+            <p><a href="mailto:support@loopstore.vn">support@loopstore.vn</a></p>
+
+            <h2>🏢 Văn phòng</h2>
+            <p>123 Đường ABC, Quận 1, TP. Hồ Chí Minh</p>
+
+            <h2>🌐 Mạng xã hội</h2>
+            <p>
+                <a href="#">Facebook</a> |
+                <a href="#">Instagram</a> |
+                <a href="#">Zalo</a>
+            </p>
+        </div>
+
+        <!-- Form liên hệ -->
+        <div class="contact-form">
+            <h2>💬 Gửi yêu cầu hỗ trợ</h2>
+            <form id="contactForm">
+                <label>Họ và tên</label>
+                <input type="text" name="name" placeholder="Nhập họ tên" required>
+
+                <label>Email</label>
+                <input type="email" name="email" placeholder="Nhập email" required>
+
+                <label>Số điện thoại</label>
+                <input type="text" name="phone" placeholder="Nhập số điện thoại" required>
+
+                <label>Nội dung</label>
+                <textarea name="message" placeholder="Nhập nội dung cần hỗ trợ" required></textarea>
+
+                <button type="submit" class="send-btn">Gửi yêu cầu</button>
+            </form>
+
+            <!-- Thông báo -->
+            <p id="successMessage" class="success-message" style="display:none;">
+                ✅ Yêu cầu của bạn đã được gửi thành công!
+            </p>
+        </div>
+    </div>
+
+    <!-- Bản đồ -->
+    <div class="map">
+        <h2>📍 Bản đồ</h2>
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18..." width="100%" height="250" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+                document.addEventListener("DOMContentLoaded", function () {
+            const form = document.getElementById("contactForm");
+            const successMessage = document.getElementById("successMessage");
+
+            form.addEventListener("submit", function (e) {
+                e.preventDefault(); // Ngăn reload trang
+
+                // Hiện thông báo
+                successMessage.style.display = "block";
+
+                // Xóa nội dung form
+                form.reset();
+
+                // Ẩn thông báo sau 5 giây
+                setTimeout(() => {
+                    successMessage.style.display = "none";
+                }, 5000);
+            });
+        });
+    </script>
+}

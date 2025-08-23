@@ -104,7 +104,7 @@ namespace DoAn1.Controllers
             return RedirectToAction("Chat", new { userId = msg.ReceiverId });
         }
 
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> DeleteMessage(int id)
         {
             var userId = HttpContext.Session.GetInt32("UserId");
             var msg = await _context.Messages.FindAsync(id);

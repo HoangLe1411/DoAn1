@@ -1,0 +1,35 @@
+﻿@{
+    var cartItems = ViewData["CartItems"] as List<DoAn1.Areas.Admin.Models.ShoppingCart> ?? new();
+    var paymentMethods = ViewData["PaymentMethods"] as List<DoAn1.Areas.Admin.Models.PaymentMethod> ?? new();
+}
+
+<h2>Thanh toán giỏ hàng</h2>
+
+@if (!(cartItems?.Any() ?? false))
+{
+    <p>Giỏ hàng trống, vui lòng thêm sản phẩm trước khi thanh toán.</p>
+}
+else
+{
+    <h4>Sản phẩm trong giỏ:</h4>
+    <ul>
+        @foreach (var item in cartItems)
+        {
+            <li>@item.Product?.Title - Số lượng: @item.Quantity - Giá: @(item.Product?.Price?.ToString("N0") ?? "0") đ</li>
+        }
+    </ul>
+
+    <form asp-action="ProcessCheckout" method="post">
+        <label>Chọn phương thức thanh toán:</label>
+        <select name="paymentMethodId" required class="form-control" style="width:300px;">
+            <option value="">-- Chọn phương thức --</option>
+            @foreach (var pm in paymentMethods)
+            {
+                <option value="@pm.PaymentMethodId">@pm.MethodName</option>
+            }
+        </select>
+
+        <br />
+        <button type="submit" class="btn btn-primary">Xác nhận thanh toán</button>
+    </form>
+}

@@ -34,11 +34,18 @@ h2 {
 .card-title {
     font-size: 18px;
     font-weight: 500;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* giới hạn 2 dòng */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
+
 
 .card-text {
     font-size: 16px;
     color: #555;
+    margin-bottom: 10px;
 }
 
 .btn-outline-primary {
@@ -178,5 +185,15 @@ footer {
     padding: 20px;
 }
 
+/* XÓA hoặc comment */
+.product-row {
+    /* display: flex; */
+    /* flex-wrap: wrap; */
+    /* gap: 20px; */
+}
 
+
+.filter-bar button {
+    height: 38px; /* giống height select */
+}
 

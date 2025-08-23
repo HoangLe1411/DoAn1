@@ -71,7 +71,7 @@
                     </span>
                 </td>
                 <td>
-                    <a asp-action="Details" asp-route-id="@item.TransactionId" class="btn btn-info btn-sm">Chi tiết</a>
+                    <a asp-controller="Products" asp-action="DetailProduct" asp-route-id="@item.ProductId" class="btn btn-info btn-sm">Chi tiết</a>
 
                     @if (item.ShippingStatus != "Shipping" &&
                                         item.ShippingStatus != "Delivered" &&
@@ -104,7 +104,7 @@
     </table>
 
     <div class="d-flex justify-content-between mt-4">
-        <a href="@Url.Action("All", "Product")" class="btn btn-secondary">Tiếp tục mua sắm</a>
+        <a href="@Url.Action("AllProducts", "Products")" class="btn btn-secondary">Tiếp tục mua sắm</a>
         <a href="/" class="btn btn-outline-primary">Trang chủ</a>
     </div>
 </div>

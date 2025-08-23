@@ -1,5 +1,4 @@
-﻿@model List<DoAn1.Areas.Admin.Models.Product>
-
+﻿@model PagedList.Core.IPagedList<DoAn1.Areas.Admin.Models.Product>
 @{
     ViewData["Title"] = "Tất Cả Sản Phẩm";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -13,117 +12,87 @@
     <h2 class="mb-4">Tất Cả Sản Phẩm</h2>
 
     <!-- Bộ lọc -->
-    <div class="filter-bar mb-4">
+    <form id="filterForm" method="get" class="filter-bar mb-4">
         <span><i class="bi bi-funnel"></i> Lọc:</span>
-        <select class="form-select d-inline-block w-auto ms-2" id="locationFilter">
+
+        <select name="location" class="form-select d-inline-block w-auto ms-2">
             <option value="">-- Địa điểm --</option>
-            <option value="Toàn quốc">Toàn quốc</option>
-            <option value="Hà Nội">Hà Nội</option>
-            <option value="TP. Hồ Chí Minh">TP. Hồ Chí Minh</option>
-            <option value="Cần Thơ">Cần Thơ</option>
+            <option value="Toàn quốc" selected="@(ViewBag.Location == "Toàn quốc" ? "selected" : null)">Toàn quốc</option>
+            <option value="Hà Nội" selected="@(ViewBag.Location == "Hà Nội" ? "selected" : null)">Hà Nội</option>
+            <option value="TP. Hồ Chí Minh" selected="@(ViewBag.Location == "TP. Hồ Chí Minh" ? "selected" : null)">TP. Hồ Chí Minh</option>
+            <option value="Cần Thơ" selected="@(ViewBag.Location == "Cần Thơ" ? "selected" : null)">Cần Thơ</option>
         </select>
 
-        <select class="form-select d-inline-block w-auto ms-2" id="categoryFilter">
+        <select name="category" class="form-select d-inline-block w-auto ms-2">
             <option value="">-- Danh mục --</option>
-            <option value="Đồ điện tử">Đồ Điện Tử</option>
-            <option value="Đồ gia dụng">Đồ Gia Dụng</option>
-            <option value="Thời trang">Thời trang</option>
-            <option value="Mẹ và bé">Mẹ & Bé</option>
-            <option value="Xe cộ">Xe cộ</option>
-            <option value="Sách">Sách</option>
-            <option value="Thể thao và giải trí">Thể thao & Giải trí</option>
-            <option value="Văn phòng">Văn phòng</option>
-            <option value="Đồ khác">Đồ khác</option>
+            <option value="Đồ điện tử" selected="@(ViewBag.Category == "Đồ điện tử" ? "selected" : null)">Đồ điện tử</option>
+            <option value="Đồ gia dụng" selected="@(ViewBag.Category == "Đồ gia dụng" ? "selected" : null)">Đồ gia dụng</option>
+            <option value="Thời trang" selected="@(ViewBag.Category == "Thời trang" ? "selected" : null)">Thời trang</option>
+            <option value="Mẹ và bé" selected="@(ViewBag.Category == "Mẹ và bé" ? "selected" : null)">Mẹ & Bé</option>
+            <option value="Xe cộ" selected="@(ViewBag.Category == "Xe cộ" ? "selected" : null)">Xe cộ</option>
+            <option value="Sách" selected="@(ViewBag.Category == "Sách" ? "selected" : null)">Sách</option>
+            <option value="Thể thao & giải trí" selected="@(ViewBag.Category == "Thể thao & giải trí" ? "selected" : null)">Thể thao & Giải trí</option>
+            <option value="Văn phòng" selected="@(ViewBag.Category == "Văn phòng" ? "selected" : null)">Văn phòng</option>
+            <option value="Đồ khác" selected="@(ViewBag.Category == "Đồ khác" ? "selected" : null)">Đồ khác</option>
         </select>
 
-        <select class="form-select d-inline-block w-auto ms-2" id="priceFilter">
+        <select name="price" class="form-select d-inline-block w-auto ms-2">
             <option value="">-- Giá --</option>
-            <option value="0-1000000">Dưới 1 triệu</option>
-            <option value="1000000-5000000">1 - 5 triệu</option>
-            <option value="5000000-10000000">5 - 10 triệu</option>
-            <option value="10000000-999999999">Trên 10 triệu</option>
+            <option value="0-1000000" selected="@(ViewBag.Price == "0-1000000" ? "selected" : null)">Dưới 1 triệu</option>
+            <option value="1000000-5000000" selected="@(ViewBag.Price == "1000000-5000000" ? "selected" : null)">1 - 5 triệu</option>
+            <option value="5000000-10000000" selected="@(ViewBag.Price == "5000000-10000000" ? "selected" : null)">5 - 10 triệu</option>
+            <option value="10000000-999999999" selected="@(ViewBag.Price == "10000000-999999999" ? "selected" : null)">Trên 10 triệu</option>
         </select>
 
-        <select class="form-select d-inline-block w-auto ms-2" id="conditionFilter">
+        <select name="condition" class="form-select d-inline-block w-auto ms-2">
             <option value="">-- Tình trạng --</option>
-            <option value="new">Mới</option>
-            <option value="used">Đã sử dụng</option>
+            <option value="new" selected="@(ViewBag.Condition == "new" ? "selected" : null)">Mới</option>
+            <option value="used" selected="@(ViewBag.Condition == "used" ? "selected" : null)">Đã sử dụng</option>
         </select>
-    </div>
 
-    <div class="product-list row">
+        <button type="submit" class="btn btn-primary ms-2">Lọc</button>
+    </form>
+
+
+    <div class="row product-row">
         @foreach (var product in Model)
         {
             var imageUrl = product.ProductImages.FirstOrDefault()?.ImageUrl ?? "/images/no-image.png";
-            var price = product.Price ?? 0;
-            var location = product.Location ?? "Toàn quốc";
-            var category = product.Category?.CategoryName ?? "Đồ khác";
-            var condition = product.Condition?.ToLower() == "mới" ? "new" : "used";
-
             <div class="col-md-3 col-sm-6 mb-4">
-                <div class="card h-100"
-                     data-location="@location"
-                     data-category="@category"
-                     data-price="@price"
-                     data-condition="@condition">
-                    <img src="@imageUrl" class="card-img-top" alt="@product.Title" />
+                <div class="card h-100">
+                    <img src="@imageUrl" class="card-img-top" alt="@product.Title">
                     <div class="card-body">
                         <h5 class="card-title">@product.Title</h5>
-                        <p class="card-text">@string.Format("{0:N0} đ", price)</p>
-                        <a href="@Url.Action("DetailProduct", "Products", new { id = product.ProductId })" class="btn btn-outline-primary w-100">Xem chi tiết</a>
+                        <p class="card-text">@string.Format("{0:N0} đ", product.Price)</p>
+                        <a href="@Url.Action("DetailProduct", "Products", new { id = product.ProductId })"
+                           class="btn btn-outline-primary w-100">Xem chi tiết</a>
                     </div>
                 </div>
             </div>
         }
     </div>
-</div>
 
-@section Scripts {
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const locationFilter = document.getElementById('locationFilter');
-            const categoryFilter = document.getElementById('categoryFilter');
-            const priceFilter = document.getElementById('priceFilter');
-            const conditionFilter = document.getElementById('conditionFilter');
-            const cards = document.querySelectorAll('.card');
-
-            function applyFilters() {
-                let selectedLocation = locationFilter.value;
-                let selectedCategory = categoryFilter.value;
-                let selectedPrice = priceFilter.value;
-                let selectedCondition = conditionFilter.value;
-
-                cards.forEach(card => {
-                    let match = true;
-
-                    if (selectedLocation && card.dataset.location !== selectedLocation) {
-                        match = false;
-                    }
-
-                    if (selectedCategory && card.dataset.category !== selectedCategory) {
-                        match = false;
-                    }
-
-                    if (selectedCondition && card.dataset.condition !== selectedCondition) {
-                        match = false;
-                    }
-
-                    if (selectedPrice) {
-                        let [minPrice, maxPrice] = selectedPrice.split('-').map(Number);
-                        let cardPrice = parseInt(card.dataset.price);
-                        if (cardPrice < minPrice || cardPrice > maxPrice) {
-                            match = false;
-                        }
-                    }
-
-                    card.parentElement.style.display = match ? 'block' : 'none';
-                });
+    <!-- Phân trang -->
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+            @if (Model.HasPreviousPage)
+            {
+                <li class="page-item">
+                    <a class="page-link" href="@Url.Action("AllProducts", new { page = Model.PageNumber - 1, location = ViewBag.Location, category = ViewBag.Category, price = ViewBag.Price, condition = ViewBag.Condition })">«</a>
+                </li>
             }
-
-            locationFilter.addEventListener('change', applyFilters);
-            categoryFilter.addEventListener('change', applyFilters);
-            priceFilter.addEventListener('change', applyFilters);
-            conditionFilter.addEventListener('change', applyFilters);
-        });
-    </script>
-}
+            @for (int i = 1; i <= Model.PageCount; i++)
+            {
+                <li class="page-item @(i == Model.PageNumber ? "active" : "")">
+                    <a class="page-link" href="@Url.Action("AllProducts", new { page = i, location = ViewBag.Location, category = ViewBag.Category, price = ViewBag.Price, condition = ViewBag.Condition })">@i</a>
+                </li>
+            }
+            @if (Model.HasNextPage)
+            {
+                <li class="page-item">
+                    <a class="page-link" href="@Url.Action("AllProducts", new { page = Model.PageNumber + 1, location = ViewBag.Location, category = ViewBag.Category, price = ViewBag.Price, condition = ViewBag.Condition })">»</a>
+                </li>
+            }
+        </ul>
+    </nav>
+</div>

@@ -1,8 +1,12 @@
 ﻿/* Trang chủ - bổ sung */
-body {
+body.homepage {
     background-color: #f8f9fa;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
+
+    body.homepage .navbar {
+        font-family: inherit; /* Hoặc font giống các trang khác */
+    }
 
 body, html {
     margin: 0;
@@ -67,7 +71,7 @@ body, html {
     left: 0;
     width: 100%;
     height: 100vh; /* Chiều cao full màn hình */
-    background-image: url('/images/nen1.jpg'); /* Thay đổi theo ảnh của bạn */
+    background-image: url('/images/nen.jpg'); /* Thay đổi theo ảnh của bạn */
     background-size: cover;
     background-position: center;
     z-index: -1; /* Quan trọng: đặt thấp hơn tất cả các phần tử khác */
@@ -199,9 +203,10 @@ footer {
 
 /* Giữ banner sát với thanh navbar */
 /* Loại bỏ margin/padding phía dưới navbar */
-.navbar {
+.homepage .navbar {
     margin-bottom: 0;
 }
+
 
 /* Nếu khung chứa banner có margin/padding phía trên */
 .banner-wrapper, .banner-container, .banner {

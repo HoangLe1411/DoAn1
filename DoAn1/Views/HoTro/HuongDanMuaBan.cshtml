@@ -1,0 +1,43 @@
+﻿@{
+    ViewData["Title"] = "Hướng dẫn mua bán";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!-- Nếu bạn chưa chèn CSS global, bỏ comment dòng sau -->
+<link rel="stylesheet" href="~/css/hotro.css" />
+
+<div class="policy-page">
+    <h1 class="title">Hướng dẫn mua bán</h1>
+    <p class="policy-meta">Hướng dẫn chi tiết cho cả người mua và người bán trên Loop Store — từ đăng ký, đăng tin đến hoàn tất giao dịch.</p>
+
+    <section class="policy-content">
+        <h2>1. Đăng ký & xác thực tài khoản</h2>
+        <p>Để sử dụng đầy đủ chức năng, bạn cần tạo tài khoản bằng email hoặc số điện thoại. Sau khi đăng ký, hãy xác thực tài khoản qua email hoặc mã OTP để nâng cao độ tin cậy khi giao dịch.</p>
+
+        <h2>2. Hướng dẫn người bán đăng tin</h2>
+        <ol>
+            <li><strong>Chuẩn bị hình ảnh:</strong> Chụp nhiều góc, ánh sáng tốt, nền gọn. Tối thiểu 3 ảnh cho mỗi tin.</li>
+            <li><strong>Tiêu đề:</strong> Viết súc tích, rõ ràng (ví dụ: “Laptop Dell Inspiron i5 — còn bảo hành 6 tháng”).</li>
+            <li><strong>Mô tả:</strong> Ghi chi tiết: tình trạng, lỗi (nếu có), phụ kiện kèm theo, nguồn gốc, bảo hành.</li>
+            <li><strong>Giá & phương thức thanh toán:</strong> Ghi rõ giá (có thể thương lượng hay không), hỗ trợ ship hay chỉ gặp lấy hàng.</li>
+            <li><strong>Đăng & quản lý:</strong> Sau khi đăng, kiểm tra lại ở phần “Quản lý tin” để chỉnh sửa hoặc xóa khi cần.</li>
+        </ol>
+
+        <h2>3. Hướng dẫn người mua</h2>
+        <ol>
+            <li>Sử dụng bộ lọc theo danh mục, khu vực, giá để tìm sản phẩm phù hợp.</li>
+            <li>Đọc kỹ mô tả, xem ảnh; nếu cần hỏi thêm, sử dụng chat hoặc gọi trực tiếp người bán.</li>
+            <li>Thỏa thuận giá, phương thức giao hàng (gặp trực tiếp, giao hàng COD, hoặc giao qua chuyển phát).</li>
+            <li>Gặp mặt kiểm tra kỹ sản phẩm trước khi thanh toán (nếu gặp trực tiếp).</li>
+        </ol>
+
+        <h2>4. Giao dịch an toàn & mẹo</h2>
+        <ul>
+            <li>Ưu tiên gặp mặt tại nơi công cộng có camera, đông người.</li>
+            <li>Không chuyển tiền trước cho người lạ nếu chưa xác minh đầy đủ.</li>
+            <li>Yêu cầu giấy tờ hoặc biên lai khi mua hàng có giá trị lớn.</li>
+            <li>Lưu lại toàn bộ tin nhắn, hình ảnh, biên lai để làm bằng chứng nếu phát sinh tranh chấp.</li>
+        </ul>
+
+        <a asp-action="Index" class="back-link">← Quay lại Trung tâm Hỗ trợ</a>
+    </section>
+</div>
