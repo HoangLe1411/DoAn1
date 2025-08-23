@@ -165,32 +165,37 @@
 
     <!-- Tin đăng mới -->
         <!-- Tin đăng mới -->
+        <!-- Tin đăng mới -->
         <div class="bg-white p-3 mb-4 rounded shadow-sm">
-            <h4>Tin đăng mới</h4>
+            <h4 class="mb-3">Tin đăng mới</h4>
             <div class="row">
-                @foreach (var product in Model.Take(6))
+                @foreach (var product in Model.Take(8))
                 {
                     var imageUrl = product.ProductImages?.FirstOrDefault()?.ImageUrl ?? "/images/no-image.png";
-                    <div class="col-md-4 mb-3">
-                        <div class="card shadow-sm h-100">
+                    <div class="col-md-3 col-sm-6 mb-4">
+                        <div class="card h-100 shadow-sm border-0">
                             <a asp-controller="Products" asp-action="DetailProduct" asp-route-id="@product.ProductId">
-                                <img src="@imageUrl" class="card-img-top" style="height: 200px; object-fit: cover;"
+                                <img src="@imageUrl"
+                                     class="card-img-top"
+                                     style="height: 220px; width: 100%; object-fit: cover; border-radius: 8px 8px 0 0;"
                                      onerror="this.onerror=null;this.src='/images/no-image.png';" />
                             </a>
-
-                            <div class="card-body">
-                                <h5 class="card-title text-truncate">@product.Title</h5>
-                                <p class="card-text text-danger fw-bold">@string.Format("{0:N0} đ", product.Price)</p>
-                                <p class="card-text"><i class="bi bi-geo-alt"></i> @product.Location</p>
+                            <div class="card-body d-flex flex-column">
+                                <h6 class="card-title text-truncate" title="@product.Title">@product.Title</h6>
+                                <p class="card-text text-danger fw-bold mb-1">@string.Format("{0:N0} đ", product.Price)</p>
+                                <p class="card-text text-muted mb-2">
+                                    <i class="bi bi-geo-alt"></i> @product.Location
+                                </p>
                                 <a asp-controller="Products" asp-action="DetailProduct" asp-route-id="@product.ProductId"
-                                   class="btn btn-outline-primary w-100 mt-2">Xem chi tiết</a>
+                                   class="btn btn-outline-primary btn-sm mt-auto">Xem chi tiết</a>
                             </div>
                         </div>
                     </div>
                 }
-
             </div>
         </div>
+
+
 
 
     <!-- Sản phẩm nổi bật -->

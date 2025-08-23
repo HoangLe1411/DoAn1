@@ -1,49 +1,92 @@
-﻿@model List<DoAn1.Areas.Admin.Models.ShoppingCart>
+﻿@model List<DoAn1.Areas.Admin.Models.ShoppingCart> 
 
-<h2>Giỏ hàng của bạn</h2>
+@section Styles {
+    <style>
+        body {
+            background-image: url('/images/nen.jpg'); /* Ảnh nền chung */
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-position: center;
+        }
 
-@if (!Model.Any())
-{
-    <p>Giỏ hàng đang trống.</p>
+        /* Bao khung giỏ hàng */
+        .cart-container {
+            background-color: rgba(255, 255, 255, 0.95); /* nền trắng mờ */
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            margin: 20px auto;
+            max-width: 1000px;
+        }
+
+        .cart-container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .cart-container table th,
+        .cart-container table td {
+            vertical-align: middle !important;
+        }
+    </style>
+    <link rel="stylesheet" href="~/css/background.css" />
 }
-else
-{
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>Sản phẩm</th>
-                <th>Số lượng</th>
-                <th>Đơn giá</th>
-                <th>Tổng tiền</th>
-                <th>Hành động</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
+
+<div class="cart-container">
+    <h2>Giỏ hàng của bạn</h2>
+
+    @if (!Model.Any())
+    {
+        <p class="text-center">Giỏ hàng đang trống.</p>
+    }
+    else
+    {
+        <table class="table table-bordered text-center">
+            <thead class="table-light">
                 <tr>
-                    <td>@item.Product?.Title</td>
-                    <td>
-                        <form asp-action="UpdateQuantity" method="post" style="display:inline;">
-                            <input type="hidden" name="cartItemId" value="@item.CartItemId" />
-                            <input type="number" name="quantity" value="@item.Quantity ?? 1" min="1" style="width:60px;" />
-                            <button type="submit" class="btn btn-sm btn-primary">Cập nhật</button>
-                        </form>
-                    </td>
-                    <td>@(item.Product?.Price?.ToString("N0") ?? "0") đ</td>
-                    <td>@((item.Quantity ?? 1) * (item.Product?.Price ?? 0)).ToString("N0") đ</td>
-                    <td>
-                        <form asp-action="Remove" method="post" style="display:inline;">
-                            <input type="hidden" name="cartItemId" value="@item.CartItemId" />
-                            <button type="submit" class="btn btn-sm btn-danger">Xóa</button>
-                        </form>
-                    </td>
+                    <th>Sản phẩm</th>
+                    <th>Số lượng</th>
+                    <th>Đơn giá</th>
+                    <th>Tổng tiền</th>
+                    <th>Hành động</th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    var total = (item.Quantity ?? 1) * (item.Product?.Price ?? 0);
+                    <tr>
+                        <td>@item.Product?.Title</td>
+                        <td>
+                             <span>@(item.Quantity ?? 1)</span>
+                             <form asp-action="UpdateQuantity" method="post" style="display:inline; margin-left:5px;">
+                             <input type="hidden" name="cartItemId" value="@item.CartItemId" />
+                             <input type="number" name="quantity" value="@item.Quantity ?? 1" min="1" style="width:60px;" />
+                             <button type="submit" class="btn btn-sm btn-primary">Cập nhật</button>
+                             </form>
+                        </td>
 
-    <p><strong>Tổng cộng: @Model.Sum(i => (i.Quantity ?? 1) * (i.Product?.Price ?? 0)).ToString("N0") đ</strong></p>
+                        <td>@(item.Product?.Price?.ToString("N0") ?? "0") đ</td>
+                        <td>@total.ToString("N0") đ</td>
+                        <td class="cart-actions">
+                            <a asp-action="DetailProduct" asp-controller="Products" asp-route-id="@item.ProductId" class="btn btn-sm btn-info">🔍 Xem chi tiết</a>
+                            <form asp-action="Remove" method="post" style="display:inline;">
+                                <input type="hidden" name="cartItemId" value="@item.CartItemId" />
+                                <button type="submit" class="btn btn-sm btn-danger">Xóa</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
 
-    <a asp-action="Checkout" class="btn btn-success">Thanh toán</a>
-}
+        <p class="text-end fw-bold fs-5 mt-3">
+            Tổng cộng: @Model.Sum(i => (i.Quantity ?? 1) * (i.Product?.Price ?? 0)).ToString("N0") đ
+        </p>
+
+        <div class="text-end">
+            <a asp-action="Checkout" class="btn btn-success btn-lg">Thanh toán</a>
+        </div>
+    }
+</div>

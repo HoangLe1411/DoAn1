@@ -54,17 +54,18 @@
     </form>
 
 
-    <div class="row">
+    <div class="row product-row">
         @foreach (var product in Model)
         {
             var imageUrl = product.ProductImages.FirstOrDefault()?.ImageUrl ?? "/images/no-image.png";
             <div class="col-md-3 col-sm-6 mb-4">
                 <div class="card h-100">
-                    <img src="@imageUrl" class="card-img-top" alt="@product.Title" />
+                    <img src="@imageUrl" class="card-img-top" alt="@product.Title">
                     <div class="card-body">
                         <h5 class="card-title">@product.Title</h5>
                         <p class="card-text">@string.Format("{0:N0} đ", product.Price)</p>
-                        <a href="@Url.Action("DetailProduct", "Products", new { id = product.ProductId })" class="btn btn-outline-primary w-100">Xem chi tiết</a>
+                        <a href="@Url.Action("DetailProduct", "Products", new { id = product.ProductId })"
+                           class="btn btn-outline-primary w-100">Xem chi tiết</a>
                     </div>
                 </div>
             </div>

@@ -1,44 +1,80 @@
 ﻿@model IEnumerable<DoAn1.Areas.Admin.Models.Notification>
 
-<h2 class="mb-4">🔔 Thông báo mới</h2>
+@section Styles {
+    <style>
+        body {
+            background-image: url('/images/nen.jpg'); /* Ảnh nền chung */
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-position: center;
+        }
 
-<div class="card shadow p-3">
-    <table class="table align-middle">
-        <thead>
-            <tr>
-                <th>Tiêu đề</th>
-                <th>Nội dung</th>
-                <th>Thời gian</th>
-                <th class="text-center">Trạng thái</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
-                <tr class="@(item.IsRead == true ? "" : "table-warning")">
-                    <td>@item.Title</td>
-                    <td>@item.Content</td>
-                    <td>@item.CreatedAt?.ToString("dd/MM/yyyy HH:mm")</td>
-                    <td class="text-center">
-                        @if (item.IsRead != true)
-                        {
-                            <form asp-action="MarkAsRead" method="post" class="d-inline">
-                                <input type="hidden" name="id" value="@item.NotificationId" />
-                                <button type="submit" class="btn btn-sm btn-primary">
-                                    @(item.TransactionId != null ? "Xem đơn hàng" : "Đánh dấu đã đọc")
-                                </button>
-                            </form>
-                        }
-                        else if (item.TransactionId != null)
-                        {
-                            <a asp-action="OrderDetails" asp-controller="Transactions" asp-route-id="@item.TransactionId" class="btn btn-sm btn-info">
-                                Xem lại đơn
-                            </a>
-                        }
-                    </td>
+        /* Bao khung thông báo */
+        .notification-container {
+            background-color: rgba(255, 255, 255, 0.95); /* nền trắng mờ */
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            margin: 20px auto;
+            max-width: 900px;
+        }
 
-                </tr>
+            .notification-container h2 {
+                text-align: center;
+                margin-bottom: 20px;
             }
-        </tbody>
-    </table>
+    </style>
+    <link rel="stylesheet" href="~/css/background.css" />
+}
+
+<div class="notification-container">
+    <h2>🔔 Thông báo mới</h2>
+
+    @if (!Model.Any())
+    {
+        <p class="text-center">Chưa có thông báo nào.</p>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>Tiêu đề</th>
+                        <th>Nội dung</th>
+                        <th>Thời gian</th>
+                        <th class="text-center">Trạng thái</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr class="@(item.IsRead == true ? "" : "table-warning")">
+                            <td>@item.Title</td>
+                            <td>@item.Content</td>
+                            <td>@item.CreatedAt?.ToString("dd/MM/yyyy HH:mm")</td>
+                            <td class="text-center">
+                                @if (item.IsRead != true)
+                                {
+                                    <form asp-action="MarkAsRead" method="post" class="d-inline">
+                                        <input type="hidden" name="id" value="@item.NotificationId" />
+                                        <button type="submit" class="btn btn-sm btn-primary">
+                                            @(item.TransactionId != null ? "Xem đơn hàng" : "Đánh dấu đã đọc")
+                                        </button>
+                                    </form>
+                                }
+                                else if (item.TransactionId != null)
+                                {
+                                    <a asp-action="OrderDetails" asp-controller="Transactions" asp-route-id="@item.TransactionId" class="btn btn-sm btn-info">
+                                        Xem lại đơn
+                                    </a>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
 </div>

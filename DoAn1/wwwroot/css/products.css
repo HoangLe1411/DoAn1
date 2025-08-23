@@ -185,11 +185,13 @@ footer {
     padding: 20px;
 }
 
-.row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
+/* XÓA hoặc comment */
+.product-row {
+    /* display: flex; */
+    /* flex-wrap: wrap; */
+    /* gap: 20px; */
 }
+
 
 .filter-bar button {
     height: 38px; /* giống height select */
